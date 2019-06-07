@@ -1,7 +1,7 @@
 # Beers
 **Beers** is a simple experimental app implemented using the new amazing **SwiftUI**.
 
-The app shows a list of beers fetched from **Punk API** and displays a detail view on tap.
+The app shows a list of beers fetched from **Punk API** (https://punkapi.com) and displays a detail view on tap.
 
 # Preview
 
