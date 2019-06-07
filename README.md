@@ -5,6 +5,7 @@ The app shows a list of beers fetched from **Punk API** and displays a detail vi
 
 # Preview
 
+![Preview GIF](https://github.com/crelies/Beers/blob/master/preview.gif "Preview GIF")
 
 # Issues
 
