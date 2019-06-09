@@ -15,7 +15,7 @@ final class MockBeerStore: BeerStore {
         
         let randomMax = Int.random(in: -1005 ... -1000)
         beers = Array(randomMax ... -995).map {
-            let imageURL = URL(string: "https://broughtonales.co.uk/wp-content/uploads/2016/02/merlins_ale.png")!
+            let imageURL = URL(string: "https://images.punkapi.com/v2/8.png")!
             return Beer(id: $0,
                         name: "Beer No. \($0)",
                         tagline: "Awesome. Beer.",
