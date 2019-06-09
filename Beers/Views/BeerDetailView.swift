@@ -10,31 +10,24 @@ import SwiftUI
 
 struct BeerDetailView : View {
     @State private var zoomed: Bool = false
-    @ObjectBinding private var beer: Beer
+    private let beer: Beer
     
     var body: some View {
         VStack(alignment: .center, spacing: 16) {
-            if !zoomed {
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(beer.name)
-                        .font(.title)
-                    Text("First brewed on: \(beer.firstBrewed, formatter: BeerAPIService.formatter)")
-                        .font(.body)
-                    Text(beer.description)
-                        .lineLimit(10)
-                        .font(.caption)
-                }.padding(.horizontal, 50.0)
+            Section(header: Text(beer.name).font(.title)) {
+                if !zoomed {
+                    VStack(alignment: .leading, spacing: 8) {
+                        Text("First brewed on: \(beer.firstBrewed, formatter: BeerAPIService.formatter)")
+                            .font(.body)
+                        Text(beer.description)
+                            .lineLimit(12)
+                            .font(.caption)
+                    }.padding(.horizontal, 50.0)
+                }
             }
             
-            if beer.image != nil {
-                Image(uiImage: beer.image!)
-                    .resizable()
-                    .aspectRatio(contentMode: zoomed ? .fill : .fit)
-                    .tapAction {
-                        withAnimation {
-                            self.zoomed.toggle()
-                        }
-                    }
+            Section {
+                BeerImageView(zoomed: $zoomed, beerImage: beer.beerImage)
             }
         }
     }

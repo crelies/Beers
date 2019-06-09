@@ -18,6 +18,8 @@
 		B90BBC1922A9BFDB00F871AB /* BeerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90BBC1822A9BFDB00F871AB /* BeerStore.swift */; };
 		B90BBC1B22A9C03E00F871AB /* BeerStoreDependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90BBC1A22A9C03E00F871AB /* BeerStoreDependencies.swift */; };
 		B90BBC1D22A9C0AE00F871AB /* BeerStoreFactory.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90BBC1C22A9C0AE00F871AB /* BeerStoreFactory.swift */; };
+		B9D0DF8922ABD5F700CCF401 /* BeerImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D0DF8822ABD5F700CCF401 /* BeerImageView.swift */; };
+		B9D0DF8B22AC3D9100CCF401 /* BeerImageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9D0DF8A22AC3D9100CCF401 /* BeerImageModel.swift */; };
 		B9F387AD22A9CFF60039E96A /* BeerDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9F387AC22A9CFF60039E96A /* BeerDetailView.swift */; };
 		B9F387AF22A9D10E0039E96A /* BeerCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9F387AE22A9D10E0039E96A /* BeerCell.swift */; };
 		B9F658B322A9C60A005E05F6 /* MockBeerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9F658B222A9C60A005E05F6 /* MockBeerStore.swift */; };
@@ -38,6 +40,8 @@
 		B90BBC1A22A9C03E00F871AB /* BeerStoreDependencies.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerStoreDependencies.swift; sourceTree = "<group>"; };
 		B90BBC1C22A9C0AE00F871AB /* BeerStoreFactory.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerStoreFactory.swift; sourceTree = "<group>"; };
 		B91EF59F22AB19A300FC2303 /* preview.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = preview.gif; sourceTree = "<group>"; };
+		B9D0DF8822ABD5F700CCF401 /* BeerImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerImageView.swift; sourceTree = "<group>"; };
+		B9D0DF8A22AC3D9100CCF401 /* BeerImageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerImageModel.swift; sourceTree = "<group>"; };
 		B9DEE5E822AB039D00D92EF3 /* Beers.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Beers.entitlements; sourceTree = "<group>"; };
 		B9F387AC22A9CFF60039E96A /* BeerDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerDetailView.swift; sourceTree = "<group>"; };
 		B9F387AE22A9D10E0039E96A /* BeerCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerCell.swift; sourceTree = "<group>"; };
@@ -101,6 +105,7 @@
 			isa = PBXGroup;
 			children = (
 				B90BBC1322A9BC9500F871AB /* Beer.swift */,
+				B9D0DF8A22AC3D9100CCF401 /* BeerImageModel.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -122,6 +127,7 @@
 			children = (
 				B9F387AE22A9D10E0039E96A /* BeerCell.swift */,
 				B9F387AC22A9CFF60039E96A /* BeerDetailView.swift */,
+				B9D0DF8822ABD5F700CCF401 /* BeerImageView.swift */,
 				B90BBC0222A9BC7B00F871AB /* BeerListView.swift */,
 			);
 			path = Views;
@@ -201,8 +207,10 @@
 				B90BBBFF22A9BC7B00F871AB /* AppDelegate.swift in Sources */,
 				B90BBC1922A9BFDB00F871AB /* BeerStore.swift in Sources */,
 				B90BBC0122A9BC7B00F871AB /* SceneDelegate.swift in Sources */,
+				B9D0DF8922ABD5F700CCF401 /* BeerImageView.swift in Sources */,
 				B90BBC0322A9BC7B00F871AB /* BeerListView.swift in Sources */,
 				B90BBC1D22A9C0AE00F871AB /* BeerStoreFactory.swift in Sources */,
+				B9D0DF8B22AC3D9100CCF401 /* BeerImageModel.swift in Sources */,
 				B9F658B322A9C60A005E05F6 /* MockBeerStore.swift in Sources */,
 				B90BBC1B22A9C03E00F871AB /* BeerStoreDependencies.swift in Sources */,
 				B9F387AF22A9D10E0039E96A /* BeerCell.swift in Sources */,
@@ -349,6 +357,7 @@
 				CODE_SIGN_ENTITLEMENTS = Beers/Beers.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Manual;
+				DERIVE_UIKITFORMAC_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_ASSET_PATHS = "Beers/Preview\\ Content";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;
@@ -374,6 +383,7 @@
 				CODE_SIGN_ENTITLEMENTS = Beers/Beers.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Manual;
+				DERIVE_UIKITFORMAC_PRODUCT_BUNDLE_IDENTIFIER = YES;
 				DEVELOPMENT_ASSET_PATHS = "Beers/Preview\\ Content";
 				DEVELOPMENT_TEAM = "";
 				ENABLE_PREVIEWS = YES;

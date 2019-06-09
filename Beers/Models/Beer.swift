@@ -6,12 +6,9 @@
 //  Copyright © 2019 Christian Elies. All rights reserved.
 //
 
-import Combine
 import SwiftUI
 
-final class Beer: Identifiable, BindableObject {
-    private static let urlSession = URLSession.shared
-    
+final class Beer: Identifiable {
     let id: Int // Identifiable
     let name: String
     let tagline: String
@@ -19,12 +16,9 @@ final class Beer: Identifiable, BindableObject {
     let description: String
     let imageURL: URL
     
-    private(set) var image: UIImage? = nil {
-        didSet {
-            didChange.send(()) // BindableObject
-        }
-    }
-    private(set) var didChange = PassthroughSubject<Void, Never>() // BindableObject
+    lazy var beerImage: BeerImageModel = {
+        return BeerImageModel(imageURL: imageURL)
+    }()
     
     init(id: Int,
          name: String,
@@ -49,19 +43,5 @@ extension Beer: Codable {
         case firstBrewed = "first_brewed"
         case description
         case imageURL = "image_url"
-    }
-}
-
-extension Beer {
-    func requestImage() {
-        let urlRequest = URLRequest(url: imageURL)
-        let task = Beer.urlSession.dataTask(with: urlRequest) { (data, _, _) in
-            if let data = data, let image = UIImage(data: data) {
-                DispatchQueue.main.async {
-                    self.image = image
-                }
-            }
-        }
-        task.resume()
     }
 }

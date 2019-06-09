@@ -9,11 +9,10 @@
 import SwiftUI
 
 struct BeerCell : View {
-    private var beer: Beer
+    private let beer: Beer
     
     var body: some View {
-        return NavigationButton(destination: BeerDetailView(beer: beer),
-                                onTrigger: onTrigger) {
+        return NavigationButton(destination: BeerDetailView(beer: beer)) {
             VStack(alignment: .leading) {
                 Text(beer.name)
                     .font(.body)
@@ -28,18 +27,14 @@ struct BeerCell : View {
     }
 }
 
-extension BeerCell {
-    private func onTrigger() -> Bool {
-        beer.requestImage()
-        return true
-    }
-}
-
 #if DEBUG
 struct BeerCell_Previews: PreviewProvider {
     static var previews: some View {
-        let beer = MockBeerStore().beers.randomElement()!
-        return BeerCell(beer: beer)
+        NavigationView {
+            List(/*@START_MENU_TOKEN@*/0 ..< 5/*@END_MENU_TOKEN@*/) { item in
+                BeerCell(beer: MockBeerStore().beers.randomElement()!)
+            }
+        }
     }
 }
 #endif
