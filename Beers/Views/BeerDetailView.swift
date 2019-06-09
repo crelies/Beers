@@ -13,16 +13,16 @@ struct BeerDetailView : View {
     private let beer: Beer
     
     var body: some View {
-        VStack(alignment: .center, spacing: 16) {
+        VStack(alignment: .center) {
             Section(header: Text(beer.name).font(.title)) {
                 if !zoomed {
-                    VStack(alignment: .leading, spacing: 8) {
-                        Text("First brewed on: \(beer.firstBrewed, formatter: BeerAPIService.formatter)")
-                            .font(.body)
+                    VStack(alignment: .leading) {
                         Text(beer.description)
-                            .lineLimit(12)
-                            .font(.caption)
-                    }.padding(.horizontal, 50.0)
+                            .lineLimit(nil)
+                            .font(.body)
+                        Text("First brewed on: \(beer.firstBrewed, formatter: BeerAPIService.formatter)")
+                            .font(.footnote)
+                    }.padding(.horizontal)
                 }
             }
             
