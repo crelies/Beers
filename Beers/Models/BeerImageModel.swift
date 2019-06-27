@@ -13,6 +13,7 @@ import UIKit
 final class BeerImageModel: BindableObject {
     private static let urlSession = URLSession.shared
     private let imageURL: URL
+    private var subscriber: AnySubscriber<UIImage, URLError>?
     
     private(set) var image: UIImage? = nil {
         didSet {
@@ -24,23 +25,13 @@ final class BeerImageModel: BindableObject {
     init(imageURL: URL) {
         self.imageURL = imageURL
         
-        defer {
-            requestImage()
-        }
-    }
-}
-
-extension BeerImageModel {
-    private func requestImage() {
         let urlRequest = URLRequest(url: imageURL)
-        let task = BeerImageModel.urlSession.dataTask(with: urlRequest) { (data, _, _) in
-            if let data = data, let image = UIImage(data: data) {
-                DispatchQueue.main.async {
-                    self.image = image
-                }
-            }
-        }
-        
-        task.resume()
+        subscriber = BeerImageModel.urlSession.dataTaskPublisher(for: urlRequest)
+            .compactMap { $0.data }
+            .compactMap { UIImage(data: $0) }
+            .sink(receiveValue: { image in
+                self.image = image
+            })
+            .eraseToAnySubscriber()
     }
 }

@@ -27,10 +27,6 @@ struct BeerListView : View {
     
     init(beerStore: BeerStore) {
         self.beerStore = beerStore
-        
-        defer {
-            beerStore.reloadBeers()
-        }
     }
 }
 

@@ -12,6 +12,7 @@ import SwiftUI
 
 class BeerStore: BindableObject {
     private let dependencies: BeerStoreDependenciesProtocol
+    private var subscriber: AnySubscriber<[Beer], Error>?
     
     var beers: [Beer] = [] {
         didSet {
@@ -23,13 +24,10 @@ class BeerStore: BindableObject {
     init(dependencies: BeerStoreDependenciesProtocol) {
         self.dependencies = dependencies
         beers = []
-    }
-}
-
-extension BeerStore {
-    func reloadBeers() {
-        dependencies.beerAPIService.getBeers { beers in
-            self.beers = beers
-        }
+        
+        subscriber = dependencies.beerAPIService.publisher
+            .sink { beers in
+                self.beers = beers
+            }.eraseToAnySubscriber()
     }
 }

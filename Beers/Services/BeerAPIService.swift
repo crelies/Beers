@@ -6,6 +6,7 @@
 //  Copyright © 2019 Christian Elies. All rights reserved.
 //
 
+import Combine
 import Foundation
 
 protocol BeerAPIServiceProvider {
@@ -13,13 +14,15 @@ protocol BeerAPIServiceProvider {
 }
 
 protocol BeerAPIServiceProtocol {
-    func getBeers(_ completion: @escaping ([Beer]) -> Void)
+    var publisher: AnyPublisher<[Beer], Error> { get }
 }
 
-final class BeerAPIService {
+final class BeerAPIService: BeerAPIServiceProtocol {
     private let url: URL
     private let urlSession: URLSession
     private let urlRequest: URLRequest
+    
+    let publisher: AnyPublisher<[Beer], Error>
     
     static let formatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -31,28 +34,13 @@ final class BeerAPIService {
         url = URL(string: "https://api.punkapi.com/v2/beers")!
         urlSession = URLSession(configuration: .default)
         urlRequest = URLRequest(url: url)
-    }
-}
-
-extension BeerAPIService: BeerAPIServiceProtocol {
-    func getBeers(_ completion: @escaping ([Beer]) -> Void) {
-        let task = urlSession.dataTask(with: urlRequest) { (data, response, error) in
-            if let data = data {
-                let decoder = JSONDecoder()
-                decoder.dateDecodingStrategy = .formatted(BeerAPIService.formatter)
-                
-                let beers = try? decoder.decode([Beer].self, from: data)
-                
-                DispatchQueue.main.async {
-                    completion(beers ?? [])
-                }
-            } else {
-                DispatchQueue.main.async {
-                    completion([])
-                }
-            }
-        }
         
-        task.resume()
+        let decoder = JSONDecoder()
+        decoder.dateDecodingStrategy = .formatted(BeerAPIService.formatter)
+        
+        publisher = urlSession.dataTaskPublisher(for: urlRequest)
+            .compactMap { $0.data }
+            .decode(type: [Beer].self, decoder: decoder)
+            .eraseToAnyPublisher()
     }
 }

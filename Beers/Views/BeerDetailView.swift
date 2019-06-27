@@ -38,8 +38,10 @@ struct BeerDetailView : View {
 #if DEBUG
 struct BeerDetailView_Previews : PreviewProvider {
     static var previews: some View {
-        NavigationView {
-            BeerDetailView(beer: MockBeerStore().beers.randomElement()!)
+        let beer = MockBeerStore().beers.randomElement()!
+        
+        return NavigationView {
+            BeerDetailView(beer: beer)
         }
     }
 }
