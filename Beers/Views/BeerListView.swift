@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct BeerListView : View {
-    @ObjectBinding private var beerStore: BeerStore
+    @ObservedObject private var beerStore: BeerStore
     
     var body: some View {
         NavigationView {

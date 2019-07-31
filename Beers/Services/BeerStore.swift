@@ -10,24 +10,28 @@ import Combine
 import Foundation
 import SwiftUI
 
-class BeerStore: BindableObject {
+class BeerStore: ObservableObject {
     private let dependencies: BeerStoreDependenciesProtocol
-    private var subscriber: AnySubscriber<[Beer], Error>?
+    private var subscriber: Subscribers.Completion<Error>?
+    private var cancellable: AnyCancellable?
     
     var beers: [Beer] = [] {
         didSet {
-            didChange.send(())
+            objectWillChange.send(())
         }
     }
-    let didChange = PassthroughSubject<Void, Never>()
+    let objectWillChange = PassthroughSubject<Void, Never>()
     
     init(dependencies: BeerStoreDependenciesProtocol) {
         self.dependencies = dependencies
         beers = []
         
-        subscriber = dependencies.beerAPIService.publisher
-            .sink { beers in
+        cancellable = dependencies.beerAPIService.publisher
+            .receive(on: RunLoop.main)
+            .sink(receiveCompletion: { subscriber in
+                self.subscriber = subscriber
+            }, receiveValue: { beers in
                 self.beers = beers
-            }.eraseToAnySubscriber()
+            })
     }
 }

@@ -9,7 +9,7 @@
 import SwiftUI
 
 struct BeerImageView : View {
-    @ObjectBinding private var beerImageMocdel: BeerImageModel
+    @ObservedObject private var beerImageMocdel: BeerImageModel
     
     var body: some View {
         Group {

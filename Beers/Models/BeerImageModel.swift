@@ -10,28 +10,31 @@ import Combine
 import SwiftUI
 import UIKit
 
-final class BeerImageModel: BindableObject {
+final class BeerImageModel: ObservableObject {
     private static let urlSession = URLSession.shared
     private let imageURL: URL
-    private var subscriber: AnySubscriber<UIImage, URLError>?
+    private var subscriber: Subscribers.Completion<URLError>?
+    private var cancellable: AnyCancellable?
     
     private(set) var image: UIImage? = nil {
         didSet {
-            didChange.send(()) // BindableObject
+            objectWillChange.send(()) // BindableObject
         }
     }
-    let didChange = PassthroughSubject<Void, Never>() // BindableObject
+    let objectWillChange = PassthroughSubject<Void, Never>() // BindableObject
     
     init(imageURL: URL) {
         self.imageURL = imageURL
         
         let urlRequest = URLRequest(url: imageURL)
-        subscriber = BeerImageModel.urlSession.dataTaskPublisher(for: urlRequest)
+        cancellable = BeerImageModel.urlSession.dataTaskPublisher(for: urlRequest)
             .compactMap { $0.data }
             .compactMap { UIImage(data: $0) }
-            .sink(receiveValue: { image in
+            .receive(on: RunLoop.main)
+            .sink(receiveCompletion: { subscriber in
+                self.subscriber = subscriber
+            }, receiveValue: { image in
                 self.image = image
             })
-            .eraseToAnySubscriber()
     }
 }

@@ -12,7 +12,7 @@ struct BeerCell : View {
     private let beer: Beer
     
     var body: some View {
-        return NavigationButton(destination: BeerDetailView(beer: beer)) {
+        return NavigationLink(destination: BeerDetailView(beer: beer)) {
             VStack(alignment: .leading) {
                 Text(beer.name)
                     .font(.body)
