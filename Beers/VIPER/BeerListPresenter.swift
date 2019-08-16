@@ -33,7 +33,7 @@ extension BeerListPresenter: BeerListPresenterProtocol {
                     .sink(receiveCompletion: { completion in
                         debugPrint(completion)
                     }, receiveValue: { beers in
-                        let beerViewModels = beers.map { BeerViewModel(beer: $0) }
+                        let beerViewModels = beers.map(BeerViewModel.init)
                         self.listService.appendItems(beerViewModels)
                     })
             case .viewDisappears:
