@@ -8,11 +8,10 @@
 
 import Foundation
 
-final class MockBeerStore: BeerStore {
+final class MockBeerStore {
+    let beers: [Beer]
+    
     init() {
-        let dependencies = BeerStoreDependencies()
-        super.init(dependencies: dependencies)
-        
         let randomMax = Int.random(in: -1005 ... -1000)
         beers = Array(randomMax ... -995).map {
             let imageURL = URL(string: "https://images.punkapi.com/v2/8.png")!
