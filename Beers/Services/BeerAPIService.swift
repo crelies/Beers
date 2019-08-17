@@ -14,15 +14,13 @@ protocol BeerAPIServiceProvider {
 }
 
 protocol BeerAPIServiceProtocol {
-    var publisher: AnyPublisher<[Beer], Error> { get }
+    func getBeers(page: Int, pageSize: Int) -> AnyPublisher<[Beer], Error>
 }
 
-final class BeerAPIService: BeerAPIServiceProtocol {
-    private let url: URL
+final class BeerAPIService {
+    private let beersBaseURL: URL
     private let urlSession: URLSession
-    private let urlRequest: URLRequest
-    
-    let publisher: AnyPublisher<[Beer], Error>
+    private let jsonDecoder: JSONDecoder
     
     static let formatter: DateFormatter = {
         let formatter = DateFormatter()
@@ -31,16 +29,40 @@ final class BeerAPIService: BeerAPIServiceProtocol {
     }()
     
     init() {
-        url = URL(string: "https://api.punkapi.com/v2/beers")!
+        beersBaseURL = URL(string: "https://api.punkapi.com/v2/beers")!
         urlSession = URLSession(configuration: .default)
-        urlRequest = URLRequest(url: url)
         
         let decoder = JSONDecoder()
         decoder.dateDecodingStrategy = .formatted(BeerAPIService.formatter)
-        
-        publisher = urlSession.dataTaskPublisher(for: urlRequest)
+        jsonDecoder = decoder
+    }
+}
+
+extension BeerAPIService: BeerAPIServiceProtocol {
+    func getBeers(page: Int, pageSize: Int) -> AnyPublisher<[Beer], Error> {
+        let urlRequest = makeURLRequest(forPage: page,
+                                        pageSize: pageSize)
+        return urlSession.dataTaskPublisher(for: urlRequest)
             .compactMap { $0.data }
-            .decode(type: [Beer].self, decoder: decoder)
+            .decode(type: [Beer].self, decoder: jsonDecoder)
             .eraseToAnyPublisher()
+    }
+}
+
+extension BeerAPIService {
+    private func makeURLRequest(forPage page: Int, pageSize: Int) -> URLRequest {
+        let pageQueryItem = URLQueryItem(name: "page",
+                                         value: "\(page)")
+        let pageSizeQueryItem = URLQueryItem(name: "per_page",
+                                             value: "\(pageSize)")
+        var urlComponents = URLComponents(url: beersBaseURL,
+                                          resolvingAgainstBaseURL: false)
+        urlComponents?.queryItems = [pageQueryItem, pageSizeQueryItem]
+        
+        if let urlComponentsURL = urlComponents?.url {
+            return URLRequest(url: urlComponentsURL)
+        } else {
+            return URLRequest(url: beersBaseURL)
+        }
     }
 }
