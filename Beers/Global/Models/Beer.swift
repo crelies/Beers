@@ -9,16 +9,12 @@
 import SwiftUI
 
 final class Beer: Identifiable {
-    let id: Int // Identifiable
+    let id: Int
     let name: String
     let tagline: String
-    let firstBrewed: Date
+    let firstBrewed: Date?
     let description: String
-    let imageURL: URL
-    
-    lazy var beerImage: BeerImageModel = {
-        return BeerImageModel(imageURL: imageURL)
-    }()
+    let imageURL: URL?
     
     init(id: Int,
          name: String,
@@ -32,6 +28,16 @@ final class Beer: Identifiable {
         self.firstBrewed = firstBrewed
         self.description = description
         self.imageURL = imageURL
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decode(Int.self, forKey: .id)
+        name = try container.decode(String.self, forKey: .name)
+        tagline = try container.decode(String.self, forKey: .tagline)
+        firstBrewed = try? container.decode(Date.self, forKey: .firstBrewed)
+        description = try container.decode(String.self, forKey: .description)
+        imageURL = try? container.decode(URL.self, forKey: .imageURL)
     }
 }
 
