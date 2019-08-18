@@ -12,33 +12,28 @@ struct BeerDetailView: View {
     weak var delegate: BeerDetailDelegateProtocol?
     
     var body: some View {
-        VStack {
-            Section {
-                VStack(alignment: .leading) {
-                    Text(beer.description)
-                        // TODO: not working
-                        .lineLimit(nil)
-                        .font(.body)
-                    // TODO: handle nil values
-                    Text("First brewed on: \(beer.firstBrewed ?? Date(), formatter: BeerAPIService.formatter)")
-                        .font(.footnote)
-                }.padding(.horizontal)
+        VStack(spacing: 8) {
+            Text(beer.description)
+                .lineLimit(nil)
+                .multilineTextAlignment(.center)
+                .font(.body)
+            
+            // TODO: optimize
+            if beer.firstBrewed != nil {
+                Text("First brewed on: \(beer.firstBrewed!, formatter: BeerAPIService.formatter)")
+                    .font(.footnote)
             }
             
-            Section {
-                // TODO: optimize
-                if beer.imageURL != nil {
-                    RemoteImage(url: beer.imageURL!, errorView: { error in
-                        Text(error.localizedDescription)
-                    }, imageView: { image in
-                        image
-                            .resizable()
-                            .aspectRatio(0.25, contentMode: .fit)
-                    }) {
-                        Text("Loading image...")
-                    }
-                } else {
-                    Text("No image available")
+            // TODO: optimize
+            if beer.imageURL != nil {
+                RemoteImage(url: beer.imageURL!, errorView: { error in
+                    Text(error.localizedDescription)
+                }, imageView: { image in
+                    image
+                        .resizable()
+                        .aspectRatio(0.25, contentMode: .fit)
+                }) {
+                    Text("Loading image...")
                 }
             }
         }
