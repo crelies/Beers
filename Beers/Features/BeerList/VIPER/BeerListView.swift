@@ -14,7 +14,17 @@ struct BeerListView: View {
             AdvancedList(listService: presenter.listService, emptyStateView: {
                 Text("No beers")
             }, errorStateView: { error in
-                Text(error.localizedDescription)
+                VStack {
+                    Text(error.localizedDescription)
+                    .lineLimit(nil)
+                    .multilineTextAlignment(.center)
+                    
+                    Button(action: {
+                        self.presenter.didTriggerAction(.retry)
+                    }) {
+                        Text("Retry")
+                    }.padding()
+                }
             }, loadingStateView: {
                 Text("Loading...")
             }, pagination: presenter.pagination)

@@ -65,7 +65,10 @@ extension BeerListPresenter: BeerListPresenterProtocol {
     }
 
     func didTriggerAction(_ action: BeerListAction) {
-
+        switch action {
+            case .retry:
+                getCurrentBeers(isInitialLoading: true)
+        }
     }
 }
 
