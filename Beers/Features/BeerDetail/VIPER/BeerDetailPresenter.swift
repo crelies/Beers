@@ -1,22 +1,17 @@
-import Combine
+import Foundation
 
 protocol BeerDetailPresenterProtocol: class {
     var viewModel: BeerDetailViewModel { get }
+    
     func didReceiveEvent(_ event: BeerDetailEvent)
     func didTriggerAction(_ action: BeerDetailAction)
 }
 
-final class BeerDetailPresenter: ObservableObject {
+final class BeerDetailPresenter: NSObject {
     private let dependencies: BeerDetailPresenterDependenciesProtocol
     private let interactor: BeerDetailInteractorProtocol
     
-    private(set) var viewModel: BeerDetailViewModel {
-        didSet {
-            objectWillChange.send()
-        }
-    }
-    
-    let objectWillChange = PassthroughSubject<Void, Never>()
+    private(set) var viewModel: BeerDetailViewModel
     
     init(dependencies: BeerDetailPresenterDependenciesProtocol,
          interactor: BeerDetailInteractorProtocol) {

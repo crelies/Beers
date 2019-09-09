@@ -6,29 +6,52 @@ protocol BeerListViewProtocol: BeerListProtocol {
 }
 
 struct BeerListView: View {
-    @ObservedObject private var presenter = BeerListWireframe.makePresenter()
+    private let presenter = BeerListWireframe.makePresenter()
     weak var delegate: BeerListDelegateProtocol?
     
     var body: some View {
         NavigationView {
-            AdvancedList(listService: presenter.listService, emptyStateView: {
-                Text("No beers")
-            }, errorStateView: { error in
-                VStack {
-                    Text(error.localizedDescription)
-                    .lineLimit(nil)
-                    .multilineTextAlignment(.center)
-                    
-                    Button(action: {
-                        self.presenter.didTriggerAction(.retry)
-                    }) {
-                        Text("Retry")
-                    }.padding()
-                }
-            }, loadingStateView: {
-                Text("Loading...")
-            }, pagination: presenter.pagination)
-            .navigationBarTitle(Text("Beers"))
+            #if targetEnvironment(macCatalyst)
+                AdvancedList(emptyStateView: {
+                    Text("No beers")
+                }, errorStateView: { error in
+                    VStack {
+                        Text(error.localizedDescription)
+                        .lineLimit(nil)
+                        .multilineTextAlignment(.center)
+                        
+                        Button(action: {
+                            self.presenter.didTriggerAction(.retry)
+                        }) {
+                            Text("Retry")
+                        }.padding()
+                    }
+                }, loadingStateView: {
+                    Text("Loading...")
+                })
+                .environmentObject(presenter.listService)
+                .environmentObject(presenter.pagination)
+                .navigationBarTitle(Text("Beers"))
+            #else
+                AdvancedList(listService: presenter.listService, emptyStateView: {
+                    Text("No beers")
+                }, errorStateView: { error in
+                    VStack {
+                        Text(error.localizedDescription)
+                        .lineLimit(nil)
+                        .multilineTextAlignment(.center)
+                        
+                        Button(action: {
+                            self.presenter.didTriggerAction(.retry)
+                        }) {
+                            Text("Retry")
+                        }.padding()
+                    }
+                }, loadingStateView: {
+                    Text("Loading...")
+                }, pagination: presenter.pagination)
+                .navigationBarTitle(Text("Beers"))
+            #endif
 //            .navigationBarItems(trailing: EditButton())
 //                .onMove(perform: onMove)
 //                .onDelete(perform: onDelete)

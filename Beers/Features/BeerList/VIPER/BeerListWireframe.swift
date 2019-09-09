@@ -11,7 +11,7 @@ struct BeerListWireframe: BeerListWireframeProtocol {
 
         let presenterDependencies = BeerListPresenterDependencies()
         let presenter = BeerListPresenter(dependencies: presenterDependencies,
-                                                               interactor: interactor)
+                                          interactor: interactor)
         return presenter
     }
 }

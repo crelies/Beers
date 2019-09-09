@@ -6,7 +6,7 @@
         "repositoryURL": "https://github.com/crelies/AdvancedList",
         "state": {
           "branch": "master",
-          "revision": "85590141f00a450e8aa570083ecc023b80fcbd13",
+          "revision": "e1a0d0a346a7769b8646839d4e65b300fa72b221",
           "version": null
         }
       },
@@ -15,17 +15,17 @@
         "repositoryURL": "https://github.com/crelies/ListPagination",
         "state": {
           "branch": null,
-          "revision": "1557cfe6508f5ea7361dbec8be6d27a2392a4015",
-          "version": "0.1.0"
+          "revision": "af667b368a10512da79605b61698d53c11d24cbf",
+          "version": "0.1.1"
         }
       },
       {
         "package": "RemoteImage",
         "repositoryURL": "https://github.com/crelies/RemoteImage",
         "state": {
-          "branch": null,
-          "revision": "d5e498f41ad52c9b4b03241c38f1414cd29ef211",
-          "version": "0.1.0"
+          "branch": "master",
+          "revision": "a7d8b852f850325b44625f4a8f447b4f4dc16584",
+          "version": null
         }
       }
     ]

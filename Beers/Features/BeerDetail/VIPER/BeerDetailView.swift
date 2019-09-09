@@ -6,7 +6,7 @@ protocol BeerDetailViewProtocol: BeerDetailProtocol {
 }
 
 struct BeerDetailView: View {
-    @ObservedObject private var presenter = BeerDetailWireframe.makePresenter()
+    private let presenter = BeerDetailWireframe.makePresenter()
     
     let beer: Beer
     weak var delegate: BeerDetailDelegateProtocol?

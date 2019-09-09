@@ -566,16 +566,16 @@
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/crelies/AdvancedList";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.0.0;
+				branch = master;
+				kind = branch;
 			};
 		};
 		B91CADAA2308B69600EB67B1 /* XCRemoteSwiftPackageReference "RemoteImage" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/crelies/RemoteImage";
 			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 0.1.0;
+				branch = master;
+				kind = branch;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */

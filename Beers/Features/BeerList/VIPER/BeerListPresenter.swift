@@ -8,18 +8,19 @@ protocol BeerListPresenterProtocol: class {
     
     var listService: ListService { get }
     var pagination: AdvancedListPagination<PaginationErrorView, PaginationLoadingView> { get }
+    
     func didReceiveEvent(_ event: BeerListEvent)
     func didTriggerAction(_ action: BeerListAction)
 }
 
-final class BeerListPresenter: ObservableObject {
+final class BeerListPresenter: NSObject {
     private let dependencies: BeerListPresenterDependenciesProtocol
     private var interactor: BeerListInteractorProtocol
     private var getCurrentBeersCancellable: AnyCancellable?
     private var getNextBeersCancellable: AnyCancellable?
     
     let listService: ListService
-    private(set) lazy var pagination: AdvancedListPagination<AnyView, TupleView<(Divider, Text)>> = {
+    private(set) lazy var pagination: AdvancedListPagination<AnyView, AnyView> = {
         .thresholdItemPagination(errorView: { error in
             AnyView(
                 VStack {
@@ -35,13 +36,16 @@ final class BeerListPresenter: ObservableObject {
                 }
             )
         }, loadingView: {
-            Divider()
-            Text("Fetching next beers...")
+            AnyView(
+                VStack {
+                    Divider()
+                    Text("Fetching next beers...")
+                }
+            )
         }, offset: 20, shouldLoadNextPage: {
             self.loadNextPage()
         }, state: .idle)
     }()
-    let objectWillChange = PassthroughSubject<Void, Never>()
     
     init(dependencies: BeerListPresenterDependenciesProtocol,
          interactor: BeerListInteractorProtocol) {
