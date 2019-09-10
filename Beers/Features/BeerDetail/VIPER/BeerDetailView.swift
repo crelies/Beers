@@ -7,6 +7,9 @@ protocol BeerDetailViewProtocol: BeerDetailProtocol {
 
 struct BeerDetailView: View {
     private let presenter = BeerDetailWireframe.makePresenter()
+    #if targetEnvironment(macCatalyst)
+    private let remoteImageService = RemoteImageService()
+    #endif
     
     let beer: Beer
     weak var delegate: BeerDetailDelegateProtocol?
@@ -26,15 +29,28 @@ struct BeerDetailView: View {
             
             // TODO: optimize
             if beer.imageURL != nil {
-                RemoteImage(url: beer.imageURL!, errorView: { error in
-                    Text(error.localizedDescription)
-                }, imageView: { image in
-                    image
-                        .resizable()
-                        .aspectRatio(0.25, contentMode: .fit)
-                }) {
-                    Text("Loading image...")
-                }
+                #if !targetEnvironment(macCatalyst)
+                    RemoteImage(url: beer.imageURL!, errorView: { error in
+                        Text(error.localizedDescription)
+                    }, imageView: { image in
+                        image
+                            .resizable()
+                            .aspectRatio(0.25, contentMode: .fit)
+                    }) {
+                        Text("Loading image...")
+                    }
+                #else
+                    RemoteImage(url: beer.imageURL!, errorView: { error in
+                        Text(error.localizedDescription)
+                    }, imageView: { image in
+                        image
+                            .resizable()
+                            .aspectRatio(0.25, contentMode: .fit)
+                    }) {
+                        Text("Loading image...")
+                    }
+                    .environmentObject(remoteImageService)
+                #endif
             }
         }
         .navigationBarTitle(Text(beer.name), displayMode: .inline)
