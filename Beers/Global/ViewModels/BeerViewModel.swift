@@ -13,13 +13,5 @@ struct BeerViewModel {
 }
 
 extension BeerViewModel: Identifiable {
-    var id: ObjectIdentifier {
-        beer.id
-    }
-}
-
-extension BeerViewModel: View {
-    var body: some View {
-        BeerCell(beer: beer)
-    }
+    var id: ObjectIdentifier { beer.id }
 }

@@ -5,9 +5,9 @@
         "package": "AdvancedList",
         "repositoryURL": "https://github.com/crelies/AdvancedList",
         "state": {
-          "branch": "master",
-          "revision": "e1a0d0a346a7769b8646839d4e65b300fa72b221",
-          "version": null
+          "branch": null,
+          "revision": "c7a03b7177acd10bbdc6a99252582d549f0bce3a",
+          "version": "4.0.0"
         }
       },
       {
@@ -23,9 +23,9 @@
         "package": "RemoteImage",
         "repositoryURL": "https://github.com/crelies/RemoteImage",
         "state": {
-          "branch": "master",
-          "revision": "9eb8540d3553a45df892a06db324ab5ce7861720",
-          "version": null
+          "branch": null,
+          "revision": "b784aeb4c1362242f54c88384e79d09e76b39134",
+          "version": "1.0.0"
         }
       }
     ]

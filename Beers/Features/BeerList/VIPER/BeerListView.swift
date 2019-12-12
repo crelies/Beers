@@ -6,55 +6,32 @@ protocol BeerListViewProtocol: BeerListProtocol {
 }
 
 struct BeerListView: View {
-    private let presenter = BeerListWireframe.makePresenter()
+    @ObservedObject private var presenter = BeerListWireframe.makePresenter()
+
     weak var delegate: BeerListDelegateProtocol?
     
     var body: some View {
         NavigationView {
-            #if targetEnvironment(macCatalyst)
-                AdvancedList(emptyStateView: {
-                    Text("No beers")
-                }, errorStateView: { error in
-                    VStack {
-                        Text(error.localizedDescription)
+            AdvancedList(presenter.beerViewModels, content: { beerViewModel in
+                BeerCell(beer: beerViewModel.beer)
+            }, listState: $presenter.listState, emptyStateView: {
+                Text("No beers")
+            }, errorStateView: { error in
+                VStack {
+                    Text(error.localizedDescription)
                         .lineLimit(nil)
                         .multilineTextAlignment(.center)
-                        
-                        Button(action: {
-                            self.presenter.didTriggerAction(.retry)
-                        }) {
-                            Text("Retry")
-                        }.padding()
-                    }
-                }, loadingStateView: {
-                    Text("Loading...")
-                })
-                .environmentObject(presenter.listService)
-                .environmentObject(presenter.pagination)
-                .navigationBarTitle(Text("Beers"))
-            #else
-                AdvancedList(listService: presenter.listService, emptyStateView: {
-                    Text("No beers")
-                }, errorStateView: { error in
-                    VStack {
-                        Text(error.localizedDescription)
-                        .lineLimit(nil)
-                        .multilineTextAlignment(.center)
-                        
-                        Button(action: {
-                            self.presenter.didTriggerAction(.retry)
-                        }) {
-                            Text("Retry")
-                        }.padding()
-                    }
-                }, loadingStateView: {
-                    Text("Loading...")
-                }, pagination: presenter.pagination)
-                .navigationBarTitle(Text("Beers"))
-            #endif
-//            .navigationBarItems(trailing: EditButton())
-//                .onMove(perform: onMove)
-//                .onDelete(perform: onDelete)
+
+                    Button(action: {
+                        self.presenter.didTriggerAction(.retry)
+                    }) {
+                        Text("Retry")
+                    }.padding()
+                }
+            }, loadingStateView: {
+                Text("Loading...")
+            }, pagination: presenter.pagination)
+            .navigationBarTitle(Text("Beers"))
         }
         .onAppear {
             self.presenter.didReceiveEvent(.viewAppears)

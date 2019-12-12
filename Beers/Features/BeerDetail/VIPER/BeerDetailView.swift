@@ -7,10 +7,7 @@ protocol BeerDetailViewProtocol: BeerDetailProtocol {
 
 struct BeerDetailView: View {
     private let presenter = BeerDetailWireframe.makePresenter()
-    #if targetEnvironment(macCatalyst)
-    private let remoteImageService = RemoteImageService()
-    #endif
-    
+
     let beer: Beer
     weak var delegate: BeerDetailDelegateProtocol?
     
@@ -20,37 +17,22 @@ struct BeerDetailView: View {
                 .lineLimit(nil)
                 .multilineTextAlignment(.center)
                 .font(.body)
-            
-            // TODO: optimize
-            if beer.firstBrewed != nil {
-                Text("First brewed on: \(beer.firstBrewed!, formatter: BeerAPIService.formatter)")
+
+            beer.firstBrewed.map { firstBrewed in
+                Text("First brewed on: \(firstBrewed, formatter: BeerAPIService.formatter)")
                     .font(.footnote)
             }
-            
-            // TODO: optimize
-            if beer.imageURL != nil {
-                #if !targetEnvironment(macCatalyst)
-                    RemoteImage(url: beer.imageURL!, errorView: { error in
-                        Text(error.localizedDescription)
-                    }, imageView: { image in
-                        image
-                            .resizable()
-                            .aspectRatio(0.25, contentMode: .fit)
-                    }) {
-                        Text("Loading image...")
-                    }
-                #else
-                    RemoteImage(url: beer.imageURL!, errorView: { error in
-                        Text(error.localizedDescription)
-                    }, imageView: { image in
-                        image
-                            .resizable()
-                            .aspectRatio(0.25, contentMode: .fit)
-                    }) {
-                        Text("Loading image...")
-                    }
-                    .environmentObject(remoteImageService)
-                #endif
+
+            beer.imageURL.map { imageURL in
+                RemoteImage(type: .url(imageURL), errorView: { error in
+                    Text(error.localizedDescription)
+                }, imageView: { image in
+                    image
+                        .resizable()
+                        .aspectRatio(0.25, contentMode: .fit)
+                }) {
+                    Text("Loading image...")
+                }
             }
         }
         .navigationBarTitle(Text(beer.name), displayMode: .inline)

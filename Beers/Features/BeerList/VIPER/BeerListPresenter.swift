@@ -5,21 +5,22 @@ import SwiftUI
 protocol BeerListPresenterProtocol: class {
     associatedtype PaginationErrorView: View
     associatedtype PaginationLoadingView: View
-    
-    var listService: ListService { get }
+
     var pagination: AdvancedListPagination<PaginationErrorView, PaginationLoadingView> { get }
     
     func didReceiveEvent(_ event: BeerListEvent)
     func didTriggerAction(_ action: BeerListAction)
 }
 
-final class BeerListPresenter: NSObject {
+final class BeerListPresenter: NSObject, ObservableObject {
     private let dependencies: BeerListPresenterDependenciesProtocol
     private var interactor: BeerListInteractorProtocol
     private var getCurrentBeersCancellable: AnyCancellable?
     private var getNextBeersCancellable: AnyCancellable?
-    
-    let listService: ListService
+
+    @Published private(set) var beerViewModels: [BeerViewModel] = []
+    @Published var listState: ListState = .items
+
     private(set) lazy var pagination: AdvancedListPagination<AnyView, AnyView> = {
         .thresholdItemPagination(errorView: { error in
             AnyView(
@@ -51,7 +52,6 @@ final class BeerListPresenter: NSObject {
          interactor: BeerListInteractorProtocol) {
         self.dependencies = dependencies
         self.interactor = interactor
-        listService = ListService()
     }
 }
 
@@ -63,7 +63,7 @@ extension BeerListPresenter: BeerListPresenterProtocol {
             case .viewDisappears:
                 getCurrentBeersCancellable?.cancel()
                 getNextBeersCancellable?.cancel()
-                listService.listState = .items
+                listState = .items
                 pagination.state = .idle
         }
     }
@@ -79,7 +79,7 @@ extension BeerListPresenter: BeerListPresenterProtocol {
 extension BeerListPresenter {
     private func getCurrentBeers(isInitialLoading: Bool) {
         if isInitialLoading {
-            listService.listState = .loading
+            listState = .loading
         } else {
             pagination.state = .loading
         }
@@ -90,20 +90,20 @@ extension BeerListPresenter {
                 switch completion {
                     case .failure(let error):
                         if isInitialLoading {
-                            self.listService.listState = .error(error)
+                            self.listState = .error(error)
                         } else {
                             self.pagination.state = .error(error)
                         }
                     case .finished:
                         if isInitialLoading {
-                            self.listService.listState = .items
+                            self.listState = .items
                         } else {
                             self.pagination.state = .idle
                         }
                 }
             }, receiveValue: { beers in
                 let beerViewModels = beers.map(BeerViewModel.init)
-                self.listService.appendItems(beerViewModels)
+                self.beerViewModels.append(contentsOf: beerViewModels)
             })
     }
     
@@ -131,7 +131,7 @@ extension BeerListPresenter {
                 // TODO: move this logic to interactor
                 self.interactor.allBeersLoaded = beers.count < self.interactor.pageSize
                 let beerViewModels = beers.map(BeerViewModel.init)
-                self.listService.appendItems(beerViewModels)
+                self.beerViewModels.append(contentsOf: beerViewModels)
             })
     }
 }
