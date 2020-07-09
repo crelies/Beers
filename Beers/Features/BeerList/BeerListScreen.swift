@@ -39,7 +39,7 @@ struct BeerListScreen: View {
 private extension BeerListScreen {
     func handleBeer(_ beer: Beer) -> some View {
         let isLastItem = beerStore.beers.firstIndex(of: beer) == beerStore.beers.endIndex - 1
-        if isLastItem {
+        if isLastItem && !beerStore.reachedEnd {
             beerStore.nextBeers()
             return AnyView(ProgressView())
         }

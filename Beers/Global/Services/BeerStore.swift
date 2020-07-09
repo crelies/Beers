@@ -18,7 +18,11 @@ final class BeerStore: ObservableObject {
 
     @Published private(set) var beers: [Beer] = []
 
+    private(set) var reachedEnd = false
+
     func loadBeers() {
+        anyCancellable?.cancel()
+
         beerAPIService.getBeers(page: page, pageSize: pageSize)
             .receive(on: RunLoop.main)
             .replaceError(with: [])
@@ -26,12 +30,15 @@ final class BeerStore: ObservableObject {
     }
 
     func nextBeers() {
+        anyCancellable?.cancel()
+
         page += 1
         anyCancellable = beerAPIService.getBeers(page: page, pageSize: pageSize)
             .receive(on: RunLoop.main)
             .replaceError(with: [])
             .sink(receiveCompletion: { _ in }) { beers in
                 self.beers.append(contentsOf: beers)
+                self.reachedEnd = beers.isEmpty
             }
     }
 }
