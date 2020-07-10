@@ -30,17 +30,13 @@ struct BeerCell: View {
 #if DEBUG
 struct BeerCell_Previews: PreviewProvider {
     static var previews: some View {
-        let beer = BeerStore.mock().beers.randomElement()!
-        let previewLayout: PreviewLayout = .fixed(
-            width: 400,
-            height: 50
-        )
-        let preferredColorScheme: ColorScheme = [.dark, .light].randomElement()!
-        return ForEach(0 ..< 5) { item in
-            BeerCell(beer: beer)
-                .previewLayout(previewLayout)
-                .preferredColorScheme(preferredColorScheme)
-        }
+        Group {
+            BeerCell(beer: BeerStore.mock().beers.randomElement()!)
+                .preferredColorScheme(.dark)
+
+            BeerCell(beer: BeerStore.mock().beers.randomElement()!)
+                .preferredColorScheme(.light)
+        }.previewLayout(.sizeThatFits)
     }
 }
 #endif

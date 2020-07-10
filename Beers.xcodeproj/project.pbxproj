@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B9073E2624B8FEA500BF8917 /* BeerAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9073E2524B8FEA500BF8917 /* BeerAPIService.swift */; };
 		B90BBC0522A9BC7D00F871AB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B90BBC0422A9BC7D00F871AB /* Assets.xcassets */; };
 		B90BBC0822A9BC7D00F871AB /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B90BBC0722A9BC7D00F871AB /* Preview Assets.xcassets */; };
 		B90BBC1422A9BC9500F871AB /* Beer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90BBC1322A9BC9500F871AB /* Beer.swift */; };
@@ -21,6 +22,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		B9073E2524B8FEA500BF8917 /* BeerAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerAPIService.swift; sourceTree = "<group>"; };
 		B90BBBFB22A9BC7B00F871AB /* Beers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Beers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B90BBC0422A9BC7D00F871AB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B90BBC0722A9BC7D00F871AB /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -98,6 +100,7 @@
 		B90BBC1522A9BD1A00F871AB /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				B9073E2524B8FEA500BF8917 /* BeerAPIService.swift */,
 				B9FE19B424B7AD98008D330F /* BeerStore.swift */,
 				B90BBC1622A9BD2C00F871AB /* DefaultBeerAPIService.swift */,
 			);
@@ -218,6 +221,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B9073E2624B8FEA500BF8917 /* BeerAPIService.swift in Sources */,
 				B9FE19B324B7AC6B008D330F /* BeerListScreen.swift in Sources */,
 				B9F387AF22A9D10E0039E96A /* BeerCell.swift in Sources */,
 				B9FE19B724B7AE35008D330F /* BeerApp.swift in Sources */,

@@ -9,28 +9,23 @@
 import Combine
 import Foundation
 
-protocol BeerAPIService {
-    func getBeers(page: Int, pageSize: Int) -> AnyPublisher<[Beer], Error>
-}
-
 final class DefaultBeerAPIService {
     private enum Constants {
         static let baseURL = URL(string: "https://api.punkapi.com/v2/beers")!
         static let dateFormat = "MM/yyyy"
+        static let formatter: DateFormatter = {
+            let formatter = DateFormatter()
+            formatter.dateFormat = dateFormat
+            return formatter
+        }()
     }
 
     private let beersBaseURL = Constants.baseURL
     private let urlSession: URLSession = .init(configuration: .default)
     private lazy var jsonDecoder: JSONDecoder = {
         let decoder = JSONDecoder()
-        decoder.dateDecodingStrategy = .formatted(DefaultBeerAPIService.formatter)
+        decoder.dateDecodingStrategy = .formatted(Constants.formatter)
         return decoder
-    }()
-
-    static let formatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = Constants.dateFormat
-        return formatter
     }()
 }
 
@@ -41,7 +36,7 @@ extension DefaultBeerAPIService: BeerAPIService {
             pageSize: pageSize
         )
         return urlSession.dataTaskPublisher(for: urlRequest)
-            .compactMap { $0.data }
+            .map(\.data)
             .decode(type: [Beer].self, decoder: jsonDecoder)
             .eraseToAnyPublisher()
     }

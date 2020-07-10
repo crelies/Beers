@@ -10,15 +10,19 @@ import Combine
 import Foundation
 
 final class BeerStore: ObservableObject {
+    private enum Constants {
+        static let pageSize = 25
+    }
+
     private let beerAPIService = DefaultBeerAPIService()
     private var anyCancellable: AnyCancellable?
 
     private var page = 1
-    private let pageSize = 25
+    private let pageSize = Constants.pageSize
 
     @Published private(set) var beers: [Beer] = []
 
-    private(set) var reachedEnd = false
+    private(set) var reachedLastPage = false
 
     func loadBeers() {
         anyCancellable?.cancel()
@@ -38,7 +42,7 @@ final class BeerStore: ObservableObject {
             .replaceError(with: [])
             .sink(receiveCompletion: { _ in }) { beers in
                 self.beers.append(contentsOf: beers)
-                self.reachedEnd = beers.isEmpty
+                self.reachedLastPage = beers.isEmpty
             }
     }
 }

@@ -15,7 +15,6 @@ struct BeerDetailScreen: View {
     var body: some View {
         VStack(spacing: 16) {
             Text(beer.description)
-                .lineLimit(nil)
                 .multilineTextAlignment(.center)
                 .foregroundColor(.primary)
                 .font(.body)
