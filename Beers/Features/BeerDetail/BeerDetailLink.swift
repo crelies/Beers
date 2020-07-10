@@ -1,5 +1,5 @@
 //
-//  BeerCell.swift
+//  BeerDetailLink.swift
 //  Beers
 //
 //  Created by Christian Elies on 07.06.19.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct BeerCell: View {
+struct BeerDetailLink: View {
     let beer: Beer
 
     var body: some View {
@@ -31,10 +31,10 @@ struct BeerCell: View {
 struct BeerCell_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            BeerCell(beer: BeerStore.mock().beers.randomElement()!)
+            BeerDetailLink(beer: BeerStore.mock().beers.randomElement()!)
                 .preferredColorScheme(.dark)
 
-            BeerCell(beer: BeerStore.mock().beers.randomElement()!)
+            BeerDetailLink(beer: BeerStore.mock().beers.randomElement()!)
                 .preferredColorScheme(.light)
         }.previewLayout(.sizeThatFits)
     }

@@ -17,13 +17,16 @@ final class BeerStore: ObservableObject {
     private let beerAPIService = DefaultBeerAPIService()
     private var anyCancellable: AnyCancellable?
 
-    private var page = 1
     private let pageSize = Constants.pageSize
 
+    // MARK: - Internal
+
     @Published private(set) var beers: [Beer] = []
-
+    private(set) var page = 1
     private(set) var reachedLastPage = false
+}
 
+extension BeerStore {
     func loadBeers() {
         anyCancellable?.cancel()
 
@@ -44,6 +47,16 @@ final class BeerStore: ObservableObject {
                 self.beers.append(contentsOf: beers)
                 self.reachedLastPage = beers.isEmpty
             }
+    }
+
+    func moveBeer(at indexSet: IndexSet, to offset: Int) {
+        objectWillChange.send()
+        beers.move(fromOffsets: indexSet, toOffset: offset)
+    }
+
+    func deleteBeer(at indexSet: IndexSet) {
+        objectWillChange.send()
+        beers.remove(atOffsets: indexSet)
     }
 }
 

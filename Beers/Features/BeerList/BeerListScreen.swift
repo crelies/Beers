@@ -18,25 +18,62 @@ struct BeerListScreen: View {
                     Text("No beers").font(.headline)
                 } else {
                     ScrollView {
-                        LazyVStack(alignment: .leading, spacing: 18) {
-                            ForEach(beerStore.beers, content: { beer in
-                                BeerCell(beer: beer)
-                                handleBeer(beer)
-                            })
-                                .padding()
-                                .background(Color(.secondarySystemBackground))
-                                .cornerRadius(16)
+                        LazyVStack(alignment: .leading, spacing: 24, pinnedViews: [.sectionHeaders, .sectionFooters]) {
+                            Section(header: headerView(), footer: footerView()) {
+                                ForEach(beerStore.beers, content: makeBeerRow)
+                                .onMove(perform: onMove)
+                                .onDelete(perform: onDelete)
+                            }
                         }
                         .padding()
                     }
                 }
             }
             .navigationTitle("Beers")
+            .navigationSubtitle("🍺")
+            .navigationBarItems(trailing: EditButton())
         }
     }
 }
 
 private extension BeerListScreen {
+    func headerView() -> some View {
+        HStack {
+            Spacer()
+
+            Text("\(beerStore.page) page(s) loaded")
+            .foregroundColor(.secondary)
+            .font(.caption)
+
+            Spacer()
+        }
+        .padding(.top)
+    }
+
+    func footerView() -> some View {
+        HStack {
+            Spacer()
+
+            Text("\(beerStore.beers.count) beers")
+            .foregroundColor(.secondary)
+            .font(.footnote)
+
+            Spacer()
+        }
+        .padding(.bottom)
+    }
+
+    func makeBeerRow(for beer: Beer) -> some View {
+        VStack(spacing: 16) {
+            BeerDetailLink(beer: beer)
+            .padding()
+            .background(Color(.secondarySystemBackground))
+            .cornerRadius(16)
+
+            handleBeer(beer)
+        }
+    }
+
     func handleBeer(_ beer: Beer) -> some View {
         let isLastItem = beerStore.beers.firstIndex(of: beer) == beerStore.beers.endIndex - 1
         if isLastItem && !beerStore.reachedLastPage {
@@ -44,6 +81,14 @@ private extension BeerListScreen {
             return AnyView(ProgressView())
         }
         return AnyView(EmptyView())
+    }
+
+    func onMove(_ indexSet: IndexSet, to offset: Int) {
+        beerStore.moveBeer(at: indexSet, to: offset)
+    }
+
+    func onDelete(_ indexSet: IndexSet) {
+        beerStore.deleteBeer(at: indexSet)
     }
 }
 
