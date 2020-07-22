@@ -14,32 +14,29 @@ struct BeerRow: View {
     var body: some View {
         Group {
             #if os(macOS)
-            VStack(alignment: .leading, spacing: 8) {
-                Text(beer.name)
-                    .foregroundColor(.primary)
-                    .font(.title3)
-                Text(beer.tagline)
-                    .foregroundColor(.secondary)
-                    .font(.caption)
-            }
+            content()
             #else
-            NavigationLink(destination: BeerDetailScreen(beer: beer)) {
-                VStack(alignment: .leading, spacing: 8) {
-                    Text(beer.name)
-                        .foregroundColor(.primary)
-                        .font(.title3)
-                    Text(beer.tagline)
-                        .foregroundColor(.secondary)
-                        .font(.caption)
-                }
-            }
+            NavigationLink(destination: BeerDetailScreen(beer: beer), label: content)
             #endif
         }
     }
 }
 
+private extension BeerRow {
+    func content() -> some View {
+        VStack(alignment: .leading, spacing: 8) {
+            Text(beer.name)
+                .foregroundColor(.primary)
+                .font(.title3)
+            Text(beer.tagline)
+                .foregroundColor(.secondary)
+                .font(.caption)
+        }
+    }
+}
+
 #if DEBUG
-struct BeerCell_Previews: PreviewProvider {
+struct BeerRow_Previews: PreviewProvider {
     static var previews: some View {
         Group {
             BeerRow(beer: BeerStore.mock().beers.randomElement()!)
