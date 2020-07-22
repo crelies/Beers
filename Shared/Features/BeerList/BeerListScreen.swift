@@ -13,24 +13,28 @@ struct BeerListScreen: View {
     @Binding var selection: Beer?
 
     var body: some View {
-        VStack {
+        List(selection: $selection) {
             if beerStore.beers.isEmpty {
                 Text("No beers").font(.headline)
-            } else {
-                List(selection: $selection) {
-                    Section(header: headerView(), footer: footerView()) {
-                        ForEach(beerStore.beers, id: \.self, content: makeBeerRow)
-                        .onMove(perform: onMove)
-                        .onDelete(perform: onDelete)
-                    }
-                }
-                .padding()
-                .listStyle(SidebarListStyle())
+            }
+
+            Section(header: headerView(), footer: footerView()) {
+                ForEach(beerStore.beers, id: \.self, content: makeBeerRow)
+                .onMove(perform: onMove)
+                .onDelete(perform: onDelete)
             }
         }
+        .padding()
+        .listStyle(SidebarListStyle())
         .navigationTitle("Beers")
         .navigationSubtitle("🍺")
-//        .navigationBarItems(trailing: EditButton())
+        .toolbar {
+            #if os(iOS)
+            ToolbarItem {
+                EditButton()
+            }
+            #endif
+        }
     }
 }
 
