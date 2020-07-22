@@ -10,29 +10,27 @@ import SwiftUI
 
 struct BeerListScreen: View {
     @ObservedObject var beerStore: BeerStore
+    @Binding var selection: Beer?
 
     var body: some View {
-        NavigationView {
-            Group {
-                if beerStore.beers.isEmpty {
-                    Text("No beers").font(.headline)
-                } else {
-                    ScrollView {
-                        LazyVStack(alignment: .leading, spacing: 24, pinnedViews: [.sectionHeaders, .sectionFooters]) {
-                            Section(header: headerView(), footer: footerView()) {
-                                ForEach(beerStore.beers, content: makeBeerRow)
-                                .onMove(perform: onMove)
-                                .onDelete(perform: onDelete)
-                            }
-                        }
-                        .padding()
+        VStack {
+            if beerStore.beers.isEmpty {
+                Text("No beers").font(.headline)
+            } else {
+                List(selection: $selection) {
+                    Section(header: headerView(), footer: footerView()) {
+                        ForEach(beerStore.beers, id: \.self, content: makeBeerRow)
+                        .onMove(perform: onMove)
+                        .onDelete(perform: onDelete)
                     }
                 }
+                .padding()
+                .listStyle(SidebarListStyle())
             }
-            .navigationTitle("Beers")
-            .navigationSubtitle("🍺")
-            .navigationBarItems(trailing: EditButton())
         }
+        .navigationTitle("Beers")
+        .navigationSubtitle("🍺")
+//        .navigationBarItems(trailing: EditButton())
     }
 }
 
@@ -47,7 +45,6 @@ private extension BeerListScreen {
 
             Spacer()
         }
-        .padding(.top)
     }
 
     func footerView() -> some View {
@@ -60,17 +57,18 @@ private extension BeerListScreen {
 
             Spacer()
         }
-        .padding(.bottom)
     }
 
     func makeBeerRow(for beer: Beer) -> some View {
-        VStack(spacing: 16) {
-            BeerDetailLink(beer: beer)
-            .padding()
-            .background(Color(.secondarySystemBackground))
-            .cornerRadius(16)
+        let isLastItem = beerStore.beers.firstIndex(of: beer) == beerStore.beers.endIndex - 1
 
-            handleBeer(beer)
+        return VStack(spacing: 16) {
+            BeerRow(beer: beer)
+            .padding()
+
+            if isLastItem {
+                handleBeer(beer)
+            }
         }
     }
 
@@ -78,7 +76,10 @@ private extension BeerListScreen {
         let isLastItem = beerStore.beers.firstIndex(of: beer) == beerStore.beers.endIndex - 1
         if isLastItem && !beerStore.reachedLastPage {
             beerStore.nextBeers()
-            return AnyView(ProgressView())
+            return AnyView(VStack {
+                ProgressView()
+                Spacer()
+            })
         }
         return AnyView(EmptyView())
     }
@@ -96,7 +97,7 @@ private extension BeerListScreen {
 struct BeerListScreen_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            BeerListScreen(beerStore: .mock())
+            BeerListScreen(beerStore: .mock(), selection: .constant(nil))
         }
         .preferredColorScheme(.dark)
     }

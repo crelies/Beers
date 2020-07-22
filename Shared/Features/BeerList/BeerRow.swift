@@ -1,5 +1,5 @@
 //
-//  BeerDetailLink.swift
+//  BeerRow.swift
 //  Beers
 //
 //  Created by Christian Elies on 07.06.19.
@@ -8,11 +8,12 @@
 
 import SwiftUI
 
-struct BeerDetailLink: View {
+struct BeerRow: View {
     let beer: Beer
 
     var body: some View {
-        NavigationLink(destination: BeerDetailScreen(beer: beer)) {
+        Group {
+            #if os(macOS)
             VStack(alignment: .leading, spacing: 8) {
                 Text(beer.name)
                     .foregroundColor(.primary)
@@ -21,8 +22,18 @@ struct BeerDetailLink: View {
                     .foregroundColor(.secondary)
                     .font(.caption)
             }
-
-            Spacer()
+            #else
+            NavigationLink(destination: BeerDetailScreen(beer: beer)) {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(beer.name)
+                        .foregroundColor(.primary)
+                        .font(.title3)
+                    Text(beer.tagline)
+                        .foregroundColor(.secondary)
+                        .font(.caption)
+                }
+            }
+            #endif
         }
     }
 }
@@ -31,10 +42,10 @@ struct BeerDetailLink: View {
 struct BeerCell_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            BeerDetailLink(beer: BeerStore.mock().beers.randomElement()!)
+            BeerRow(beer: BeerStore.mock().beers.randomElement()!)
                 .preferredColorScheme(.dark)
 
-            BeerDetailLink(beer: BeerStore.mock().beers.randomElement()!)
+            BeerRow(beer: BeerStore.mock().beers.randomElement()!)
                 .preferredColorScheme(.light)
         }.previewLayout(.sizeThatFits)
     }

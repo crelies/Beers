@@ -26,26 +26,25 @@ struct BeerDetailScreen: View {
                         .foregroundColor(.secondary)
                     Text(firstBrewed, style: .date)
                         .foregroundColor(.primary)
-                }
-                    .font(.footnote)
+                }.font(.footnote)
             }
 
             beer.imageURL.map { imageURL in
-                VStack {
-                    Spacer()
+                RemoteImage(type: .url(imageURL), errorView: { error in
+                    Text(error.localizedDescription)
+                }, imageView: { image in
+                    VStack {
+                        Spacer()
 
-                    RemoteImage(type: .url(imageURL), errorView: { error in
-                        Text(error.localizedDescription)
-                    }, imageView: { image in
                         image
                             .resizable()
                             .aspectRatio(contentMode: .fit)
                             .padding(.bottom)
-                    }, loadingView: ProgressView.init)
-                }
+                    }
+                }, loadingView: ProgressView.init)
             }
         }
-        .navigationBarTitle(beer.name, displayMode: .inline)
+        .navigationTitle(beer.name)
     }
 }
 

@@ -53,3 +53,5 @@ extension Beer: Codable {
 }
 
 extension Beer: Equatable {}
+
+extension Beer: Hashable {}
