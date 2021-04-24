@@ -27,7 +27,7 @@ struct BeerListScreen: View {
         .padding()
         .listStyle(SidebarListStyle())
         .navigationTitle("Beers")
-        .navigationSubtitle("🍺")
+//        .navigationSubtitle("🍺")
         .toolbar {
             #if os(iOS)
             ToolbarItem {
@@ -79,7 +79,7 @@ private extension BeerListScreen {
     func handleBeer(_ beer: Beer) -> some View {
         let isLastItem = beerStore.beers.firstIndex(of: beer) == beerStore.beers.endIndex - 1
         if isLastItem && !beerStore.reachedLastPage {
-            beerStore.nextBeers()
+//            beerStore.nextBeers()
             return AnyView(VStack {
                 ProgressView()
                 Spacer()
@@ -89,11 +89,11 @@ private extension BeerListScreen {
     }
 
     func onMove(_ indexSet: IndexSet, to offset: Int) {
-        beerStore.moveBeer(at: indexSet, to: offset)
+//        beerStore.moveBeer(at: indexSet, to: offset)
     }
 
     func onDelete(_ indexSet: IndexSet) {
-        beerStore.deleteBeer(at: indexSet)
+//        beerStore.deleteBeer(at: indexSet)
     }
 }
 

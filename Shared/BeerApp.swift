@@ -6,30 +6,50 @@
 //  Copyright © 2020 Christian Elies. All rights reserved.
 //
 
+import ComposableArchitecture
 import SwiftUI
 
 @main
 struct BeerApp: App {
     @Environment(\.scenePhase) private var scenePhase
     @StateObject private var beerStore = BeerStore()
-    @State private var selectedBeer: Beer?
 
     var body: some Scene {
         WindowGroup {
-            NavigationView {
-                NavigationPrimary(beerStore: beerStore, selectedBeer: $selectedBeer)
-
-                #if os(macOS)
-                if let selectedBeer = selectedBeer {
-                    NavigationDetail(beer: selectedBeer)
-                }
-                #endif
-            }
-            .onAppear(perform: beerStore.loadBeers)
-        }.onChange(of: scenePhase) { newScenePhase in
-            if newScenePhase == .active {
-                beerStore.loadBeers()
-            }
+            AppView(
+                store: Store(
+                    initialState: AppState(listState: .init()),
+                    reducer: AppModule.reducer,
+                    environment: AppEnvironment(
+                        fetchBeers: {
+                            beerStore.fetchBeers()
+                                .mapError { $0 as! BeerListError }
+                                .eraseToEffect()
+                        },
+                        nextBeers: {
+                            beerStore.nextBeers()
+                                .mapError { $0 as! BeerListError }
+                                .eraseToEffect()
+                        },
+                        fetchBeer: { id in
+                            guard let beer = beerStore.beers.first(where: { $0.id == id }) else {
+                                return Effect(error: BeerListRowError.beerNotFound)
+                            }
+                            return Effect(value: beer)
+                        }
+                    )
+                )
+            )
+            .frame(minWidth: 250, minHeight: 700)
+//            NavigationView {
+//                NavigationPrimary(beerStore: beerStore, selectedBeer: $selectedBeer)
+//
+//                #if os(macOS)
+//                if let selectedBeer = selectedBeer {
+//                    NavigationDetail(beer: selectedBeer)
+//                }
+//                #endif
+//            }
         }
     }
 }

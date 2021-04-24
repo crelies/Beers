@@ -6,6 +6,7 @@
 //  Copyright © 2020 Christian Elies. All rights reserved.
 //
 
+import ComposableArchitecture
 import SwiftUI
 
 struct NavigationPrimary: View {
@@ -13,8 +14,31 @@ struct NavigationPrimary: View {
     @Binding var selectedBeer: Beer?
 
     var body: some View {
-        BeerListScreen(beerStore: beerStore, selection: $selectedBeer)
-            .frame(minWidth: 250, minHeight: 700)
+        AppView(
+            store: Store(
+                initialState: AppState(listState: .init()),
+                reducer: AppModule.reducer,
+                environment: AppEnvironment(
+                    fetchBeers: {
+                        beerStore.fetchBeers()
+                            .mapError { $0 as! BeerListError }
+                            .eraseToEffect()
+                    },
+                    nextBeers: {
+                        beerStore.nextBeers()
+                            .mapError { $0 as! BeerListError }
+                            .eraseToEffect()
+                    },
+                    fetchBeer: { id in
+                        guard let beer = beerStore.beers.first(where: { $0.id == id }) else {
+                            return Effect(error: BeerListRowError.beerNotFound)
+                        }
+                        return Effect(value: beer)
+                    }
+                )
+            )
+        )
+        .frame(minWidth: 250, minHeight: 700)
     }
 }
 

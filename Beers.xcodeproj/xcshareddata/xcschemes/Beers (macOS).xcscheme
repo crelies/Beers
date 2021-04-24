@@ -14,8 +14,8 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "B956167C24C872C3003A3ACF"
-               BuildableName = "Beers (macOS).app"
+               BlueprintIdentifier = "B956169C24C87382003A3ACF"
+               BuildableName = "Beers.app"
                BlueprintName = "Beers (macOS)"
                ReferencedContainer = "container:Beers.xcodeproj">
             </BuildableReference>
@@ -44,8 +44,8 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B956167C24C872C3003A3ACF"
-            BuildableName = "Beers (macOS).app"
+            BlueprintIdentifier = "B956169C24C87382003A3ACF"
+            BuildableName = "Beers.app"
             BlueprintName = "Beers (macOS)"
             ReferencedContainer = "container:Beers.xcodeproj">
          </BuildableReference>
@@ -61,8 +61,8 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "B956167C24C872C3003A3ACF"
-            BuildableName = "Beers (macOS).app"
+            BlueprintIdentifier = "B956169C24C87382003A3ACF"
+            BuildableName = "Beers.app"
             BlueprintName = "Beers (macOS)"
             ReferencedContainer = "container:Beers.xcodeproj">
          </BuildableReference>

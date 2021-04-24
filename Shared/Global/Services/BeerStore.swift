@@ -15,49 +15,47 @@ final class BeerStore: ObservableObject {
     }
 
     private let beerAPIService = DefaultBeerAPIService()
-    private var anyCancellable: AnyCancellable?
 
     private let pageSize = Constants.pageSize
 
     // MARK: - Internal
 
-    @Published private(set) var beers: [Beer] = []
+    private(set) var beers: [Beer] = []
     private(set) var page = 1
     private(set) var reachedLastPage = false
 }
 
 extension BeerStore {
-    func loadBeers() {
-        anyCancellable?.cancel()
-
+    func fetchBeers() -> AnyPublisher<[Beer], Error> {
         beerAPIService.getBeers(page: page, pageSize: pageSize)
             .receive(on: RunLoop.main)
-            .replaceError(with: [])
-            .assign(to: $beers)
+            .handleEvents(receiveOutput: { beers in
+                self.beers = beers
+            })
+            .eraseToAnyPublisher()
     }
 
-    func nextBeers() {
-        anyCancellable?.cancel()
-
+    func nextBeers() -> AnyPublisher<[Beer], Error> {
         page += 1
-        anyCancellable = beerAPIService.getBeers(page: page, pageSize: pageSize)
+        return beerAPIService.getBeers(page: page, pageSize: pageSize)
             .receive(on: RunLoop.main)
-            .replaceError(with: [])
-            .sink(receiveCompletion: { _ in }) { beers in
+            .handleEvents(receiveOutput: { beers in
                 self.beers.append(contentsOf: beers)
                 self.reachedLastPage = beers.isEmpty
-            }
+            })
+            .map { _ in self.beers }
+            .eraseToAnyPublisher()
     }
 
-    func moveBeer(at indexSet: IndexSet, to offset: Int) {
-        objectWillChange.send()
-        beers.move(fromOffsets: indexSet, toOffset: offset)
-    }
-
-    func deleteBeer(at indexSet: IndexSet) {
-        objectWillChange.send()
-        beers.remove(atOffsets: indexSet)
-    }
+//    func moveBeer(at indexSet: IndexSet, to offset: Int) {
+//        objectWillChange.send()
+//        beers.move(fromOffsets: indexSet, toOffset: offset)
+//    }
+//
+//    func deleteBeer(at indexSet: IndexSet) {
+//        objectWillChange.send()
+//        beers.remove(atOffsets: indexSet)
+//    }
 }
 
 extension BeerStore {
