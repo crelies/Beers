@@ -21,7 +21,7 @@ final class BeerStore: ObservableObject {
     // MARK: - Internal
 
     private(set) var beers: [Beer] = []
-    private(set) var page = 1
+    var page = 1
 
     init(beerApiService: BeerAPIService = DefaultBeerAPIService()) {
         self.beerAPIService = beerApiService
@@ -30,7 +30,8 @@ final class BeerStore: ObservableObject {
 
 extension BeerStore {
     func fetchBeers() -> AnyPublisher<[Beer], Error> {
-        beerAPIService.getBeers(page: page, pageSize: pageSize)
+        page = 1
+        return beerAPIService.getBeers(page: page, pageSize: pageSize)
             .receive(on: RunLoop.main)
             .map {
                 self.beers = $0

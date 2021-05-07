@@ -32,10 +32,7 @@ extension BeerListModule {
                     guard state.page == 0 else {
                         return .none
                     }
-                    return environment.fetchBeers()
-                        .map { BeersResult(beers: $0, page: 1) }
-                        .catchToEffect()
-                        .map(BeerListAction.fetchBeersResponse)
+                    return .init(value: .fetchBeers)
                 case let .fetchBeersResponse(.success(result)):
                     state.page = result.page
                     let rowStates = result.beers.map { beer in
@@ -76,6 +73,13 @@ extension BeerListModule {
                 case let .delete(indexSet):
                     indexSet.forEach { state.rowStates.remove(at: $0) }
                     return .none
+                case .fetchBeers:
+                    return environment.fetchBeers()
+                        .map { BeersResult(beers: $0, page: 1) }
+                        .catchToEffect()
+                        .map(BeerListAction.fetchBeersResponse)
+                case .refresh:
+                    return .init(value: .fetchBeers)
                 }
             }
         )

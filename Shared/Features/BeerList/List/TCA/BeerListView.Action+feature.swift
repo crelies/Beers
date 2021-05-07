@@ -20,6 +20,8 @@ extension BeerListView.Action {
             return BeerListAction.move(indexSet: indexSet, toOffset: toOffset)
         case let BeerListView.Action.delete(indexSet):
             return BeerListAction.delete(indexSet: indexSet)
+        case BeerListView.Action.refresh:
+            return BeerListAction.refresh
         }
     }
 }

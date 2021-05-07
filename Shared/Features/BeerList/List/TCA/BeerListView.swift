@@ -17,7 +17,15 @@ struct BeerListView: View {
         #if os(macOS)
         return SidebarListStyle()
         #else
-        return DefaultListStyle()
+        return InsetGroupedListStyle()
+        #endif
+    }
+
+    private var refreshToolbarItemPlacement: ToolbarItemPlacement {
+        #if os(macOS)
+        return .automatic
+        #else
+        return .navigationBarLeading
         #endif
     }
 
@@ -75,6 +83,14 @@ struct BeerListView: View {
                         EditButton()
                     }
                     #endif
+
+                    ToolbarItem(placement: refreshToolbarItemPlacement) {
+                        Button(action: {
+                            viewStore.send(.refresh)
+                        }) {
+                            Image(systemName: "arrow.clockwise")
+                        }
+                    }
                 }
             case let .failed(error):
                 Text(error.localizedDescription)
