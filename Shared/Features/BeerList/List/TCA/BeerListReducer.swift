@@ -53,7 +53,8 @@ extension BeerListModule {
                             return .none
                         }
 
-                        guard index == state.rowStates.endIndex - 1 else {
+                        let lastIndex = state.rowStates.endIndex - 1
+                        guard index == lastIndex - 5 else {
                             return .none
                         }
 
