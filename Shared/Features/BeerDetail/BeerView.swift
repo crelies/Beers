@@ -20,7 +20,7 @@ struct BeerView: View {
                 .font(.body)
                 .padding()
 
-            beer.firstBrewed.map { firstBrewed in
+            if let firstBrewed = beer.firstBrewed {
                 HStack(spacing: 2) {
                     Text("First brewed on:")
                         .foregroundColor(.secondary)
