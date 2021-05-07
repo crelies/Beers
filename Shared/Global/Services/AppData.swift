@@ -34,6 +34,14 @@ final class AppData: ObservableObject {
                     return Effect(error: BeerListRowError.beerNotFound)
                 }
                 return Effect(value: beer)
+            },
+            moveBeer: { fromOffsets, toOffset in
+                self.beerStore.moveBeer(at: fromOffsets, to: toOffset)
+                return .none
+            },
+            deleteBeer: { indexSet in
+                self.beerStore.deleteBeer(at: indexSet)
+                return .none
             }
         )
     )

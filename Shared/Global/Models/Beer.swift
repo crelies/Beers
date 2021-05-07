@@ -46,7 +46,12 @@ extension Beer: Codable {
         id = try container.decode(Int.self, forKey: .id)
         name = try container.decode(String.self, forKey: .name)
         tagline = try container.decode(String.self, forKey: .tagline)
-        firstBrewed = try container.decodeIfPresent(Date.self, forKey: .firstBrewed)
+        do {
+            firstBrewed = try container.decodeIfPresent(Date.self, forKey: .firstBrewed)
+        } catch {
+            // Some beers only return the year in which they have been brewed, like '2016'.
+            firstBrewed = nil
+        }
         description = try container.decode(String.self, forKey: .description)
         imageURL = try container.decodeIfPresent(URL.self, forKey: .imageURL)
     }

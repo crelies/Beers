@@ -24,7 +24,9 @@ extension AppModule {
                         BeerListEnvironment(
                             fetchBeers: appEnvironment.fetchBeers,
                             nextBeers: appEnvironment.nextBeers,
-                            fetchBeer: appEnvironment.fetchBeer
+                            fetchBeer: appEnvironment.fetchBeer,
+                            moveBeer: appEnvironment.moveBeer,
+                            deleteBeer: appEnvironment.deleteBeer
                         )
                     }
                 )

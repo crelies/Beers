@@ -45,7 +45,6 @@ extension BeerListModule {
                     state.viewState = .loaded(rowStates)
                     return .none
                 case let .fetchBeersResponse(.failure(error)):
-                    state.rowStates = []
                     state.viewState = .failed(error)
                     return .none
                 case let .row(index, rowAction):
