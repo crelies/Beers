@@ -9,9 +9,13 @@
 //  https://www.christianelies.de
 //
 
+import Foundation
+
 extension BeerListView {
     enum Action: Equatable {
         case onAppear
         case selectBeer(beer: Beer?)
+        case move(indexSet: IndexSet, toOffset: Int)
+        case delete(indexSet: IndexSet)
     }
 }

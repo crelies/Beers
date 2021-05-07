@@ -26,6 +26,10 @@ struct BeerListRowView: View {
         ) { viewStore in
             #if os(macOS)
             content(beer: viewStore.beer)
+                .tag(viewStore.state.beer)
+                .onAppear {
+                    viewStore.send(.onAppear)
+                }
             #else
             NavigationLink(
                 destination: IfLetStore(

@@ -9,6 +9,7 @@
 //  https://www.christianelies.de
 //
 
+import Combine
 import ComposableArchitecture
 
 enum BeerListModule {}
@@ -28,26 +29,36 @@ extension BeerListModule {
             Reducer<BeerListState, BeerListAction, BeerListEnvironment> { state, action, environment in
                 switch action {
                 case .onAppear:
-                    guard state.rowStates.isEmpty else {
+                    guard state.page == 0 else {
                         return .none
                     }
                     return environment.fetchBeers()
+                        .map { BeersResult(beers: $0, page: 1) }
                         .catchToEffect()
                         .map(BeerListAction.fetchBeersResponse)
-                case let .fetchBeersResponse(.success(beers)):
-                    state.rowStates = beers.map { beer in
+                case let .fetchBeersResponse(.success(result)):
+                    state.page = result.page
+                    let rowStates = result.beers.map { beer in
                         BeerListRowState(beer: beer)
                     }
+                    state.rowStates = rowStates
+                    state.viewState = .loaded(rowStates)
                     return .none
-                case .fetchBeersResponse(.failure):
+                case let .fetchBeersResponse(.failure(error)):
                     state.rowStates = []
+                    state.viewState = .failed(error)
                     return .none
                 case let .row(index, rowAction):
                     switch rowAction {
                     case .onAppear:
+                        guard state.viewState != .loading else {
+                            return .none
+                        }
+
                         guard index == state.rowStates.endIndex - 1 else {
                             return .none
                         }
+
                         return environment.nextBeers()
                             .catchToEffect()
                             .map(BeerListAction.fetchBeersResponse)
@@ -59,6 +70,12 @@ extension BeerListModule {
                     }
                 case let .selectBeer(beer):
                     state.selection = beer
+                    return .none
+                case let .move(indexSet, toOffset):
+                    state.rowStates.move(fromOffsets: indexSet, toOffset: toOffset)
+                    return .none
+                case let .delete(indexSet):
+                    indexSet.forEach { state.rowStates.remove(at: $0) }
                     return .none
                 }
             }

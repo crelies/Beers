@@ -11,6 +11,6 @@
 
 extension BeerListState {
     var view: BeerListView.State {
-        .init(rowStates: rowStates, selection: selection)
+        .init(page: page, viewState: viewState, selection: selection)
     }
 }

@@ -6,4 +6,8 @@
 //  Copyright © 2021 Christian Elies. All rights reserved.
 //
 
-struct BeerListError: Error, Equatable {}
+import Foundation
+
+enum BeerListError: Error, Equatable {
+    case underlying(_ error: NSError)
+}

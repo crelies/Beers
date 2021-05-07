@@ -9,9 +9,18 @@
 //  https://www.christianelies.de
 //
 
+import Foundation
+
+struct BeersResult: Equatable {
+    let beers: [Beer]
+    let page: Int
+}
+
 enum BeerListAction: Equatable {
     case onAppear
     case row(index: Int, action: BeerListRowAction)
-    case fetchBeersResponse(Result<[Beer], BeerListError>)
+    case fetchBeersResponse(Result<BeersResult, BeerListError>)
     case selectBeer(beer: Beer?)
+    case move(indexSet: IndexSet, toOffset: Int)
+    case delete(indexSet: IndexSet)
 }

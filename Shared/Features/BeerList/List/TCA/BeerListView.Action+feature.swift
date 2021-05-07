@@ -12,10 +12,14 @@
 extension BeerListView.Action {
     var feature: BeerListAction {
         switch self {
-            case BeerListView.Action.onAppear:
-                return BeerListAction.onAppear
-            case let BeerListView.Action.selectBeer(beer):
-                return BeerListAction.selectBeer(beer: beer)
+        case BeerListView.Action.onAppear:
+            return BeerListAction.onAppear
+        case let BeerListView.Action.selectBeer(beer):
+            return BeerListAction.selectBeer(beer: beer)
+        case let BeerListView.Action.move(indexSet, toOffset):
+            return BeerListAction.move(indexSet: indexSet, toOffset: toOffset)
+        case let BeerListView.Action.delete(indexSet):
+            return BeerListAction.delete(indexSet: indexSet)
         }
     }
 }

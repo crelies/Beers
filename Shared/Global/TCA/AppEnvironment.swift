@@ -13,6 +13,6 @@ import ComposableArchitecture
 
 struct AppEnvironment {
     var fetchBeers: () -> Effect<[Beer], BeerListError>
-    var nextBeers: () -> Effect<[Beer], BeerListError>
+    var nextBeers: () -> Effect<BeersResult, BeerListError>
     var fetchBeer: (_ id: Int) -> Effect<Beer, BeerListRowError>
 }

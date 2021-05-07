@@ -1,5 +1,5 @@
 //
-//  BeerDetailScreen.swift
+//  BeerView.swift
 //  Beers
 //
 //  Created by Christian Elies on 06.06.19.
@@ -9,7 +9,7 @@
 import RemoteImage
 import SwiftUI
 
-struct BeerDetailScreen: View {
+struct BeerView: View {
     let beer: Beer
 
     var body: some View {
@@ -29,7 +29,7 @@ struct BeerDetailScreen: View {
                 }.font(.footnote)
             }
 
-            beer.imageURL.map { imageURL in
+            if let imageURL = beer.imageURL {
                 RemoteImage(type: .url(imageURL), errorView: { error in
                     Text(error.localizedDescription)
                 }, imageView: { image in
@@ -52,7 +52,7 @@ struct BeerDetailScreen: View {
 struct BeerDetailScreen_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            BeerDetailScreen(beer: BeerStore.mock().beers.randomElement()!)
+            BeerView(beer: BeerStore.mock().beers.randomElement()!)
         }
     }
 }

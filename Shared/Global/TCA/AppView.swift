@@ -18,7 +18,7 @@ struct AppView: View {
     var body: some View {
         WithViewStore(
             store.scope(
-                state: { $0.view },
+                state: \.view,
                 action: { (viewAction: AppView.Action) in
                     viewAction.feature
                 }
@@ -33,9 +33,10 @@ struct AppView: View {
                     )
                 )
 
+                // Detail
                 #if os(macOS)
                 if let selectedBeer = viewStore.selection {
-                    NavigationDetail(beer: selectedBeer)
+                    BeerView(beer: selectedBeer)
                 }
                 #endif
             }

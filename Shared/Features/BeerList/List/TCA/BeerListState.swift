@@ -10,6 +10,8 @@
 //
 
 struct BeerListState: Equatable {
-    var rowStates: [BeerListRowState] = []
+    var page: Int = 0
+    var rowStates: [BeerListRowState]
+    var viewState: ViewState<[BeerListRowState], BeerListError>
     var selection: Beer?
 }
