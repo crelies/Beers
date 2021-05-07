@@ -69,10 +69,12 @@ extension BeerListModule {
                     return .none
                 case let .move(indexSet, toOffset):
                     state.rowStates.move(fromOffsets: indexSet, toOffset: toOffset)
-                    return .none
+                    return environment.moveBeer(indexSet, toOffset)
+                        .fireAndForget()
                 case let .delete(indexSet):
                     indexSet.forEach { state.rowStates.remove(at: $0) }
-                    return .none
+                    return environment.deleteBeer(indexSet)
+                        .fireAndForget()
                 case .fetchBeers:
                     return environment.fetchBeers()
                         .map { BeersResult(beers: $0, page: 1) }
