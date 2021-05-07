@@ -80,7 +80,9 @@ struct BeerListView: View {
                 .toolbar {
                     #if os(iOS)
                     ToolbarItem {
-                        EditButton()
+                        if !viewStore.isLoading {
+                            EditButton()
+                        }
                     }
                     #endif
 

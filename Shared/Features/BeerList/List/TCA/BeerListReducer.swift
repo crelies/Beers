@@ -63,6 +63,7 @@ extension BeerListModule {
                         return environment.nextBeers()
                             .catchToEffect()
                             .map(BeerListAction.fetchBeersResponse)
+                            .cancellable(id: BeerListCancelID(), cancelInFlight: true)
                     case let .didTapRow(id: .some(id)):
                         state.selection = state.rowStates.first(where: { $0.id == id})?.beer
                         return .none
@@ -86,6 +87,7 @@ extension BeerListModule {
                         .map { BeersResult(beers: $0, page: 1) }
                         .catchToEffect()
                         .map(BeerListAction.fetchBeersResponse)
+                        .cancellable(id: BeerListCancelID(), cancelInFlight: true)
                 case .refresh:
                     return .init(value: .fetchBeers)
                 }
