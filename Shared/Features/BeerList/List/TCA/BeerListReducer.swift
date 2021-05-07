@@ -34,6 +34,7 @@ extension BeerListModule {
                     }
                     return .init(value: .fetchBeers)
                 case let .fetchBeersResponse(.success(result)):
+                    state.isLoading = false
                     state.page = result.page
                     let rowStates = result.beers.map { beer in
                         BeerListRowState(beer: beer)
@@ -42,6 +43,7 @@ extension BeerListModule {
                     state.viewState = .loaded(rowStates)
                     return .none
                 case let .fetchBeersResponse(.failure(error)):
+                    state.isLoading = false
                     state.viewState = .failed(error)
                     return .none
                 case let .row(index, rowAction):
@@ -54,6 +56,8 @@ extension BeerListModule {
                         guard index == state.rowStates.endIndex - 1 else {
                             return .none
                         }
+
+                        state.isLoading = true
 
                         return environment.nextBeers()
                             .catchToEffect()
@@ -76,6 +80,7 @@ extension BeerListModule {
                     return environment.deleteBeer(indexSet)
                         .fireAndForget()
                 case .fetchBeers:
+                    state.isLoading = true
                     return environment.fetchBeers()
                         .map { BeersResult(beers: $0, page: 1) }
                         .catchToEffect()

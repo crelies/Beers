@@ -14,4 +14,5 @@ struct BeerListState: Equatable {
     var rowStates: [BeerListRowState]
     var viewState: ViewState<[BeerListRowState], BeerListError>
     var selection: Beer?
+    var isLoading: Bool
 }

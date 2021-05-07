@@ -11,7 +11,7 @@ import ComposableArchitecture
 
 final class AppData: ObservableObject {
     private let beerStore = BeerStore()
-    private var appState = AppState(listState: .init(rowStates: [], viewState: .loading))
+    private var appState = AppState(listState: .init(rowStates: [], viewState: .loading, isLoading: false))
     private let reducer: Reducer<AppState, AppAction, AppEnvironment> = AppModule.reducer
 
     private(set) lazy var store = Store(

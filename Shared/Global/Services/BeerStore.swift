@@ -31,6 +31,7 @@ final class BeerStore: ObservableObject {
 extension BeerStore {
     func fetchBeers() -> AnyPublisher<[Beer], Error> {
         page = 1
+        reachedLastPage = false
         return beerAPIService.getBeers(page: page, pageSize: pageSize)
             .receive(on: RunLoop.main)
             .map {

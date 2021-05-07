@@ -14,5 +14,6 @@ extension BeerListView {
         var page: Int
         var viewState: ViewState<[BeerListRowState], BeerListError>
         var selection: Beer?
+        var isLoading: Bool
     }
 }

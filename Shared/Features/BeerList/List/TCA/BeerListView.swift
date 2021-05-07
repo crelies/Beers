@@ -56,7 +56,7 @@ struct BeerListView: View {
                     if rowStates.isEmpty {
                         Text("No beers").font(.headline)
                     } else {
-                        Section(header: headerView(page: viewStore.page), footer: footerView(count: rowStates.count)) {
+                        Section(header: headerView(page: viewStore.page), footer: footerView(count: rowStates.count, isLoading: viewStore.isLoading)) {
                             ForEachStore(
                                 store.scope(
                                     state: \.rowStates,
@@ -112,15 +112,22 @@ private extension BeerListView {
         }
     }
 
-    func footerView(count: Int) -> some View {
-        HStack {
-            Spacer()
+    func footerView(count: Int, isLoading: Bool) -> some View {
+        VStack {
+            HStack {
+                Spacer()
 
-            Text("\(count) beers")
-            .foregroundColor(.secondary)
-            .font(.footnote)
+                Text("\(count) beers")
+                .foregroundColor(.secondary)
+                .font(.footnote)
 
-            Spacer()
+                Spacer()
+            }
+
+            if isLoading {
+                ProgressView()
+            }
         }
+        .padding()
     }
 }
