@@ -12,6 +12,7 @@
 extension BeerListView {
     struct State: Equatable {
         var page: Int
+        var rowStates: [BeerListRowState]
         var viewState: ViewState<[BeerListRowState], BeerListError>
         var selection: Beer?
         var isLoading: Bool

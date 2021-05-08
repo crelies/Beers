@@ -76,6 +76,15 @@ struct BeerListView: View {
                 .listStyle(listStyle)
                 .navigationTitle("Beers")
     //            .navigationSubtitle("🍺")
+                .if {
+                    #if os(macOS)
+                    $0.onDeleteCommand {
+                        onDeleteCommand(viewStore: viewStore)
+                    }
+                    #else
+                    $0
+                    #endif
+                }
                 .toolbar {
                     #if os(iOS)
                     ToolbarItem {
@@ -130,5 +139,21 @@ private extension BeerListView {
             }
         }
         .padding()
+    }
+
+    func onDeleteCommand(viewStore: ViewStore<BeerListView.State, BeerListView.Action>) {
+        guard case ViewState.loaded = viewStore.viewState else {
+            return
+        }
+
+        guard let selection = viewStore.selection else {
+            return
+        }
+
+        guard let index = viewStore.rowStates.firstIndex(where: { $0.beer == selection }) else {
+            return
+        }
+
+        viewStore.send(.delete(indexSet: .init(integer: index)))
     }
 }
