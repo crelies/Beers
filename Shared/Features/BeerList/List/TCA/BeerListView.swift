@@ -73,7 +73,6 @@ struct BeerListView: View {
                         }
                     }
                 }
-                .padding()
                 .listStyle(listStyle)
                 .navigationTitle("Beers")
     //            .navigationSubtitle("🍺")

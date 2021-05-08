@@ -27,6 +27,13 @@ struct BeerListRowView: View {
             #if os(macOS)
             content(beer: viewStore.beer)
                 .tag(viewStore.state.beer)
+                .contextMenu {
+                    Button(action: {
+                        viewStore.send(.delete)
+                    }) {
+                        Text("Delete")
+                    }
+                }
                 .onAppear {
                     viewStore.send(.onAppear)
                 }

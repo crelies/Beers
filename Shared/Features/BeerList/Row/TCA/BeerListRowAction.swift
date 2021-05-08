@@ -12,5 +12,6 @@
 enum BeerListRowAction: Equatable {
     case onAppear
     case didTapRow(id: Int?)
+    case delete
     case beerDetail(BeerDetailAction)
 }

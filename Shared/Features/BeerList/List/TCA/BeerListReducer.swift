@@ -67,6 +67,11 @@ extension BeerListModule {
                     case let .didTapRow(id: .some(id)):
                         state.selection = state.rowStates.first(where: { $0.id == id})?.beer
                         return .none
+                    // macOS only
+                    case .delete:
+                        state.rowStates.remove(at: index)
+                        return environment.deleteBeer(.init(integer: index))
+                            .fireAndForget()
                     default:
                         return .none
                     }
