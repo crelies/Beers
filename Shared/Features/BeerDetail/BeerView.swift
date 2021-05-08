@@ -52,7 +52,7 @@ struct BeerView: View {
 struct BeerDetailScreen_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
-            BeerView(beer: BeerStore.mock().beers.randomElement()!)
+            BeerView(beer: DefaultBeerStore.mock().beers.randomElement()!)
         }
     }
 }

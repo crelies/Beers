@@ -10,7 +10,7 @@ import Combine
 import ComposableArchitecture
 
 final class AppData: ObservableObject {
-    private let beerStore = BeerStore()
+    private let beerStore: BeerStore = DefaultBeerStore()
     private var appState = AppState(listState: .init(rowStates: [], viewState: .loading, isLoading: false))
     private let reducer: Reducer<AppState, AppAction, AppEnvironment> = AppModule.reducer
 

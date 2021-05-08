@@ -9,14 +9,16 @@
 /* Begin PBXBuildFile section */
 		B92EFDFD2645EFB500A9AB68 /* BeerListCancelID.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92EFDFC2645EFB500A9AB68 /* BeerListCancelID.swift */; };
 		B92EFDFE2645EFB500A9AB68 /* BeerListCancelID.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92EFDFC2645EFB500A9AB68 /* BeerListCancelID.swift */; };
+		B92EFE002646868E00A9AB68 /* BeerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92EFDFF2646868E00A9AB68 /* BeerStore.swift */; };
+		B92EFE012646868E00A9AB68 /* BeerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B92EFDFF2646868E00A9AB68 /* BeerStore.swift */; };
 		B95616A524C87382003A3ACF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B956169124C87382003A3ACF /* Assets.xcassets */; };
 		B95616A624C87382003A3ACF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B956169124C87382003A3ACF /* Assets.xcassets */; };
 		B95616AD24C873D4003A3ACF /* BeerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FE19B624B7AE35008D330F /* BeerApp.swift */; };
 		B95616AE24C873D4003A3ACF /* BeerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FE19B624B7AE35008D330F /* BeerApp.swift */; };
-		B95616AF24C873D9003A3ACF /* BeerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FE19B424B7AD98008D330F /* BeerStore.swift */; };
+		B95616AF24C873D9003A3ACF /* DefaultBeerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FE19B424B7AD98008D330F /* DefaultBeerStore.swift */; };
 		B95616B024C873D9003A3ACF /* BeerAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9073E2524B8FEA500BF8917 /* BeerAPIService.swift */; };
 		B95616B124C873D9003A3ACF /* DefaultBeerAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90BBC1622A9BD2C00F871AB /* DefaultBeerAPIService.swift */; };
-		B95616B224C873D9003A3ACF /* BeerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FE19B424B7AD98008D330F /* BeerStore.swift */; };
+		B95616B224C873D9003A3ACF /* DefaultBeerStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9FE19B424B7AD98008D330F /* DefaultBeerStore.swift */; };
 		B95616B324C873D9003A3ACF /* BeerAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9073E2524B8FEA500BF8917 /* BeerAPIService.swift */; };
 		B95616B424C873D9003A3ACF /* DefaultBeerAPIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90BBC1622A9BD2C00F871AB /* DefaultBeerAPIService.swift */; };
 		B95616B524C873DC003A3ACF /* Beer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90BBC1322A9BC9500F871AB /* Beer.swift */; };
@@ -124,6 +126,7 @@
 		B91CAD9B2308B4FF00EB67B1 /* BeerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerView.swift; sourceTree = "<group>"; };
 		B91EF59F22AB19A300FC2303 /* preview.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = preview.gif; sourceTree = "<group>"; };
 		B92EFDFC2645EFB500A9AB68 /* BeerListCancelID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerListCancelID.swift; sourceTree = "<group>"; };
+		B92EFDFF2646868E00A9AB68 /* BeerStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerStore.swift; sourceTree = "<group>"; };
 		B956169124C87382003A3ACF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B956169624C87382003A3ACF /* Beers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Beers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B956169824C87382003A3ACF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -174,7 +177,7 @@
 		B9FB347F2644A08D00C18EEB /* ViewState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewState.swift; sourceTree = "<group>"; };
 		B9FB3482264585B100C18EEB /* AppData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppData.swift; sourceTree = "<group>"; };
 		B9FE19B224B7AC6B008D330F /* BeerListScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerListScreen.swift; sourceTree = "<group>"; };
-		B9FE19B424B7AD98008D330F /* BeerStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerStore.swift; sourceTree = "<group>"; };
+		B9FE19B424B7AD98008D330F /* DefaultBeerStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultBeerStore.swift; sourceTree = "<group>"; };
 		B9FE19B624B7AE35008D330F /* BeerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerApp.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -234,10 +237,11 @@
 		B90BBC1522A9BD1A00F871AB /* Services */ = {
 			isa = PBXGroup;
 			children = (
-				B9073E2524B8FEA500BF8917 /* BeerAPIService.swift */,
-				B9FE19B424B7AD98008D330F /* BeerStore.swift */,
-				B90BBC1622A9BD2C00F871AB /* DefaultBeerAPIService.swift */,
 				B9FB3482264585B100C18EEB /* AppData.swift */,
+				B9073E2524B8FEA500BF8917 /* BeerAPIService.swift */,
+				B92EFDFF2646868E00A9AB68 /* BeerStore.swift */,
+				B90BBC1622A9BD2C00F871AB /* DefaultBeerAPIService.swift */,
+				B9FE19B424B7AD98008D330F /* DefaultBeerStore.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -536,6 +540,7 @@
 				B9F88D6726337AB2001040A6 /* BeerListState+view.swift in Sources */,
 				B9F88D9526337ACF001040A6 /* BeerListRowView+State.swift in Sources */,
 				B9F88DD226337B23001040A6 /* AppView+Action.swift in Sources */,
+				B92EFE002646868E00A9AB68 /* BeerStore.swift in Sources */,
 				B9F88D7126337AB2001040A6 /* BeerListView+State.swift in Sources */,
 				B9F88DB426337AE9001040A6 /* BeerDetailView.swift in Sources */,
 				B9F88DD626337B23001040A6 /* AppEnvironment.swift in Sources */,
@@ -558,7 +563,7 @@
 				B9F88D8B26337ACF001040A6 /* BeerListRowState+view.swift in Sources */,
 				B9FB34802644A08D00C18EEB /* ViewState.swift in Sources */,
 				B9F88DDC26337B23001040A6 /* AppState.swift in Sources */,
-				B95616AF24C873D9003A3ACF /* BeerStore.swift in Sources */,
+				B95616AF24C873D9003A3ACF /* DefaultBeerStore.swift in Sources */,
 				B95616B024C873D9003A3ACF /* BeerAPIService.swift in Sources */,
 				B9F88D9726337ACF001040A6 /* BeerListRowReducer.swift in Sources */,
 				B9F88DD026337B23001040A6 /* AppView.Action+feature.swift in Sources */,
@@ -594,6 +599,7 @@
 				B9F88D6826337AB2001040A6 /* BeerListState+view.swift in Sources */,
 				B9F88D9626337ACF001040A6 /* BeerListRowView+State.swift in Sources */,
 				B9F88DD326337B23001040A6 /* AppView+Action.swift in Sources */,
+				B92EFE012646868E00A9AB68 /* BeerStore.swift in Sources */,
 				B9F88D7226337AB2001040A6 /* BeerListView+State.swift in Sources */,
 				B9F88DB526337AE9001040A6 /* BeerDetailView.swift in Sources */,
 				B9F88DD726337B23001040A6 /* AppEnvironment.swift in Sources */,
@@ -616,7 +622,7 @@
 				B9F88D8C26337ACF001040A6 /* BeerListRowState+view.swift in Sources */,
 				B9FB34812644A08D00C18EEB /* ViewState.swift in Sources */,
 				B9F88DDD26337B23001040A6 /* AppState.swift in Sources */,
-				B95616B224C873D9003A3ACF /* BeerStore.swift in Sources */,
+				B95616B224C873D9003A3ACF /* DefaultBeerStore.swift in Sources */,
 				B95616B324C873D9003A3ACF /* BeerAPIService.swift in Sources */,
 				B9F88D9826337ACF001040A6 /* BeerListRowReducer.swift in Sources */,
 				B9F88DD126337B23001040A6 /* AppView.Action+feature.swift in Sources */,
