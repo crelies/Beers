@@ -52,8 +52,8 @@ private extension BeerListView {
                 .onAppear {
                     viewStore.send(.onAppear)
                 }
-        case let .loaded(rowStates):
-            list(viewStore: viewStore, rowStates: rowStates)
+        case .loaded(let rowStates):
+            listView(viewStore: viewStore, rowStates: rowStates)
 //            .navigationTitle(Text("Beers"))
             .if {
                 #if os(macOS)
@@ -86,7 +86,7 @@ private extension BeerListView {
         }
     }
 
-    func list(viewStore: ViewStore<BeerListView.State, BeerListView.Action>, rowStates: [BeerListRowState]) -> some View {
+    func listView(viewStore: ViewStore<BeerListView.State, BeerListView.Action>, rowStates: [BeerListRowState]) -> some View {
         List(
             selection: viewStore.binding(
                 get: { _ in viewStore.selection },
