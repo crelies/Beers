@@ -53,8 +53,7 @@ private extension BeerListView {
                     viewStore.send(.onAppear)
                 }
         case .loaded(let rowStates):
-            Text("Huhu")
-//            listView(viewStore: viewStore, rowStates: rowStates)
+            listView(viewStore: viewStore, rowStates: rowStates)
 ////            .navigationTitle(Text("Beers"))
 //            .if {
 //                #if os(macOS)
@@ -91,7 +90,7 @@ private extension BeerListView {
         List(
             selection: viewStore.binding(
                 get: { _ in viewStore.selection },
-                send: BeerListView.Action.selectBeer(beer:)
+                send: BeerListView.Action.selectBeer
             )
         ) {
             if rowStates.isEmpty {
