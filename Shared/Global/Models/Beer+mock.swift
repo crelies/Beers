@@ -11,7 +11,7 @@ import Foundation
 extension Beer {
     static func mock() -> Beer {
         .init(
-            id: Int.random(in: -999 ... -1000),
+            id: Int.random(in: -1000 ..< -999),
             name: "MockBeer",
             tagline: "Hey ho",
             firstBrewed: Date(),
