@@ -54,33 +54,33 @@ private extension BeerListView {
                 }
         case .loaded(let rowStates):
             listView(viewStore: viewStore, rowStates: rowStates)
-////            .navigationTitle(Text("Beers"))
-//            .if {
-//                #if os(macOS)
-//                $0.onDeleteCommand {
-//                    onDeleteCommand(viewStore: viewStore)
-//                }
-//                #else
-//                $0
-//                #endif
-//            }
-//            .toolbar {
-//                #if os(iOS)
-//                ToolbarItem {
-//                    if !viewStore.isLoading {
-//                        EditButton()
-//                    }
-//                }
-//                #endif
-//
-//                ToolbarItem(placement: refreshToolbarItemPlacement) {
-//                    Button(action: {
-//                        viewStore.send(.refresh)
-//                    }) {
-//                        Image(systemName: "arrow.clockwise")
-//                    }
-//                }
-//            }
+            .navigationTitle(Text("Beers"))
+            .if {
+                #if os(macOS)
+                $0.onDeleteCommand {
+                    onDeleteCommand(viewStore: viewStore)
+                }
+                #else
+                $0
+                #endif
+            }
+            .toolbar {
+                #if os(iOS)
+                ToolbarItem {
+                    if !viewStore.isLoading {
+                        EditButton()
+                    }
+                }
+                #endif
+
+                ToolbarItem(placement: refreshToolbarItemPlacement) {
+                    Button(action: {
+                        viewStore.send(.refresh)
+                    }) {
+                        Image(systemName: "arrow.clockwise")
+                    }
+                }
+            }
         case let .failed(error):
             Text(error.localizedDescription)
         }
