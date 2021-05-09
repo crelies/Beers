@@ -10,6 +10,8 @@ jobs:
   build:
     name: Build and Test default scheme using any available iPhone simulator
     runs-on: macos-latest
+    env:
+      
 
     steps:
       - name: Checkout
@@ -23,9 +25,11 @@ jobs:
       - name: Prepare
         run: |
           device=`xcrun xctrace list devices 2>&1 | grep -oE 'iPhone.*?[^\(]+' | head -1 | awk '{$1=$1;print}'`
+          echo "$device" >> $DEVICE
           xcrun instruments -w "$device" || sleep 15
       - name: Build
         env:
+          device: ${{ env.DEVICE }}
           scheme: ${{ 'default' }}
           platform: ${{ 'iOS Simulator' }}
         run: |
