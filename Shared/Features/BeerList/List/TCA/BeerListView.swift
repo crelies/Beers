@@ -90,7 +90,7 @@ private extension BeerListView {
         List(
             selection: viewStore.binding(
                 get: { _ in viewStore.selection },
-                send: BeerListView.Action.selectBeer
+                send: BeerListView.Action.selectBeer(beer:)
             )
         ) {
             if viewStore.rowStates.isEmpty {
