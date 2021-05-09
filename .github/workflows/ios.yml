@@ -9,7 +9,7 @@ on:
 jobs:
   build:
     name: Test
-    runs-on: macos-11
+    runs-on: macos-11.3
 
     steps:
       - name: Checkout
