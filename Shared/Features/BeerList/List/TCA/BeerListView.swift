@@ -54,7 +54,7 @@ private extension BeerListView {
                 }
         case let .loaded(rowStates):
             list(viewStore: viewStore, rowStates: rowStates)
-            .navigationTitle(Text("Beers"))
+//            .navigationTitle(Text("Beers"))
             .if {
                 #if os(macOS)
                 $0.onDeleteCommand {
