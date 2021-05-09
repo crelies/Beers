@@ -23,7 +23,7 @@ jobs:
       - name: Prepare
         run: |
           device=`xcrun xctrace list devices 2>&1 | grep -oE 'iPhone.*?[^\(]+' | head -1 | awk '{$1=$1;print}'`
-          echo "$device" >> $SIMULATOR_DEVICE
+          echo "SIMULATOR_DEVICE=$device" >> $GITHUB_ENV
           xcrun instruments -w "$device" || sleep 15
       - name: Build
         env:
