@@ -24,7 +24,7 @@ jobs:
         run: |
           device=`xcrun xctrace list devices 2>&1 | grep -oE 'iPhone.*?[^\(]+' | head -1 | awk '{$1=$1;print}'`
           echo "SIMULATOR_DEVICE=$device" >> $GITHUB_ENV
-          xcrun xctrace -w "$device" || sleep 15
+          xcrun simctl boot "$device" || sleep 15
       - name: Build
         env:
           device: ${{ env.SIMULATOR_DEVICE }}
