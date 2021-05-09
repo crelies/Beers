@@ -38,78 +38,81 @@ struct BeerListView: View {
                 action: { (viewAction: BeerListView.Action) in
                     viewAction.feature
                 }
-            )
-        ) { viewStore in
-            switch viewStore.viewState {
-            case .loading:
-                ProgressView()
-                    .onAppear {
-                        viewStore.send(.onAppear)
-                    }
-            case let .loaded(rowStates):
-                List(
-                    selection: viewStore.binding(
-                        get: { _ in viewStore.selection },
-                        send: BeerListView.Action.selectBeer(beer:)
-                    )
-                ) {
-                    if rowStates.isEmpty {
-                        Text("No beers").font(.headline)
-                    } else {
-                        Section(header: headerView(page: viewStore.page), footer: footerView(count: rowStates.count, isLoading: viewStore.isLoading)) {
-                            ForEachStore(
-                                store.scope(
-                                    state: \.rowStates,
-                                    action: BeerListAction.row
-                                )) { rowViewStore in
-                                BeerListRowView(store: rowViewStore)
-                            }
-                            .onMove { indexSet, offset in
-                                viewStore.send(.move(indexSet: indexSet, toOffset: offset))
-                            }
-                            .onDelete { indexSet in
-                                viewStore.send(.delete(indexSet: indexSet))
-                            }
-                        }
-                    }
-                }
-                .listStyle(listStyle)
-                .navigationTitle("Beers")
-    //            .navigationSubtitle("🍺")
-                .if {
-                    #if os(macOS)
-                    $0.onDeleteCommand {
-                        onDeleteCommand(viewStore: viewStore)
-                    }
-                    #else
-                    $0
-                    #endif
-                }
-                .toolbar {
-                    #if os(iOS)
-                    ToolbarItem {
-                        if !viewStore.isLoading {
-                            EditButton()
-                        }
-                    }
-                    #endif
-
-                    ToolbarItem(placement: refreshToolbarItemPlacement) {
-                        Button(action: {
-                            viewStore.send(.refresh)
-                        }) {
-                            Image(systemName: "arrow.clockwise")
-                        }
-                    }
-                }
-            case let .failed(error):
-                Text(error.localizedDescription)
-            }
-        }
+            ),
+            content: content
+        )
     }
 }
 
 private extension BeerListView {
+    @ViewBuilder func content(viewStore: ViewStore<BeerListView.State, BeerListView.Action>) -> some View {
+        switch viewStore.viewState {
+        case .loading:
+            ProgressView()
+                .onAppear {
+                    viewStore.send(.onAppear)
+                }
+        case let .loaded(rowStates):
+            List(
+                selection: viewStore.binding(
+                    get: { _ in viewStore.selection },
+                    send: BeerListView.Action.selectBeer(beer:)
+                )
+            ) {
+                if rowStates.isEmpty {
+                    Text("No beers").font(.headline)
+                } else {
+                    Section(header: headerView(page: viewStore.page), footer: footerView(count: rowStates.count, isLoading: viewStore.isLoading)) {
+                        ForEachStore(
+                            store.scope(
+                                state: \.rowStates,
+                                action: BeerListAction.row
+                            )) { rowViewStore in
+                            BeerListRowView(store: rowViewStore)
+                        }
+                        .onMove { indexSet, offset in
+                            viewStore.send(.move(indexSet: indexSet, toOffset: offset))
+                        }
+                        .onDelete { indexSet in
+                            viewStore.send(.delete(indexSet: indexSet))
+                        }
+                    }
+                }
+            }
+            .listStyle(listStyle)
+            .navigationTitle("Beers")
+//            .navigationSubtitle("🍺")
+            .if {
+                #if os(macOS)
+                $0.onDeleteCommand {
+                    onDeleteCommand(viewStore: viewStore)
+                }
+                #else
+                $0
+                #endif
+            }
+            .toolbar {
+                #if os(iOS)
+                ToolbarItem {
+                    if !viewStore.isLoading {
+                        EditButton()
+                    }
+                }
+                #endif
+
+                ToolbarItem(placement: refreshToolbarItemPlacement) {
+                    Button(action: {
+                        viewStore.send(.refresh)
+                    }) {
+                        Image(systemName: "arrow.clockwise")
+                    }
+                }
+            }
+        case let .failed(error):
+            Text(error.localizedDescription)
+        }
+    }
+
     func headerView(page: Int) -> some View {
         HStack {
             Spacer()
