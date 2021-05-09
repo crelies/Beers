@@ -52,8 +52,8 @@ private extension BeerListView {
                 .onAppear {
                     viewStore.send(.onAppear)
                 }
-        case .loaded(let rowStates):
-            listView(viewStore: viewStore, rowStates: rowStates)
+        case .loaded:
+            listView(viewStore: viewStore)
             .navigationTitle(Text("Beers"))
             .if {
                 #if os(macOS)
@@ -86,17 +86,17 @@ private extension BeerListView {
         }
     }
 
-    func listView(viewStore: ViewStore<BeerListView.State, BeerListView.Action>, rowStates: [BeerListRowState]) -> some View {
+    func listView(viewStore: ViewStore<BeerListView.State, BeerListView.Action>) -> some View {
         List(
             selection: viewStore.binding(
                 get: { _ in viewStore.selection },
                 send: BeerListView.Action.selectBeer
             )
         ) {
-            if rowStates.isEmpty {
+            if viewStore.rowStates.isEmpty {
                 Text("No beers").font(.headline)
             } else {
-                Section(header: headerView(page: viewStore.page), footer: footerView(count: rowStates.count, isLoading: viewStore.isLoading)) {
+                Section(header: headerView(page: viewStore.page), footer: footerView(count: viewStore.rowStates.count, isLoading: viewStore.isLoading)) {
                     ForEachStore(
                         store.scope(
                             state: \.rowStates,
