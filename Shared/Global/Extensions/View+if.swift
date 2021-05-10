@@ -9,7 +9,7 @@
 import SwiftUI
 
 extension View {
-    func `if`<IfView: View>(transform: (Self) -> IfView) -> some View {
+    func `if`<IfView: View>(@ViewBuilder transform: (Self) -> IfView) -> some View {
         transform(self)
     }
 }
