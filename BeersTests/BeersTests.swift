@@ -16,7 +16,7 @@ final class BeersTests: XCTestCase {
     private lazy var environment = BeerListEnvironment(
         fetchBeers: { Effect(value: self.beers) },
         nextBeers: { Effect(value: .init(beers: [], page: 1)) },
-        fetchBeer: { _ in Effect(value: .mock()) },
+        fetchBeer: { id in Effect(value: .mock(id: id)) },
         moveBeer: { _, _  in Effect(value: ()) },
         deleteBeer: { _ in Effect(value: ()) }
     )
@@ -35,7 +35,7 @@ final class BeersTests: XCTestCase {
             state.page = 1
             
             let rowStates = self.beers.map { BeerListRowState(beer: $0, detailState: nil) }
-            state.rowStates = rowStates
+            state.rowStates = .init(uniqueElements: rowStates)
             state.viewState = .loaded(rowStates)
         }
     }
@@ -46,7 +46,7 @@ final class BeersTests: XCTestCase {
         let store = TestStore(
             initialState: BeerListState(
                 page: 1,
-                rowStates: rowStates,
+                rowStates: .init(uniqueElements: rowStates),
                 viewState: .loaded(rowStates),
                 isLoading: false
             ),
@@ -65,7 +65,7 @@ final class BeersTests: XCTestCase {
         let store = TestStore(
             initialState: BeerListState(
                 page: 1,
-                rowStates: rowStates,
+                rowStates: .init(uniqueElements: rowStates),
                 viewState: .loaded(rowStates),
                 isLoading: false
             ),
@@ -81,7 +81,7 @@ final class BeersTests: XCTestCase {
             state.isLoading = false
 
             let rowStates = self.beers.map { BeerListRowState(beer: $0, detailState: nil) }
-            state.rowStates = rowStates
+            state.rowStates = .init(uniqueElements: rowStates)
             state.viewState = .loaded(rowStates)
         }
     }

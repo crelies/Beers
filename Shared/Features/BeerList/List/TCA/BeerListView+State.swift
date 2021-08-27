@@ -9,10 +9,12 @@
 //  https://www.christianelies.de
 //
 
+import IdentifiedCollections
+
 extension BeerListView {
     struct State: Equatable {
         var page: Int
-        var rowStates: [BeerListRowState]
+        var rowStates: IdentifiedArray<Int, BeerListRowState>
         var viewState: ViewState<[BeerListRowState], BeerListError>
         var selection: Beer?
         var isLoading: Bool

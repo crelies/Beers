@@ -39,7 +39,7 @@ extension BeerListModule {
                     let rowStates = result.beers.map { beer in
                         BeerListRowState(beer: beer)
                     }
-                    state.rowStates = rowStates
+                    state.rowStates = .init(uniqueElements: rowStates)
                     state.viewState = .loaded(rowStates)
                     return .none
                 case let .fetchBeersResponse(.failure(error)):

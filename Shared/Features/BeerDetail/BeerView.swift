@@ -33,18 +33,20 @@ struct BeerView: View {
                 RemoteImage(type: .url(imageURL), errorView: { error in
                     Text(error.localizedDescription)
                 }, imageView: { image in
-                    VStack {
-                        Spacer()
-
-                        image
-                            .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .padding(.bottom)
-                    }
-                }, loadingView: ProgressView.init)
+                    Spacer()
+                    image
+                        .resizable()
+                        .aspectRatio(contentMode: .fit)
+                        .padding(.bottom)
+                }, loadingView: {
+                    Spacer()
+                    ProgressView()
+                    Spacer()
+                })
             }
         }
         .navigationTitle(beer.name)
+        .animation(.easeIn)
     }
 }
 

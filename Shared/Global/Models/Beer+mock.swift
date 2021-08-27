@@ -9,9 +9,9 @@
 import Foundation
 
 extension Beer {
-    static func mock() -> Beer {
+    static func mock(id: Int = Int.random(in: -1000 ..< -1)) -> Beer {
         .init(
-            id: Int.random(in: -1000 ..< -999),
+            id: id,
             name: "MockBeer",
             tagline: "Hey ho",
             firstBrewed: Date(),
