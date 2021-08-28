@@ -6,7 +6,6 @@
 //  Copyright © 2019 Christian Elies. All rights reserved.
 //
 
-import Combine
 import Foundation
 
 final class DefaultBeerAPIService {
@@ -30,15 +29,13 @@ final class DefaultBeerAPIService {
 }
 
 extension DefaultBeerAPIService: BeerAPIService {
-    func getBeers(page: Int, pageSize: Int) -> AnyPublisher<[Beer], Error> {
+    func getBeers(page: Int, pageSize: Int) async throws -> [Beer] {
         let urlRequest = makeURLRequest(
             forPage: page,
             pageSize: pageSize
         )
-        return urlSession.dataTaskPublisher(for: urlRequest)
-            .map(\.data)
-            .decode(type: [Beer].self, decoder: jsonDecoder)
-            .eraseToAnyPublisher()
+        let (data, _) = try await urlSession.data(for: urlRequest)
+        return try JSONDecoder().decode([Beer].self, from: data)
     }
 }
 

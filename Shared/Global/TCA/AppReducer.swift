@@ -22,6 +22,7 @@ extension AppModule {
                     action: /AppAction.beerList,
                     environment: { appEnvironment in
                         BeerListEnvironment(
+                            mainQueue: DispatchQueue.main.eraseToAnyScheduler,
                             fetchBeers: appEnvironment.fetchBeers,
                             nextBeers: appEnvironment.nextBeers,
                             fetchBeer: appEnvironment.fetchBeer,

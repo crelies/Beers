@@ -12,8 +12,10 @@ import Foundation
 import XCTest
 
 final class BeersTests: XCTestCase {
+    private let scheduler = DispatchQueue.test
     private let beers: [Beer] = [.mock(), .mock()]
     private lazy var environment = BeerListEnvironment(
+        mainQueue: scheduler.eraseToAnyScheduler,
         fetchBeers: { Effect(value: self.beers) },
         nextBeers: { Effect(value: .init(beers: [], page: 1)) },
         fetchBeer: { id in Effect(value: .mock(id: id)) },
@@ -28,16 +30,19 @@ final class BeersTests: XCTestCase {
             environment: environment
         )
 
-        store.send(.onAppear)
-        store.receive(.fetchBeers)
-        store.receive(.fetchBeersResponse(.success(.init(beers: beers, page: 1)))) { state in
-            state.isLoading = false
-            state.page = 1
-            
-            let rowStates = self.beers.map { BeerListRowState(beer: $0, detailState: nil) }
-            state.rowStates = .init(uniqueElements: rowStates)
-            state.viewState = .loaded(rowStates)
-        }
+        store.assert(
+            .send(.onAppear),
+            .receive(.fetchBeers),
+            .do { self.scheduler.advance() },
+            .receive(.fetchBeersResponse(.success(.init(beers: beers, page: 1)))) { state in
+                state.isLoading = false
+                state.page = 1
+
+                let rowStates = self.beers.map { BeerListRowState(beer: $0, detailState: nil) }
+                state.rowStates = .init(uniqueElements: rowStates)
+                state.viewState = .loaded(rowStates)
+            }
+        )
     }
 
     func testSelectBeer() {
@@ -73,16 +78,19 @@ final class BeersTests: XCTestCase {
             environment: environment
         )
 
-        store.send(.refresh)
-        store.receive(.fetchBeers) { state in
-            state.isLoading = true
-        }
-        store.receive(.fetchBeersResponse(.success(.init(beers: beers, page: 1)))) { state in
-            state.isLoading = false
+        store.assert(
+            .send(.refresh),
+            .receive(.fetchBeers) { state in
+                state.isLoading = true
+            },
+            .do { self.scheduler.advance() },
+            .receive(.fetchBeersResponse(.success(.init(beers: beers, page: 1)))) { state in
+                state.isLoading = false
 
-            let rowStates = self.beers.map { BeerListRowState(beer: $0, detailState: nil) }
-            state.rowStates = .init(uniqueElements: rowStates)
-            state.viewState = .loaded(rowStates)
-        }
+                let rowStates = self.beers.map { BeerListRowState(beer: $0, detailState: nil) }
+                state.rowStates = .init(uniqueElements: rowStates)
+                state.viewState = .loaded(rowStates)
+            }
+        )
     }
 }

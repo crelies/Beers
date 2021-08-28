@@ -13,6 +13,7 @@ import ComposableArchitecture
 import Foundation
 
 struct BeerListEnvironment {
+    var mainQueue: () -> AnySchedulerOf<DispatchQueue>
     var fetchBeers: () -> Effect<[Beer], BeerListError>
     var nextBeers: () -> Effect<BeersResult, BeerListError>
     var fetchBeer: (_ id: Int) -> Effect<Beer, BeerListRowError>

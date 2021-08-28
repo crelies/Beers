@@ -6,8 +6,6 @@
 //  Copyright © 2020 Christian Elies. All rights reserved.
 //
 
-import Combine
-
 protocol BeerAPIService {
-    func getBeers(page: Int, pageSize: Int) -> AnyPublisher<[Beer], Error>
+    func getBeers(page: Int, pageSize: Int) async throws -> [Beer]
 }

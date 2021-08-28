@@ -9,7 +9,6 @@
 //  https://www.christianelies.de
 //
 
-import Combine
 import ComposableArchitecture
 
 enum BeerListModule {}
@@ -61,6 +60,7 @@ extension BeerListModule {
                         state.isLoading = true
 
                         return environment.nextBeers()
+                            .receive(on: environment.mainQueue())
                             .catchToEffect()
                             .map(BeerListAction.fetchBeersResponse)
                             .cancellable(id: BeerListCancelID(), cancelInFlight: true)
@@ -89,6 +89,7 @@ extension BeerListModule {
                 case .fetchBeers:
                     state.isLoading = true
                     return environment.fetchBeers()
+                        .receive(on: environment.mainQueue())
                         .map { BeersResult(beers: $0, page: 1) }
                         .catchToEffect()
                         .map(BeerListAction.fetchBeersResponse)

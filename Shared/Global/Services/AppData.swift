@@ -19,15 +19,19 @@ final class AppData: ObservableObject {
         reducer: reducer,
         environment: AppEnvironment(
             fetchBeers: {
-                self.beerStore.fetchBeers()
-                    .mapError { BeerListError.underlying($0 as NSError) }
-                    .eraseToEffect()
+                Effect.task {
+                    try await self.beerStore.fetchBeers()
+                }
+                .mapError { BeerListError.underlying($0 as NSError) }
+                .eraseToEffect()
             },
             nextBeers: {
-                self.beerStore.nextBeers()
-                    .mapError { BeerListError.underlying($0 as NSError) }
-                    .map { BeersResult(beers: $0, page: self.beerStore.page) }
-                    .eraseToEffect()
+                Effect.task {
+                    try await self.beerStore.nextBeers()
+                }
+                .mapError { BeerListError.underlying($0 as NSError) }
+                .map { BeersResult(beers: $0, page: self.beerStore.page) }
+                .eraseToEffect()
             },
             fetchBeer: { id in
                 guard let beer = self.beerStore.beers.first(where: { $0.id == id }) else {

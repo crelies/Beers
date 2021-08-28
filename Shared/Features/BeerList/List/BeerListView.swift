@@ -113,6 +113,9 @@ private extension BeerListView {
                 }
             }
         }
+        .refreshable {
+            await viewStore.send(.refresh, while: \.isLoading)
+        }
         .listStyle(listStyle)
     }
 
