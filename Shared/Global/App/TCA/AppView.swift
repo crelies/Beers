@@ -31,13 +31,6 @@ struct AppView: View {
                         action: AppAction.beerList
                     )
                 )
-
-                // Detail
-//                #if os(macOS)
-//                if let selectedBeer = viewStore.selection {
-//                    BeerView(beer: selectedBeer)
-//                }
-//                #endif
             }
         }
     }

@@ -51,11 +51,6 @@ private extension BeerListView {
                     }
             case .loaded:
                 listView(viewStore: viewStore)
-                    #if os(macOS)
-                    .onDeleteCommand {
-                        onDeleteCommand(viewStore: viewStore)
-                    }
-                    #endif
             case let .failed(error):
                 Text(error.localizedDescription)
             }
@@ -88,12 +83,6 @@ private extension BeerListView {
     }
 
     func listView(viewStore: ViewStore<BeerListView.State, BeerListView.Action>) -> some View {
-        /*(
-         selection: viewStore.binding(
-             get: { _ in viewStore.selection },
-             send: BeerListView.Action.selectBeer(beer:)
-         )
-     )*/
         List {
             if viewStore.viewState.value?.isEmpty ?? true {
                 Text("No beers").font(.headline)
@@ -135,6 +124,7 @@ private extension BeerListView {
                         action: BeerListAction.row
                     )) { rowStore in
                         BeerListRowView(store: rowStore)
+                            .contentShape(Rectangle())
                             .onTapGesture {
                                 viewStore.send(.selectBeer(beer: ViewStore(rowStore).beer))
                             }
@@ -179,24 +169,4 @@ private extension BeerListView {
         }
         .padding()
     }
-
-    #if os(macOS)
-    func onDeleteCommand(viewStore: ViewStore<BeerListView.State, BeerListView.Action>) {
-//        guard case ViewState.loaded = viewStore.viewState else {
-//            return
-//        }
-//
-//        guard let selection = viewStore.selection else {
-//            return
-//        }
-//
-//        guard let index = viewStore.rowStates.firstIndex(where: { $0.beer == selection }) else {
-//            return
-//        }
-
-        // TODO: reimplement
-
-//        viewStore.send(.delete(indexSet: .init(integer: index)))
-    }
-    #endif
 }
