@@ -18,7 +18,6 @@
 		B95616B524C873DC003A3ACF /* Beer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B90BBC1322A9BC9500F871AB /* Beer.swift */; };
 		B95616BB24C873E5003A3ACF /* BeerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91CAD9B2308B4FF00EB67B1 /* BeerView.swift */; };
 		B95616CA24C879BC003A3ACF /* Beer+mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95616C924C879BC003A3ACF /* Beer+mock.swift */; };
-		B9E20A212882D665006FA697 /* ComposableArchitecture in Frameworks */ = {isa = PBXBuildFile; productRef = B9E20A202882D665006FA697 /* ComposableArchitecture */; };
 		B9EEB49F2882AAE40025A280 /* Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EEB49E2882AAE40025A280 /* Dependencies.swift */; };
 		B9EEB4A12882AC8D0025A280 /* StyleConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EEB4A02882AC8D0025A280 /* StyleConstants.swift */; };
 		B9F88D6526337AB2001040A6 /* BeerListAction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9F88D5C26337AB2001040A6 /* BeerListAction.swift */; };
@@ -141,7 +140,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				B9E20A212882D665006FA697 /* ComposableArchitecture in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -382,7 +380,6 @@
 			);
 			name = BeersTests;
 			packageProductDependencies = (
-				B9E20A202882D665006FA697 /* ComposableArchitecture */,
 			);
 			productName = BeersTests;
 			productReference = B92EFE0A2647C71D00A9AB68 /* BeersTests.xctest */;
@@ -844,11 +841,6 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		B9E20A202882D665006FA697 /* ComposableArchitecture */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = B9F88DE226337B88001040A6 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
-			productName = ComposableArchitecture;
-		};
 		B9F88DE326337B88001040A6 /* ComposableArchitecture */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = B9F88DE226337B88001040A6 /* XCRemoteSwiftPackageReference "swift-composable-architecture" */;
