@@ -12,6 +12,9 @@ jobs:
     runs-on: macos-latest
 
     steps:
+      - uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest
       - name: Checkout
         uses: actions/checkout@v2
       - name: Prepare
@@ -20,4 +23,4 @@ jobs:
           bundle install
       - name: Test
         run: |
-          bundle exec fastlane scan --scheme "Beers (iOS)"
+          bundle exec fastlane scan --scheme "Beers"
