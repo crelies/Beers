@@ -30,17 +30,17 @@ final class BeersTests: XCTestCase {
             environment: environment
         )
 
-        store.assert(
-            .send(.onAppear),
-            .receive(.fetchBeers),
-            .receive(.fetchBeersResponse(.success(.init(beers: beers, page: 1)))) { state in
-                state.isLoading = false
-                state.page = 1
+        store.send(.onAppear)
 
-                let rowStates = self.beers.map { BeerListRowState(beer: $0) }
-                state.viewState = .loaded(.init(uniqueElements: rowStates))
-            }
-        )
+        store.receive(.fetchBeers)
+
+        store.receive(.fetchBeersResponse(.success(.init(beers: beers, page: 1)))) { state in
+            state.isLoading = false
+            state.page = 1
+
+            let rowStates = self.beers.map { BeerListRowState(beer: $0) }
+            state.viewState = .loaded(.init(uniqueElements: rowStates))
+        }
     }
 
     func testSelectBeer() {
@@ -74,17 +74,17 @@ final class BeersTests: XCTestCase {
             environment: environment
         )
 
-        store.assert(
-            .send(.refresh),
-            .receive(.fetchBeers) { state in
-                state.isLoading = true
-            },
-            .receive(.fetchBeersResponse(.success(.init(beers: beers, page: 1)))) { state in
-                state.isLoading = false
+        store.send(.refresh)
 
-                let rowStates = self.beers.map { BeerListRowState(beer: $0) }
-                state.viewState = .loaded(.init(uniqueElements: rowStates))
-            }
-        )
+        store.receive(.fetchBeers) { state in
+            state.isLoading = true
+        }
+
+        store.receive(.fetchBeersResponse(.success(.init(beers: beers, page: 1)))) { state in
+            state.isLoading = false
+
+            let rowStates = self.beers.map { BeerListRowState(beer: $0) }
+            state.viewState = .loaded(.init(uniqueElements: rowStates))
+        }
     }
 }
