@@ -11,5 +11,4 @@
 
 struct AppState: Equatable {
     var listState: BeerListState
-    var selection: Beer?
 }

@@ -12,5 +12,6 @@
 import ComposableArchitecture
 
 struct BeerDetailEnvironment {
+    var mainQueue: () -> AnySchedulerOf<DispatchQueue>
     var fetchBeer: (_ id: Int) -> Effect<Beer, BeerListRowError>
 }

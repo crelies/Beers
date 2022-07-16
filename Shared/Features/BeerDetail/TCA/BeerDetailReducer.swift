@@ -19,14 +19,16 @@ extension BeerDetailModule {
             switch action {
             case .onAppear:
                 return environment.fetchBeer(state.id)
-                    .catchToEffect()
-                    .map(BeerDetailAction.fetchBeerResponse)
+                    .receive(on: environment.mainQueue())
+                    .catchToEffect(BeerDetailAction.fetchBeerResponse)
+
             case let .fetchBeerResponse(.success(beer)):
                 state.beer = beer
-                return .none
-            default:
-                return .none
+
+            default: ()
             }
+
+            return .none
         }
     }
 }

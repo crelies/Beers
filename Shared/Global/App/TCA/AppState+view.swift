@@ -11,6 +11,6 @@
 
 extension AppState {
     var view: AppView.State {
-        .init(selection: selection)
+        .init()
     }
 }

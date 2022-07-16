@@ -224,16 +224,7 @@
 		B91CAD902308B4AE00EB67B1 /* BeerDetail */ = {
 			isa = PBXGroup;
 			children = (
-				B9F88DA326337AE9001040A6 /* BeerDetailAction.swift */,
-				B9F88DA826337AE9001040A6 /* BeerDetailEnvironment.swift */,
-				B9F88E03263385F6001040A6 /* BeerDetailError.swift */,
-				B9F88DAA26337AE9001040A6 /* BeerDetailReducer.swift */,
-				B9F88DAB26337AE9001040A6 /* BeerDetailState.swift */,
-				B9F88DA426337AE9001040A6 /* BeerDetailState+view.swift */,
-				B9F88DA526337AE9001040A6 /* BeerDetailView.Action+feature.swift */,
-				B9F88DA726337AE9001040A6 /* BeerDetailView.swift */,
-				B9F88DA626337AE9001040A6 /* BeerDetailView+Action.swift */,
-				B9F88DA926337AE9001040A6 /* BeerDetailView+State.swift */,
+				B9ED6B0E2882F46100A1120E /* TCA */,
 			);
 			path = BeerDetail;
 			sourceTree = "<group>";
@@ -308,32 +299,24 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
-		B9EEB49D2882AAC10025A280 /* App */ = {
+		B9ED6B0E2882F46100A1120E /* TCA */ = {
 			isa = PBXGroup;
 			children = (
-				B9F88DC226337B09001040A6 /* TCA */,
+				B9F88DA326337AE9001040A6 /* BeerDetailAction.swift */,
+				B9F88DA826337AE9001040A6 /* BeerDetailEnvironment.swift */,
+				B9F88E03263385F6001040A6 /* BeerDetailError.swift */,
+				B9F88DAA26337AE9001040A6 /* BeerDetailReducer.swift */,
+				B9F88DAB26337AE9001040A6 /* BeerDetailState.swift */,
+				B9F88DA426337AE9001040A6 /* BeerDetailState+view.swift */,
+				B9F88DA526337AE9001040A6 /* BeerDetailView.Action+feature.swift */,
+				B9F88DA726337AE9001040A6 /* BeerDetailView.swift */,
+				B9F88DA626337AE9001040A6 /* BeerDetailView+Action.swift */,
+				B9F88DA926337AE9001040A6 /* BeerDetailView+State.swift */,
 			);
-			path = App;
+			path = TCA;
 			sourceTree = "<group>";
 		};
-		B9F88D5A26337A89001040A6 /* Row */ = {
-			isa = PBXGroup;
-			children = (
-				B9F88D8026337ACF001040A6 /* BeerListRowAction.swift */,
-				B9F88D8526337ACF001040A6 /* BeerListRowEnvironment.swift */,
-				B9F88DFA263383F3001040A6 /* BeerListRowError.swift */,
-				B9F88D8726337ACF001040A6 /* BeerListRowReducer.swift */,
-				B9F88D8826337ACF001040A6 /* BeerListRowState.swift */,
-				B9F88D8126337ACF001040A6 /* BeerListRowState+view.swift */,
-				B9F88D8226337ACF001040A6 /* BeerListRowView.Action+feature.swift */,
-				B9F88D8426337ACF001040A6 /* BeerListRowView.swift */,
-				B9F88D8326337ACF001040A6 /* BeerListRowView+Action.swift */,
-				B9F88D8626337ACF001040A6 /* BeerListRowView+State.swift */,
-			);
-			path = Row;
-			sourceTree = "<group>";
-		};
-		B9F88D5B26337A91001040A6 /* List */ = {
+		B9ED6B102882F47300A1120E /* TCA */ = {
 			isa = PBXGroup;
 			children = (
 				B9F88D5C26337AB2001040A6 /* BeerListAction.swift */,
@@ -347,6 +330,47 @@
 				B9F88D6026337AB2001040A6 /* BeerListView.swift */,
 				B9F88D5F26337AB2001040A6 /* BeerListView+Action.swift */,
 				B9F88D6226337AB2001040A6 /* BeerListView+State.swift */,
+			);
+			path = TCA;
+			sourceTree = "<group>";
+		};
+		B9ED6B112882F47D00A1120E /* TCA */ = {
+			isa = PBXGroup;
+			children = (
+				B9F88D8026337ACF001040A6 /* BeerListRowAction.swift */,
+				B9F88D8526337ACF001040A6 /* BeerListRowEnvironment.swift */,
+				B9F88DFA263383F3001040A6 /* BeerListRowError.swift */,
+				B9F88D8726337ACF001040A6 /* BeerListRowReducer.swift */,
+				B9F88D8826337ACF001040A6 /* BeerListRowState.swift */,
+				B9F88D8126337ACF001040A6 /* BeerListRowState+view.swift */,
+				B9F88D8226337ACF001040A6 /* BeerListRowView.Action+feature.swift */,
+				B9F88D8426337ACF001040A6 /* BeerListRowView.swift */,
+				B9F88D8326337ACF001040A6 /* BeerListRowView+Action.swift */,
+				B9F88D8626337ACF001040A6 /* BeerListRowView+State.swift */,
+			);
+			path = TCA;
+			sourceTree = "<group>";
+		};
+		B9EEB49D2882AAC10025A280 /* App */ = {
+			isa = PBXGroup;
+			children = (
+				B9F88DC226337B09001040A6 /* TCA */,
+			);
+			path = App;
+			sourceTree = "<group>";
+		};
+		B9F88D5A26337A89001040A6 /* Row */ = {
+			isa = PBXGroup;
+			children = (
+				B9ED6B112882F47D00A1120E /* TCA */,
+			);
+			path = Row;
+			sourceTree = "<group>";
+		};
+		B9F88D5B26337A91001040A6 /* List */ = {
+			isa = PBXGroup;
+			children = (
+				B9ED6B102882F47300A1120E /* TCA */,
 			);
 			path = List;
 			sourceTree = "<group>";

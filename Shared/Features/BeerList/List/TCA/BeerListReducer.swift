@@ -22,7 +22,10 @@ extension BeerListModule {
                     state: \.selection,
                     action: /BeerListAction.beerDetail,
                     environment: { rowEnvironment in
-                        BeerDetailEnvironment(fetchBeer: rowEnvironment.fetchBeer)
+                        BeerDetailEnvironment(
+                            mainQueue: rowEnvironment.mainQueue,
+                            fetchBeer: rowEnvironment.fetchBeer
+                        )
                     }
                 )
             ,

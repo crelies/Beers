@@ -11,6 +11,6 @@
 
 extension AppView {
     struct State: Equatable {
-        var selection: Beer?
+
     }
 }

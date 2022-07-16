@@ -33,19 +33,8 @@ extension AppModule {
                     }
                 )
             ,
-            Reducer<AppState, AppAction, AppEnvironment> { state, action, environment in
-                switch action {
-                case let .beerList(listAction):
-                    switch listAction {
-                    case let .selectBeer(beer):
-                        state.selection = beer
-                        return .none
-                    default:
-                        return .none
-                    }
-                default:
-                    return .none
-                }
+            .init { state, action, environment in
+                return .none
             }
         )
     }
