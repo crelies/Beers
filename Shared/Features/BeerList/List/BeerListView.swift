@@ -12,18 +12,6 @@
 import ComposableArchitecture
 import SwiftUI
 
-extension Store: Equatable where State: Equatable {
-    public static func == (lhs: ComposableArchitecture.Store<State, Action>, rhs: ComposableArchitecture.Store<State, Action>) -> Bool {
-        ViewStore(lhs).state == ViewStore(rhs).state
-    }
-}
-
-extension Store: Hashable where State: Hashable {
-    public func hash(into hasher: inout Hasher) {
-        hasher.combine(ViewStore(self).state)
-    }
-}
-
 struct BeerListView: View {
     let store: Store<BeerListState, BeerListAction>
 
@@ -85,7 +73,8 @@ private extension BeerListView {
     func listView(viewStore: ViewStore<BeerListView.State, BeerListView.Action>) -> some View {
         List {
             if viewStore.viewState.value?.isEmpty ?? true {
-                Text("No beers").font(.headline)
+                Text("No beers")
+                    .font(.headline)
             } else {
                 beersSection(viewStore: viewStore)
             }
@@ -144,8 +133,8 @@ private extension BeerListView {
             Spacer()
 
             Text("\(page) page(s) loaded")
-            .foregroundColor(.secondary)
-            .font(.caption)
+                .foregroundColor(.secondary)
+                .font(.caption)
 
             Spacer()
         }
@@ -157,8 +146,8 @@ private extension BeerListView {
                 Spacer()
 
                 Text("\(count) beers")
-                .foregroundColor(.secondary)
-                .font(.footnote)
+                    .foregroundColor(.secondary)
+                    .font(.footnote)
 
                 Spacer()
             }
