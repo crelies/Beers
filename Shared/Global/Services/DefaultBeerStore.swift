@@ -54,6 +54,10 @@ extension DefaultBeerStore: BeerStore {
     func deleteBeer(at indexSet: IndexSet) {
         beers.remove(atOffsets: indexSet)
     }
+
+    func deleteBeer(with id: Int) {
+        beers.removeAll(where: { $0.id == id })
+    }
 }
 
 extension DefaultBeerStore {

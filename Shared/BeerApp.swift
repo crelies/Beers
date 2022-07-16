@@ -43,6 +43,9 @@ let store = Store(
         deleteBeer: { indexSet in
             dependencies.beerStore.deleteBeer(at: indexSet)
             return .none
+        }, deleteBeerWithID: { id in
+            dependencies.beerStore.deleteBeer(with: id)
+            return .none
         }
     )
 )

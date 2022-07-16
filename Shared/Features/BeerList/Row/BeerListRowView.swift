@@ -26,10 +26,10 @@ struct BeerListRowView: View {
         ) { viewStore in
         content(beer: viewStore.beer)
             .contextMenu {
-                Button(action: {
+                Button(role: .destructive, action: {
                     viewStore.send(.delete)
                 }) {
-                    Text("Delete")
+                    Label("Delete", systemImage: "trash")
                 }
             }
             .tag(viewStore.state.beer)

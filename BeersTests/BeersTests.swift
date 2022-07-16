@@ -20,7 +20,8 @@ final class BeersTests: XCTestCase {
         nextBeers: { Effect(value: .init(beers: [], page: 1)) },
         fetchBeer: { id in Effect(value: .mock(id: id)) },
         moveBeer: { _, _  in Effect(value: ()) },
-        deleteBeer: { _ in Effect(value: ()) }
+        deleteBeer: { _ in Effect(value: ()) },
+        deleteBeerWithID: { _ in Effect(value: ()) }
     )
 
     func testOnAppear() {

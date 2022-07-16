@@ -52,6 +52,7 @@ extension BeerListModule {
                 case let .fetchBeersResponse(.success(result)):
                     state.isLoading = false
                     state.page = result.page
+
                     let rowStates = result.beers.map(BeerListRowState.init)
                     state.viewState = .loaded(.init(uniqueElements: rowStates))
 
@@ -59,15 +60,19 @@ extension BeerListModule {
                     state.isLoading = false
                     state.viewState = .failed(error)
 
-                case let .row(index, rowAction):
+                case let .row(id, rowAction):
                     switch rowAction {
                     case .onAppear:
                         guard state.viewState != .loading else {
                             return .none
                         }
 
+                        guard let beerIndex = state.viewState.value?.firstIndex(where: { $0.id == id }) else {
+                            return .none
+                        }
+
                         let lastIndex = (state.viewState.value ?? []).endIndex - 1
-                        guard index == lastIndex - 5 else {
+                        guard beerIndex == lastIndex - 5 else {
                             return .none
                         }
 
@@ -75,14 +80,12 @@ extension BeerListModule {
 
                         return environment.nextBeers()
                             .receive(on: environment.mainQueue())
-                            .catchToEffect()
-                            .map(BeerListAction.fetchBeersResponse)
+                            .catchToEffect(BeerListAction.fetchBeersResponse)
                             .cancellable(id: BeerListCancelID(), cancelInFlight: true)
 
-                    // macOS only
                     case .delete:
-                        state.viewState.value?.remove(at: index)
-                        return environment.deleteBeer(.init(integer: index))
+                        state.viewState.value?.remove(id: id)
+                        return environment.deleteBeerWithID(id)
                             .fireAndForget()
                     }
 
@@ -111,8 +114,7 @@ extension BeerListModule {
                     return environment.fetchBeers()
                         .receive(on: environment.mainQueue())
                         .map { BeersResult(beers: $0, page: 1) }
-                        .catchToEffect()
-                        .map(BeerListAction.fetchBeersResponse)
+                        .catchToEffect(BeerListAction.fetchBeersResponse)
                         .cancellable(id: BeerListCancelID(), cancelInFlight: true)
 
                 case .refresh:

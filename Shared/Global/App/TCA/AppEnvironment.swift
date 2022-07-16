@@ -18,4 +18,5 @@ struct AppEnvironment {
     var fetchBeer: (_ id: Int) -> Effect<Beer, BeerListRowError>
     var moveBeer: (_ fromOffsets: IndexSet, _ toOffset: Int) -> Effect<Void, BeerListError>
     var deleteBeer: (_ indexSet: IndexSet) -> Effect<Void, BeerListError>
+    var deleteBeerWithID: (Int) -> Effect<Void, BeerListError>
 }

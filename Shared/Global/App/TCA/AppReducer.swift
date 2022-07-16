@@ -27,7 +27,8 @@ extension AppModule {
                             nextBeers: appEnvironment.nextBeers,
                             fetchBeer: appEnvironment.fetchBeer,
                             moveBeer: appEnvironment.moveBeer,
-                            deleteBeer: appEnvironment.deleteBeer
+                            deleteBeer: appEnvironment.deleteBeer,
+                            deleteBeerWithID: appEnvironment.deleteBeerWithID
                         )
                     }
                 )
