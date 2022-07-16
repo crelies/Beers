@@ -7,5 +7,12 @@
 //
 
 struct Dependencies {
-    let beerStore = DefaultBeerStore()
+    let beerAPIService: BeerAPIService
+    let beerStore: BeerStore
+
+    init() {
+        let beerAPIService = DefaultBeerAPIService()
+        self.beerAPIService = beerAPIService
+        beerStore = DefaultBeerStore(beerApiService: beerAPIService)
+    }
 }

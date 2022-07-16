@@ -16,4 +16,5 @@ protocol BeerStore {
     func nextBeers() async throws -> [Beer]
     func moveBeer(at indexSet: IndexSet, to offset: Int)
     func deleteBeer(at indexSet: IndexSet)
+    func deleteBeer(with id: Beer.ID)
 }
