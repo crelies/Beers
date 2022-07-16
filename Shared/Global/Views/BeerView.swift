@@ -6,7 +6,6 @@
 //  Copyright © 2019 Christian Elies. All rights reserved.
 //
 
-import RemoteImage
 import SwiftUI
 
 struct BeerView: View {
@@ -30,32 +29,32 @@ struct BeerView: View {
             }
 
             if let imageURL = beer.imageURL {
-                RemoteImage(type: .url(imageURL), errorView: { error in
-                    Text(error.localizedDescription)
-                }, imageView: { image in
-                    Spacer()
-                    image
-                        .resizable()
-                        .aspectRatio(contentMode: .fit)
-                        .padding(.bottom)
-                }, loadingView: {
-                    Spacer()
-                    ProgressView()
-                    Spacer()
-                })
+                AsyncImage(url: imageURL) { phase in
+                    if let image = phase.image {
+                        Spacer()
+                        image
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .padding(.bottom)
+                    } else if let error = phase.error {
+                        Text(error.localizedDescription)
+                    } else {
+                        Spacer()
+                        ProgressView()
+                        Spacer()
+                    }
+                }
             }
         }
         .navigationTitle(beer.name)
-        .animation(.easeIn)
+        .animation(.easeIn, value: beer)
     }
 }
 
-#if DEBUG
-struct BeerDetailScreen_Previews: PreviewProvider {
+struct BeerView_Previews: PreviewProvider {
     static var previews: some View {
         NavigationView {
             BeerView(beer: DefaultBeerStore.mock().beers.randomElement()!)
         }
     }
 }
-#endif
