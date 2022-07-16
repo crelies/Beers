@@ -11,7 +11,7 @@ import SwiftUI
 enum StyleConstants {
     static var listStyle: some ListStyle {
         #if os(macOS)
-        return InsetListStyle()
+        return InsetListStyle(alternatesRowBackgrounds: true)
         #else
         return InsetGroupedListStyle()
         #endif
