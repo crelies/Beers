@@ -11,6 +11,6 @@
 
 extension BeerListRowState {
     var view: BeerListRowView.State {
-        .init(beer: beer, detailState: detailState)
+        .init(beer: beer)
     }
 }

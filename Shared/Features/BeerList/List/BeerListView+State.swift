@@ -13,10 +13,9 @@ import IdentifiedCollections
 
 extension BeerListView {
     struct State: Equatable {
-        var page: Int
-        var rowStates: IdentifiedArray<Int, BeerListRowState>
-        var viewState: ViewState<[BeerListRowState], BeerListError>
-        var selection: Beer?
-        var isLoading: Bool
+        let page: Int
+        let viewState: ViewState<IdentifiedArrayOf<BeerListRowState>, BeerListError>
+        let isBeerPresented: Bool
+        let isLoading: Bool
     }
 }

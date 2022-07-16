@@ -16,6 +16,8 @@ extension BeerListView.Action {
             return BeerListAction.onAppear
         case let BeerListView.Action.selectBeer(beer):
             return BeerListAction.selectBeer(beer: beer)
+        case let .setBeerPresented(isPresented):
+            return .setBeerPresented(isPresented: isPresented)
         case let BeerListView.Action.move(indexSet, toOffset):
             return BeerListAction.move(indexSet: indexSet, toOffset: toOffset)
         case let BeerListView.Action.delete(indexSet):

@@ -24,8 +24,7 @@ struct AppView: View {
                 }
             )
         ) { viewStore in
-            NavigationView {
-                // Primary
+            NavigationStack {
                 BeerListView(
                     store: store.scope(
                         state: \.listState,
@@ -34,11 +33,11 @@ struct AppView: View {
                 )
 
                 // Detail
-                #if os(macOS)
-                if let selectedBeer = viewStore.selection {
-                    BeerView(beer: selectedBeer)
-                }
-                #endif
+//                #if os(macOS)
+//                if let selectedBeer = viewStore.selection {
+//                    BeerView(beer: selectedBeer)
+//                }
+//                #endif
             }
         }
     }

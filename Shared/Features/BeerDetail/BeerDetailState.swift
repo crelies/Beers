@@ -9,7 +9,10 @@
 //  https://www.christianelies.de
 //
 
-struct BeerDetailState: Equatable {
-    let id: Int
-    var beer: Beer?
+struct BeerDetailState: Equatable, Hashable {
+    var beer: Beer
+}
+
+extension BeerDetailState: Identifiable {
+    var id: Int { beer.id }
 }

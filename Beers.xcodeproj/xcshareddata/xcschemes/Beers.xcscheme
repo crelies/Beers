@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1200"
+   LastUpgradeVersion = "1400"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "B956169524C87382003A3ACF"
                BuildableName = "Beers.app"
-               BlueprintName = "Beers (iOS)"
+               BlueprintName = "Beers"
                ReferencedContainer = "container:Beers.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -70,7 +70,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B956169524C87382003A3ACF"
             BuildableName = "Beers.app"
-            BlueprintName = "Beers (iOS)"
+            BlueprintName = "Beers"
             ReferencedContainer = "container:Beers.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -87,7 +87,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "B956169524C87382003A3ACF"
             BuildableName = "Beers.app"
-            BlueprintName = "Beers (iOS)"
+            BlueprintName = "Beers"
             ReferencedContainer = "container:Beers.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>

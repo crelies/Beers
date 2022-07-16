@@ -15,6 +15,7 @@ extension BeerListView {
     enum Action: Equatable {
         case onAppear
         case selectBeer(beer: Beer?)
+        case setBeerPresented(isPresented: Bool)
         case move(indexSet: IndexSet, toOffset: Int)
         case delete(indexSet: IndexSet)
         case refresh

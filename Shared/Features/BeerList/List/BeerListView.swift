@@ -12,23 +12,19 @@
 import ComposableArchitecture
 import SwiftUI
 
+extension Store: Equatable where State: Equatable {
+    public static func == (lhs: ComposableArchitecture.Store<State, Action>, rhs: ComposableArchitecture.Store<State, Action>) -> Bool {
+        ViewStore(lhs).state == ViewStore(rhs).state
+    }
+}
+
+extension Store: Hashable where State: Hashable {
+    public func hash(into hasher: inout Hasher) {
+        hasher.combine(ViewStore(self).state)
+    }
+}
+
 struct BeerListView: View {
-    private var listStyle: some ListStyle {
-        #if os(macOS)
-        return SidebarListStyle()
-        #else
-        return InsetGroupedListStyle()
-        #endif
-    }
-
-    private var refreshToolbarItemPlacement: ToolbarItemPlacement {
-        #if os(macOS)
-        return .automatic
-        #else
-        return .navigationBarLeading
-        #endif
-    }
-
     let store: Store<BeerListState, BeerListAction>
 
     var body: some View {
@@ -46,77 +42,111 @@ struct BeerListView: View {
 
 private extension BeerListView {
     @ViewBuilder func content(viewStore: ViewStore<BeerListView.State, BeerListView.Action>) -> some View {
-        switch viewStore.viewState {
-        case .loading:
-            ProgressView()
-                .onAppear {
-                    viewStore.send(.onAppear)
-                }
-        case .loaded:
-            listView(viewStore: viewStore)
-            .navigationTitle(Text("Beers"))
-            .if {
-                #if os(macOS)
-                $0.onDeleteCommand {
-                    onDeleteCommand(viewStore: viewStore)
-                }
-                #else
-                $0
-                #endif
-            }
-            .toolbar {
-                #if os(iOS)
-                ToolbarItem {
-                    if !viewStore.isLoading {
-                        EditButton()
+        VStack {
+            switch viewStore.viewState {
+            case .loading:
+                ProgressView()
+                    .onAppear {
+                        viewStore.send(.onAppear)
                     }
-                }
-                #endif
+            case .loaded:
+                listView(viewStore: viewStore)
+                    #if os(macOS)
+                    .onDeleteCommand {
+                        onDeleteCommand(viewStore: viewStore)
+                    }
+                    #endif
+            case let .failed(error):
+                Text(error.localizedDescription)
+            }
+        }
+        .navigationTitle("Beers")
+        .toolbar {
+            toolbar(viewStore: viewStore)
+        }
+    }
 
-                ToolbarItem(placement: refreshToolbarItemPlacement) {
-                    Button(action: {
-                        viewStore.send(.refresh)
-                    }) {
-                        Image(systemName: "arrow.clockwise")
-                    }
-                }
+    @ToolbarContentBuilder
+    func toolbar(
+        viewStore: ViewStore<BeerListView.State, BeerListView.Action>
+    ) -> some ToolbarContent {
+        #if os(iOS)
+        ToolbarItem {
+            if !viewStore.isLoading {
+                EditButton()
             }
-        case let .failed(error):
-            Text(error.localizedDescription)
+        }
+        #endif
+
+        ToolbarItem(placement: StyleConstants.leadingToolbarItemPlacement) {
+            Button(action: {
+                viewStore.send(.refresh)
+            }) {
+                Image(systemName: "arrow.clockwise")
+            }
         }
     }
 
     func listView(viewStore: ViewStore<BeerListView.State, BeerListView.Action>) -> some View {
-        List(
-            selection: viewStore.binding(
-                get: { _ in viewStore.selection },
-                send: BeerListView.Action.selectBeer(beer:)
-            )
-        ) {
-            if viewStore.rowStates.isEmpty {
+        /*(
+         selection: viewStore.binding(
+             get: { _ in viewStore.selection },
+             send: BeerListView.Action.selectBeer(beer:)
+         )
+     )*/
+        List {
+            if viewStore.viewState.value?.isEmpty ?? true {
                 Text("No beers").font(.headline)
             } else {
-                Section(header: headerView(page: viewStore.page), footer: footerView(count: viewStore.rowStates.count, isLoading: viewStore.isLoading)) {
-                    ForEachStore(
-                        store.scope(
-                            state: \.rowStates,
-                            action: BeerListAction.row
-                        )) { rowViewStore in
-                        BeerListRowView(store: rowViewStore)
-                    }
-                    .onMove { indexSet, offset in
-                        viewStore.send(.move(indexSet: indexSet, toOffset: offset))
-                    }
-                    .onDelete { indexSet in
-                        viewStore.send(.delete(indexSet: indexSet))
-                    }
-                }
+                beersSection(viewStore: viewStore)
             }
         }
+        .navigationDestination(
+            isPresented: viewStore.binding(
+                get: { $0.isBeerPresented },
+                send: BeerListView.Action.setBeerPresented
+            ),
+            destination: {
+                IfLetStore(
+                    store.scope(
+                        state: \.selection,
+                        action: BeerListAction.beerDetail
+                    ),
+                    then: BeerDetailView.init(store:),
+                    else: { Text("Store not found") }
+                )
+            }
+        )
         .refreshable {
             await viewStore.send(.refresh, while: \.isLoading)
         }
-        .listStyle(listStyle)
+        .listStyle(StyleConstants.listStyle)
+    }
+
+    @ViewBuilder
+    func beersSection(
+        viewStore: ViewStore<BeerListView.State, BeerListView.Action>
+    ) -> some View {
+        if case let ViewState.loaded(rowStates) = viewStore.viewState {
+            Section(header: headerView(page: viewStore.page), footer: footerView(count: rowStates.count, isLoading: viewStore.isLoading)) {
+                ForEachStore(
+                    store.scope(
+                        state: { _ in rowStates },
+                        action: BeerListAction.row
+                    )) { rowStore in
+                        BeerListRowView(store: rowStore)
+                            .onTapGesture {
+                                viewStore.send(.selectBeer(beer: ViewStore(rowStore).beer))
+                            }
+                }
+                .onMove { indexSet, offset in
+                    viewStore.send(.move(indexSet: indexSet, toOffset: offset))
+                }
+                .onDelete { indexSet in
+                    viewStore.send(.delete(indexSet: indexSet))
+                }
+            }
+        }
     }
 
     func headerView(page: Int) -> some View {
@@ -150,19 +180,23 @@ private extension BeerListView {
         .padding()
     }
 
+    #if os(macOS)
     func onDeleteCommand(viewStore: ViewStore<BeerListView.State, BeerListView.Action>) {
-        guard case ViewState.loaded = viewStore.viewState else {
-            return
-        }
+//        guard case ViewState.loaded = viewStore.viewState else {
+//            return
+//        }
+//
+//        guard let selection = viewStore.selection else {
+//            return
+//        }
+//
+//        guard let index = viewStore.rowStates.firstIndex(where: { $0.beer == selection }) else {
+//            return
+//        }
 
-        guard let selection = viewStore.selection else {
-            return
-        }
+        // TODO: reimplement
 
-        guard let index = viewStore.rowStates.firstIndex(where: { $0.beer == selection }) else {
-            return
-        }
-
-        viewStore.send(.delete(indexSet: .init(integer: index)))
+//        viewStore.send(.delete(indexSet: .init(integer: index)))
     }
+    #endif
 }

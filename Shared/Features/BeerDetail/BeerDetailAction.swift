@@ -9,7 +9,7 @@
 //  https://www.christianelies.de
 //
 
-enum BeerDetailAction: Equatable {
+enum BeerDetailAction: Equatable, Hashable {
     case onAppear
     case fetchBeerResponse(Result<Beer, BeerListRowError>)
 }

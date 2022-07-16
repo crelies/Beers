@@ -24,42 +24,18 @@ struct BeerListRowView: View {
                 }
             )
         ) { viewStore in
-            #if os(macOS)
-            content(beer: viewStore.beer)
-                .contextMenu {
-                    Button(action: {
-                        viewStore.send(.delete)
-                    }) {
-                        Text("Delete")
-                    }
+        content(beer: viewStore.beer)
+            .contextMenu {
+                Button(action: {
+                    viewStore.send(.delete)
+                }) {
+                    Text("Delete")
                 }
-                .tag(viewStore.state.beer)
-                .onAppear {
-                    viewStore.send(.onAppear)
-                }
-            #else
-            NavigationLink(
-                destination: IfLetStore(
-                    store.scope(
-                        state: \.detailState,
-                        action: BeerListRowAction.beerDetail
-                    ),
-                    then: BeerDetailView.init(store:),
-                    else: { Text("Store not found") }
-                ),
-                tag: viewStore.beer.id,
-                selection: viewStore.binding(
-                    get: { $0.detailState?.id },
-                    send: BeerListRowView.Action.didTapRow(id:)
-                ),
-                label: {
-                    content(beer: viewStore.beer)
-                }
-            )
+            }
+            .tag(viewStore.state.beer)
             .onAppear {
                 viewStore.send(.onAppear)
             }
-            #endif
         }
     }
 }

@@ -12,7 +12,6 @@
 extension BeerListRowView {
     enum Action: Equatable {
         case onAppear
-        case didTapRow(id: Int?)
         case delete
     }
 }

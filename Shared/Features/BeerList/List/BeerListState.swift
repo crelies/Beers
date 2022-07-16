@@ -13,8 +13,7 @@ import IdentifiedCollections
 
 struct BeerListState: Equatable {
     var page: Int = 0
-    var rowStates: IdentifiedArray<Int, BeerListRowState>
-    var viewState: ViewState<[BeerListRowState], BeerListError>
-    var selection: Beer?
+    var viewState: ViewState<IdentifiedArrayOf<BeerListRowState>, BeerListError>
+    var selection: BeerDetailState?
     var isLoading: Bool
 }

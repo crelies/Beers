@@ -15,11 +15,27 @@ enum BeerListModule {}
 
 extension BeerListModule {
     static var reducer: Reducer<BeerListState, BeerListAction, BeerListEnvironment> {
-        Reducer.combine(
+        .combine(
+            BeerDetailModule.reducer
+                .optional()
+                .pullback(
+                    state: \.selection,
+                    action: /BeerListAction.beerDetail,
+                    environment: { rowEnvironment in
+                        BeerDetailEnvironment(fetchBeer: rowEnvironment.fetchBeer)
+                    }
+                )
+            ,
             BeerListRowModule.reducer
                 .forEach(
-                    state: \.rowStates,
-                    action: /BeerListAction.row(index:action:),
+                    state: \.self,
+                    action: .self,
+                    environment: { $0 }
+                )
+                .optional()
+                .pullback(
+                    state: \.viewState.value,
+                    action: /BeerListAction.row,
                     environment: { listEnvironment in
                         BeerListRowEnvironment(fetchBeer: listEnvironment.fetchBeer)
                     }
@@ -32,19 +48,17 @@ extension BeerListModule {
                         return .none
                     }
                     return .init(value: .fetchBeers)
+
                 case let .fetchBeersResponse(.success(result)):
                     state.isLoading = false
                     state.page = result.page
-                    let rowStates = result.beers.map { beer in
-                        BeerListRowState(beer: beer)
-                    }
-                    state.rowStates = .init(uniqueElements: rowStates)
-                    state.viewState = .loaded(rowStates)
-                    return .none
+                    let rowStates = result.beers.map(BeerListRowState.init)
+                    state.viewState = .loaded(.init(uniqueElements: rowStates))
+
                 case let .fetchBeersResponse(.failure(error)):
                     state.isLoading = false
                     state.viewState = .failed(error)
-                    return .none
+
                 case let .row(index, rowAction):
                     switch rowAction {
                     case .onAppear:
@@ -52,7 +66,7 @@ extension BeerListModule {
                             return .none
                         }
 
-                        let lastIndex = state.rowStates.endIndex - 1
+                        let lastIndex = (state.viewState.value ?? []).endIndex - 1
                         guard index == lastIndex - 5 else {
                             return .none
                         }
@@ -64,28 +78,34 @@ extension BeerListModule {
                             .catchToEffect()
                             .map(BeerListAction.fetchBeersResponse)
                             .cancellable(id: BeerListCancelID(), cancelInFlight: true)
-                    case let .didTapRow(id: .some(id)):
-                        state.selection = state.rowStates.first(where: { $0.id == id})?.beer
-                        return .none
+
                     // macOS only
                     case .delete:
-                        state.rowStates.remove(at: index)
+                        state.viewState.value?.remove(at: index)
                         return environment.deleteBeer(.init(integer: index))
                             .fireAndForget()
-                    default:
-                        return .none
                     }
+
+                case .setBeerPresented(false):
+                    state.selection = nil
+
                 case let .selectBeer(beer):
-                    state.selection = beer
-                    return .none
+                    if let beer {
+                        state.selection = .init(beer: beer)
+                    } else {
+                        state.selection = nil
+                    }
+
                 case let .move(indexSet, toOffset):
-                    state.rowStates.move(fromOffsets: indexSet, toOffset: toOffset)
+                    state.viewState.value?.move(fromOffsets: indexSet, toOffset: toOffset)
                     return environment.moveBeer(indexSet, toOffset)
                         .fireAndForget()
+
                 case let .delete(indexSet):
-                    indexSet.forEach { state.rowStates.remove(at: $0) }
+                    indexSet.forEach { state.viewState.value?.remove(at: $0) }
                     return environment.deleteBeer(indexSet)
                         .fireAndForget()
+
                 case .fetchBeers:
                     state.isLoading = true
                     return environment.fetchBeers()
@@ -94,9 +114,14 @@ extension BeerListModule {
                         .catchToEffect()
                         .map(BeerListAction.fetchBeersResponse)
                         .cancellable(id: BeerListCancelID(), cancelInFlight: true)
+
                 case .refresh:
                     return .init(value: .fetchBeers)
+
+                default: ()
                 }
+
+                return .none
             }
         )
     }

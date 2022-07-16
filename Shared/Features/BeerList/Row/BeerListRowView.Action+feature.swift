@@ -14,8 +14,6 @@ extension BeerListRowView.Action {
         switch self {
         case BeerListRowView.Action.onAppear:
             return BeerListRowAction.onAppear
-        case let BeerListRowView.Action.didTapRow(id):
-            return BeerListRowAction.didTapRow(id: id)
         case BeerListRowView.Action.delete:
             return BeerListRowAction.delete
         }

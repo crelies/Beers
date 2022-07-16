@@ -11,7 +11,6 @@
 
 struct BeerListRowState: Equatable {
     let beer: Beer
-    var detailState: BeerDetailState?
 }
 
 extension BeerListRowState: Identifiable {

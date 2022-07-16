@@ -12,7 +12,7 @@ import Foundation
 import XCTest
 
 final class BeersTests: XCTestCase {
-    private let scheduler = DispatchQueue.test
+    private let scheduler = DispatchQueue.immediate
     private let beers: [Beer] = [.mock(), .mock()]
     private lazy var environment = BeerListEnvironment(
         mainQueue: scheduler.eraseToAnyScheduler,
@@ -25,7 +25,7 @@ final class BeersTests: XCTestCase {
 
     func testOnAppear() {
         let store = TestStore(
-            initialState: BeerListState(rowStates: [], viewState: .loading, isLoading: true),
+            initialState: BeerListState(viewState: .loading, isLoading: true),
             reducer: BeerListModule.reducer,
             environment: environment
         )
@@ -33,26 +33,23 @@ final class BeersTests: XCTestCase {
         store.assert(
             .send(.onAppear),
             .receive(.fetchBeers),
-            .do { self.scheduler.advance() },
             .receive(.fetchBeersResponse(.success(.init(beers: beers, page: 1)))) { state in
                 state.isLoading = false
                 state.page = 1
 
-                let rowStates = self.beers.map { BeerListRowState(beer: $0, detailState: nil) }
-                state.rowStates = .init(uniqueElements: rowStates)
-                state.viewState = .loaded(rowStates)
+                let rowStates = self.beers.map { BeerListRowState(beer: $0) }
+                state.viewState = .loaded(.init(uniqueElements: rowStates))
             }
         )
     }
 
     func testSelectBeer() {
         let beer: Beer = .mock()
-        let rowStates: [BeerListRowState] = [.init(beer: beer, detailState: nil)]
+        let rowStates: [BeerListRowState] = [.init(beer: beer)]
         let store = TestStore(
             initialState: BeerListState(
                 page: 1,
-                rowStates: .init(uniqueElements: rowStates),
-                viewState: .loaded(rowStates),
+                viewState: .loaded(.init(uniqueElements: rowStates)),
                 isLoading: false
             ),
             reducer: BeerListModule.reducer,
@@ -60,18 +57,17 @@ final class BeersTests: XCTestCase {
         )
 
         store.send(.selectBeer(beer: beer)) { state in
-            state.selection = beer
+            state.selection = .init(beer: beer)
         }
     }
 
     func testRefresh() {
         let beer: Beer = .mock()
-        let rowStates: [BeerListRowState] = [.init(beer: beer, detailState: nil)]
+        let rowStates: [BeerListRowState] = [.init(beer: beer)]
         let store = TestStore(
             initialState: BeerListState(
                 page: 1,
-                rowStates: .init(uniqueElements: rowStates),
-                viewState: .loaded(rowStates),
+                viewState: .loaded(.init(uniqueElements: rowStates)),
                 isLoading: false
             ),
             reducer: BeerListModule.reducer,
@@ -83,13 +79,11 @@ final class BeersTests: XCTestCase {
             .receive(.fetchBeers) { state in
                 state.isLoading = true
             },
-            .do { self.scheduler.advance() },
             .receive(.fetchBeersResponse(.success(.init(beers: beers, page: 1)))) { state in
                 state.isLoading = false
 
-                let rowStates = self.beers.map { BeerListRowState(beer: $0, detailState: nil) }
-                state.rowStates = .init(uniqueElements: rowStates)
-                state.viewState = .loaded(rowStates)
+                let rowStates = self.beers.map { BeerListRowState(beer: $0) }
+                state.viewState = .loaded(.init(uniqueElements: rowStates))
             }
         )
     }

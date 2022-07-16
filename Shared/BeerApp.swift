@@ -9,12 +9,8 @@
 import ComposableArchitecture
 import SwiftUI
 
-struct Dependencies {
-    let beerStore = DefaultBeerStore()
-}
-
 let dependencies = Dependencies()
-let appState = AppState(listState: .init(rowStates: [], viewState: .loading, isLoading: false))
+let appState = AppState(listState: .init(viewState: .loading, isLoading: false))
 let store = Store(
     initialState: appState,
     reducer: AppModule.reducer,
@@ -58,7 +54,7 @@ struct BeerApp: App {
     var body: some Scene {
         WindowGroup {
             AppView(store: store)
-            .frame(minWidth: 250, minHeight: 700)
+                .frame(minWidth: 250, minHeight: 700)
         }
     }
 }
