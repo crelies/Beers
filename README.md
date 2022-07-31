@@ -16,7 +16,7 @@ The app shows a list of beers fetched from the **Punk API** (https://punkapi.com
 
 <div style="display: inline-block;">
   <img src="https://github.com/crelies/Beers/blob/master/screenshots/mac1.png" alt="Preview Image Beer List - Mac" height="400"/>
-  <img src="https://github.com/crelies/Beers/blob/master/screenshots/mac2.jpg" alt="Preview Image Beer Detail - Mac" height="400"/>
+  <img src="https://github.com/crelies/Beers/blob/master/screenshots/mac2.png" alt="Preview Image Beer Detail - Mac" height="400"/>
 </div>
 
 # Author
