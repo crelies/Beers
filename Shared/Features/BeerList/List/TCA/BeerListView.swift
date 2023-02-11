@@ -105,11 +105,11 @@ private extension BeerListView {
     func beersSection(
         viewStore: ViewStore<BeerListView.State, BeerListView.Action>
     ) -> some View {
-        if case let ViewState.loaded(rowStates) = viewStore.viewState {
-            Section(header: headerView(page: viewStore.page), footer: footerView(count: rowStates.values.count, isLoading: viewStore.isLoading)) {
+        if case let ViewState.loaded(rowsState) = viewStore.viewState {
+            Section(header: headerView(page: viewStore.page), footer: footerView(count: rowsState.values.count, isLoading: viewStore.isLoading)) {
                 ForEachStore(
                     store.scope(
-                        state: { _ in rowStates.values },
+                        state: { _ in rowsState.values },
                         action: BeerListFeature.Action.row
                     )) { rowStore in
                         BeerListRowView(store: rowStore)
