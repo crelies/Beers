@@ -23,7 +23,7 @@ enum BeerListAction: Equatable {
     case fetchBeersResponse(Result<BeersResult, BeerListError>)
     case selectBeer(beer: Beer?)
     case setBeerPresented(isPresented: Bool)
-    case beerDetail(BeerDetailAction)
+    case beerDetail(BeerDetailFeature.Action)
     case move(indexSet: IndexSet, toOffset: Int)
     case delete(indexSet: IndexSet)
     case refresh

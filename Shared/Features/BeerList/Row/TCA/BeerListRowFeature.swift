@@ -1,5 +1,5 @@
 //
-//  BeerListRowReducer.swift
+//  BeerListRowFeature.swift
 //  Beers
 //
 //  Created Christian Elies on 23.04.21.

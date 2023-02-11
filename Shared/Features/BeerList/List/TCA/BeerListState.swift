@@ -14,6 +14,6 @@ import IdentifiedCollections
 struct BeerListState: Equatable {
     var page: Int = 0
     var viewState: ViewState<IdentifiedArrayOf<BeerListRowFeature.State>, BeerListError>
-    var selection: BeerDetailState?
+    var selection: BeerDetailFeature.State?
     var isLoading: Bool
 }

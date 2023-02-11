@@ -16,17 +16,13 @@ enum BeerListModule {}
 extension BeerListModule {
     static var reducer: AnyReducer<BeerListState, BeerListAction, BeerListEnvironment> {
         .combine(
-            BeerDetailModule.reducer
+            // TODO:
+            AnyReducer(BeerDetailFeature(fetchBeer: { _ in .none }))
                 .optional()
                 .pullback(
                     state: \.selection,
                     action: /BeerListAction.beerDetail,
-                    environment: { rowEnvironment in
-                        BeerDetailEnvironment(
-                            mainQueue: rowEnvironment.mainQueue,
-                            fetchBeer: rowEnvironment.fetchBeer
-                        )
-                    }
+                    environment: { $0 }
                 )
             ,
             AnyReducer(BeerListRowFeature())

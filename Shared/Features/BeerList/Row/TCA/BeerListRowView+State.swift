@@ -12,6 +12,6 @@
 extension BeerListRowView {
     struct State: Equatable {
         let beer: Beer
-        var detailState: BeerDetailState?
+        var detailState: BeerDetailFeature.State?
     }
 }

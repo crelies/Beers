@@ -10,10 +10,10 @@
 //
 
 extension BeerDetailView.Action {
-    var feature: BeerDetailAction {
+    var feature: BeerDetailFeature.Action {
         switch self {
             case BeerDetailView.Action.onAppear:
-                return BeerDetailAction.onAppear
+                return .onAppear
         }
     }
 }

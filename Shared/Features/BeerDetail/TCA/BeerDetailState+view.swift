@@ -9,7 +9,7 @@
 //  https://www.christianelies.de
 //
 
-extension BeerDetailState {
+extension BeerDetailFeature.State {
     var view: BeerDetailView.State {
         .init(beer: beer)
     }
