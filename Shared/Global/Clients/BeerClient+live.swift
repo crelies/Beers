@@ -6,34 +6,7 @@
 //  Copyright © 2023 Christian Elies. All rights reserved.
 //
 
-import ComposableArchitecture
 import Foundation
-
-struct BeerClient {
-    // BeerListError
-    var fetchBeers: () async throws -> [Beer]
-    // BeerListError
-    var nextBeers: () async throws -> BeersResult
-    // BeerError
-    var fetchBeer: (_ id: Int) async throws -> Beer
-    // BeerListError
-    var moveBeer: (_ fromOffsets: IndexSet, _ toOffset: Int) async throws -> Void
-    // BeerListError
-    var deleteBeer: (_ indexSet: IndexSet) async throws -> Void
-    // BeerListError
-    var deleteBeerWithID: (Int) async throws -> Void
-}
-
-private enum BeerClientKey: DependencyKey {
-    static var liveValue = BeerClient.live
-}
-
-extension DependencyValues {
-    var beerClient: BeerClient {
-        get { self[BeerClientKey.self] }
-        set { self[BeerClientKey.self] = newValue }
-    }
-}
 
 extension BeerClient {
     static var live: Self {

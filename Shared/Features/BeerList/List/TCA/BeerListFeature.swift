@@ -89,7 +89,7 @@ struct BeerListFeature: ReducerProtocol {
                 case .delete:
                     state.viewState.value?.values.remove(id: id)
                     return .fireAndForget {
-                        try await beerClient.deleteBeerWithID(id)
+                        await beerClient.deleteBeerWithID(id)
                     }
                 }
 
@@ -106,13 +106,13 @@ struct BeerListFeature: ReducerProtocol {
             case let .move(indexSet, toOffset):
                 state.viewState.value?.values.move(fromOffsets: indexSet, toOffset: toOffset)
                 return .fireAndForget {
-                    try await beerClient.moveBeer(indexSet, toOffset)
+                    await beerClient.moveBeer(indexSet, toOffset)
                 }
 
             case let .delete(indexSet):
                 indexSet.forEach { state.viewState.value?.values.remove(at: $0) }
                 return .fireAndForget {
-                    try await beerClient.deleteBeer(indexSet)
+                    await beerClient.deleteBeer(indexSet)
                 }
 
             case .fetchBeers:
