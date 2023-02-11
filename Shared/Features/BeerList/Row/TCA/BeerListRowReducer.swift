@@ -14,7 +14,7 @@ import ComposableArchitecture
 enum BeerListRowModule {}
 
 extension BeerListRowModule {
-    static var reducer: Reducer<BeerListRowState, BeerListRowAction, BeerListRowEnvironment> {
+    static var reducer: AnyReducer<BeerListRowState, BeerListRowAction, BeerListRowEnvironment> {
         .init { state, action, environment in
             return .none
         }

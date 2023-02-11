@@ -15,8 +15,8 @@ import Foundation
 enum AppModule {}
 
 extension AppModule {
-    static var reducer: Reducer<AppState, AppAction, AppEnvironment> {
-        Reducer.combine(
+    static var reducer: AnyReducer<AppState, AppAction, AppEnvironment> {
+        AnyReducer.combine(
             BeerListModule.reducer
                 .pullback(
                     state: \.listState,

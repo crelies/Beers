@@ -14,8 +14,8 @@ import ComposableArchitecture
 enum BeerDetailModule {}
 
 extension BeerDetailModule {
-    static var reducer: Reducer<BeerDetailState, BeerDetailAction, BeerDetailEnvironment> {
-        Reducer<BeerDetailState, BeerDetailAction, BeerDetailEnvironment> { state, action, environment in
+    static var reducer: AnyReducer<BeerDetailState, BeerDetailAction, BeerDetailEnvironment> {
+        AnyReducer<BeerDetailState, BeerDetailAction, BeerDetailEnvironment> { state, action, environment in
             switch action {
             case .onAppear:
                 return environment.fetchBeer(state.id)

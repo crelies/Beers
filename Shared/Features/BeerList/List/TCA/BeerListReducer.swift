@@ -14,7 +14,7 @@ import ComposableArchitecture
 enum BeerListModule {}
 
 extension BeerListModule {
-    static var reducer: Reducer<BeerListState, BeerListAction, BeerListEnvironment> {
+    static var reducer: AnyReducer<BeerListState, BeerListAction, BeerListEnvironment> {
         .combine(
             BeerDetailModule.reducer
                 .optional()
@@ -44,7 +44,7 @@ extension BeerListModule {
                     }
                 )
             ,
-            Reducer<BeerListState, BeerListAction, BeerListEnvironment> { state, action, environment in
+            AnyReducer<BeerListState, BeerListAction, BeerListEnvironment> { state, action, environment in
                 switch action {
                 case .onAppear:
                     guard state.page == 0 else {
