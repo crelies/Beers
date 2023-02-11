@@ -10,12 +10,12 @@
 //
 
 extension BeerListRowView.Action {
-    var feature: BeerListRowAction {
+    var feature: BeerListRowFeature.Action {
         switch self {
         case BeerListRowView.Action.onAppear:
-            return BeerListRowAction.onAppear
+            return .onAppear
         case BeerListRowView.Action.delete:
-            return BeerListRowAction.delete
+            return .delete
         }
     }
 }

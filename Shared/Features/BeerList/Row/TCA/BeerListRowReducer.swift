@@ -11,12 +11,21 @@
 
 import ComposableArchitecture
 
-enum BeerListRowModule {}
-
-extension BeerListRowModule {
-    static var reducer: AnyReducer<BeerListRowState, BeerListRowAction, BeerListRowEnvironment> {
-        .init { state, action, environment in
-            return .none
-        }
+struct BeerListRowFeature: ReducerProtocol {
+    struct State: Equatable {
+        let beer: Beer
     }
+
+    enum Action: Equatable {
+        case onAppear
+        case delete
+    }
+
+    func reduce(into state: inout State, action: Action) -> EffectTask<Action> {
+        return .none
+    }
+}
+
+extension BeerListRowFeature.State: Identifiable {
+    var id: Int { beer.id }
 }

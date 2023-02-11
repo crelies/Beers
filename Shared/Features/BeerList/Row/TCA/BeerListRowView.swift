@@ -13,7 +13,7 @@ import ComposableArchitecture
 import SwiftUI
 
 struct BeerListRowView: View {
-    let store: Store<BeerListRowState, BeerListRowAction>
+    let store: StoreOf<BeerListRowFeature>
 
     var body: some View {
         WithViewStore(

@@ -29,7 +29,7 @@ extension BeerListModule {
                     }
                 )
             ,
-            BeerListRowModule.reducer
+            AnyReducer(BeerListRowFeature())
                 .forEach(
                     state: \.self,
                     action: .self,
@@ -56,7 +56,7 @@ extension BeerListModule {
                     state.isLoading = false
                     state.page = result.page
 
-                    let rowStates = result.beers.map(BeerListRowState.init)
+                    let rowStates = result.beers.map(BeerListRowFeature.State.init)
                     state.viewState = .loaded(.init(uniqueElements: rowStates))
 
                 case let .fetchBeersResponse(.failure(error)):

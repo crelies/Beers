@@ -18,7 +18,7 @@ struct BeersResult: Equatable {
 
 enum BeerListAction: Equatable {
     case onAppear
-    case row(index: BeerListRowState.ID, action: BeerListRowAction)
+    case row(index: BeerListRowFeature.State.ID, action: BeerListRowFeature.Action)
     case fetchBeers
     case fetchBeersResponse(Result<BeersResult, BeerListError>)
     case selectBeer(beer: Beer?)

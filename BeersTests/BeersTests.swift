@@ -39,14 +39,14 @@ final class BeersTests: XCTestCase {
             state.isLoading = false
             state.page = 1
 
-            let rowStates = self.beers.map { BeerListRowState(beer: $0) }
+            let rowStates = self.beers.map { BeerListRowFeature.State(beer: $0) }
             state.viewState = .loaded(.init(uniqueElements: rowStates))
         }
     }
 
     func testSelectBeer() {
         let beer: Beer = .mock()
-        let rowStates: [BeerListRowState] = [.init(beer: beer)]
+        let rowStates: [BeerListRowFeature.State] = [.init(beer: beer)]
         let store = TestStore(
             initialState: BeerListState(
                 page: 1,
@@ -64,7 +64,7 @@ final class BeersTests: XCTestCase {
 
     func testRefresh() {
         let beer: Beer = .mock()
-        let rowStates: [BeerListRowState] = [.init(beer: beer)]
+        let rowStates: [BeerListRowFeature.State] = [.init(beer: beer)]
         let store = TestStore(
             initialState: BeerListState(
                 page: 1,
@@ -84,7 +84,7 @@ final class BeersTests: XCTestCase {
         store.receive(.fetchBeersResponse(.success(.init(beers: beers, page: 1)))) { state in
             state.isLoading = false
 
-            let rowStates = self.beers.map { BeerListRowState(beer: $0) }
+            let rowStates = self.beers.map { BeerListRowFeature.State(beer: $0) }
             state.viewState = .loaded(.init(uniqueElements: rowStates))
         }
     }
