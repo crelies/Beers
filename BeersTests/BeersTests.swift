@@ -26,7 +26,6 @@ extension BeerClient {
 
 @MainActor
 final class BeersTests: XCTestCase {
-    private let scheduler = DispatchQueue.immediate
     private let beers: [Beer] = [.mock(), .mock()]
 
     func testOnAppear() async {
@@ -36,8 +35,6 @@ final class BeersTests: XCTestCase {
             initialState: BeerListFeature.State(viewState: .loading, isLoading: true),
             reducer: BeerListFeature()
         )
-
-        store.dependencies.mainQueue = scheduler.eraseToAnyScheduler()
         store.dependencies.beerClient = beerClient
 
         await store.send(.onAppear)
@@ -65,7 +62,6 @@ final class BeersTests: XCTestCase {
             ),
             reducer: BeerListFeature()
         )
-        store.dependencies.mainQueue = scheduler.eraseToAnyScheduler()
         store.dependencies.beerClient = beerClient
 
         store.send(.selectBeer(beer: beer)) { state in
@@ -85,7 +81,6 @@ final class BeersTests: XCTestCase {
             ),
             reducer: BeerListFeature()
         )
-        store.dependencies.mainQueue = scheduler.eraseToAnyScheduler()
         store.dependencies.beerClient = beerClient
 
         await store.send(.refresh)

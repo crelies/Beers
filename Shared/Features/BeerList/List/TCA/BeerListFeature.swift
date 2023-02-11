@@ -34,7 +34,6 @@ struct BeerListFeature: ReducerProtocol {
         case refresh
     }
 
-    @Dependency(\.mainQueue) var mainQueue
     @Dependency(\.beerClient) var beerClient
 
     var body: some ReducerProtocolOf<Self> {
@@ -83,7 +82,6 @@ struct BeerListFeature: ReducerProtocol {
                         .fetchBeersResponse(.failure(error))
                     })
                     .cancellable(id: BeerListCancelID(), cancelInFlight: true)
-                    .receive(on: mainQueue)
                     .eraseToEffect()
 
                 case .delete:
@@ -126,7 +124,6 @@ struct BeerListFeature: ReducerProtocol {
                     .fetchBeersResponse(.failure(error))
                 })
                 .cancellable(id: BeerListCancelID(), cancelInFlight: true)
-                .receive(on: mainQueue)
                 .eraseToEffect()
 
             case .refresh:

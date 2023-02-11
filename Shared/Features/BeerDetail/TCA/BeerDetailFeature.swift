@@ -21,7 +21,6 @@ struct BeerDetailFeature: ReducerProtocol {
         case fetchBeerResponse(TaskResult<Beer>)
     }
 
-    @Dependency(\.mainQueue) var mainQueue
     @Dependency(\.beerClient.fetchBeer) var fetchBeer
 
     func reduce(into state: inout State, action: Action) -> EffectTask<Action> {
@@ -34,8 +33,6 @@ struct BeerDetailFeature: ReducerProtocol {
             }, catch: { error in
                 .fetchBeerResponse(.failure(error))
             })
-            // TODO: is this required anymore?
-            .receive(on: mainQueue)
             .eraseToEffect()
 
         case let .fetchBeerResponse(.success(beer)):
