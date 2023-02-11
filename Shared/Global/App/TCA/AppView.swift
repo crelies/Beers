@@ -16,22 +16,13 @@ struct AppView: View {
     let store: StoreOf<AppFeature>
 
     var body: some View {
-        WithViewStore(
-            store.scope(
-                state: \.view,
-                action: { (viewAction: AppView.Action) in
-                    viewAction.feature
-                }
-            )
-        ) { viewStore in
-            NavigationStack {
-                BeerListView(
-                    store: store.scope(
-                        state: \.listState,
-                        action: AppFeature.Action.beerList
-                    )
+        NavigationStack {
+            BeerListView(
+                store: store.scope(
+                    state: \.listState,
+                    action: AppFeature.Action.beerList
                 )
-            }
+            )
         }
     }
 }
