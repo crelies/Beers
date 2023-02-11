@@ -13,7 +13,7 @@ import ComposableArchitecture
 import SwiftUI
 
 struct BeerListView: View {
-    let store: Store<BeerListState, BeerListAction>
+    let store: StoreOf<BeerListFeature>
 
     var body: some View {
         WithViewStore(
@@ -88,7 +88,7 @@ private extension BeerListView {
                 IfLetStore(
                     store.scope(
                         state: \.selection,
-                        action: BeerListAction.beerDetail
+                        action: BeerListFeature.Action.beerDetail
                     ),
                     then: BeerDetailView.init(store:),
                     else: { Text("Store not found") }
@@ -110,7 +110,7 @@ private extension BeerListView {
                 ForEachStore(
                     store.scope(
                         state: { _ in rowStates },
-                        action: BeerListAction.row
+                        action: BeerListFeature.Action.row
                     )) { rowStore in
                         BeerListRowView(store: rowStore)
                             .contentShape(Rectangle())

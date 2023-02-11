@@ -9,7 +9,7 @@
 //  https://www.christianelies.de
 //
 
-extension BeerListState {
+extension BeerListFeature.State {
     var view: BeerListView.State {
         .init(
             page: page,

@@ -10,10 +10,10 @@
 //
 
 extension AppView.Action {
-    var feature: AppAction {
+    var feature: AppFeature.Action {
         switch self {
             case AppView.Action.onAppear:
-                return AppAction.onAppear
+                return .onAppear
         }
     }
 }

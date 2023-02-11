@@ -10,7 +10,7 @@
 //
 
 extension BeerListView.Action {
-    var feature: BeerListAction {
+    var feature: BeerListFeature.Action {
         switch self {
         case .onAppear:
             return .onAppear

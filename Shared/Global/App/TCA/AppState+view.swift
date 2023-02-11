@@ -9,7 +9,7 @@
 //  https://www.christianelies.de
 //
 
-extension AppState {
+extension AppFeature.State {
     var view: AppView.State {
         .init()
     }

@@ -11,25 +11,33 @@ import ComposableArchitecture
 import Foundation
 import XCTest
 
+extension BeerClient {
+    static func testing(beers: [Beer]) -> Self {
+        .init(
+            fetchBeers: { Effect(value: beers) },
+            nextBeers: { Effect(value: .init(beers: [], page: 1)) },
+            fetchBeer: { id in Effect(value: .mock(id: id)) },
+            moveBeer: { _, _  in Effect(value: ()) },
+            deleteBeer: { _ in Effect(value: ()) },
+            deleteBeerWithID: { _ in Effect(value: ()) }
+        )
+    }
+}
+
 final class BeersTests: XCTestCase {
     private let scheduler = DispatchQueue.immediate
     private let beers: [Beer] = [.mock(), .mock()]
-    private lazy var environment = BeerListEnvironment(
-        mainQueue: scheduler.eraseToAnyScheduler,
-        fetchBeers: { Effect(value: self.beers) },
-        nextBeers: { Effect(value: .init(beers: [], page: 1)) },
-        fetchBeer: { id in Effect(value: .mock(id: id)) },
-        moveBeer: { _, _  in Effect(value: ()) },
-        deleteBeer: { _ in Effect(value: ()) },
-        deleteBeerWithID: { _ in Effect(value: ()) }
-    )
 
     func testOnAppear() {
+        let beerClient: BeerClient = .testing(beers: beers)
+
         let store = TestStore(
-            initialState: BeerListState(viewState: .loading, isLoading: true),
-            reducer: BeerListModule.reducer,
-            environment: environment
+            initialState: BeerListFeature.State(viewState: .loading, isLoading: true),
+            reducer: BeerListFeature()
         )
+
+        store.dependencies.mainQueue = scheduler.eraseToAnyScheduler()
+        store.dependencies.beerClient = beerClient
 
         store.send(.onAppear)
 
@@ -45,17 +53,19 @@ final class BeersTests: XCTestCase {
     }
 
     func testSelectBeer() {
+        let beerClient: BeerClient = .testing(beers: beers)
         let beer: Beer = .mock()
         let rowStates: [BeerListRowFeature.State] = [.init(beer: beer)]
         let store = TestStore(
-            initialState: BeerListState(
+            initialState: BeerListFeature.State(
                 page: 1,
                 viewState: .loaded(.init(uniqueElements: rowStates)),
                 isLoading: false
             ),
-            reducer: BeerListModule.reducer,
-            environment: environment
+            reducer: BeerListFeature()
         )
+        store.dependencies.mainQueue = scheduler.eraseToAnyScheduler()
+        store.dependencies.beerClient = beerClient
 
         store.send(.selectBeer(beer: beer)) { state in
             state.selection = .init(beer: beer)
@@ -63,17 +73,19 @@ final class BeersTests: XCTestCase {
     }
 
     func testRefresh() {
+        let beerClient: BeerClient = .testing(beers: beers)
         let beer: Beer = .mock()
         let rowStates: [BeerListRowFeature.State] = [.init(beer: beer)]
         let store = TestStore(
-            initialState: BeerListState(
+            initialState: BeerListFeature.State(
                 page: 1,
                 viewState: .loaded(.init(uniqueElements: rowStates)),
                 isLoading: false
             ),
-            reducer: BeerListModule.reducer,
-            environment: environment
+            reducer: BeerListFeature()
         )
+        store.dependencies.mainQueue = scheduler.eraseToAnyScheduler()
+        store.dependencies.beerClient = beerClient
 
         store.send(.refresh)
 

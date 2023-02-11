@@ -13,7 +13,7 @@ import ComposableArchitecture
 import SwiftUI
 
 struct AppView: View {
-    let store: Store<AppState, AppAction>
+    let store: StoreOf<AppFeature>
 
     var body: some View {
         WithViewStore(
@@ -28,7 +28,7 @@ struct AppView: View {
                 BeerListView(
                     store: store.scope(
                         state: \.listState,
-                        action: AppAction.beerList
+                        action: AppFeature.Action.beerList
                     )
                 )
             }
