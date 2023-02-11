@@ -10,12 +10,18 @@ import ComposableArchitecture
 import Foundation
 
 struct BeerClient {
-    var fetchBeers: () -> Effect<[Beer], BeerListError>
-    var nextBeers: () -> Effect<BeersResult, BeerListError>
-    var fetchBeer: (_ id: Int) -> Effect<Beer, BeerError>
-    var moveBeer: (_ fromOffsets: IndexSet, _ toOffset: Int) -> Effect<Void, BeerListError>
-    var deleteBeer: (_ indexSet: IndexSet) -> Effect<Void, BeerListError>
-    var deleteBeerWithID: (Int) -> Effect<Void, BeerListError>
+    // BeerListError
+    var fetchBeers: () async throws -> [Beer]
+    // BeerListError
+    var nextBeers: () async throws -> BeersResult
+    // BeerError
+    var fetchBeer: (_ id: Int) async throws -> Beer
+    // BeerListError
+    var moveBeer: (_ fromOffsets: IndexSet, _ toOffset: Int) async throws -> Void
+    // BeerListError
+    var deleteBeer: (_ indexSet: IndexSet) async throws -> Void
+    // BeerListError
+    var deleteBeerWithID: (Int) async throws -> Void
 }
 
 private enum BeerClientKey: DependencyKey {
@@ -33,36 +39,33 @@ extension BeerClient {
     static var live: Self {
         .init(
             fetchBeers: {
-                Effect.task {
-                    try await dependencies.beerStore.fetchBeers()
+                do {
+                    return try await dependencies.beerStore.fetchBeers()
+                } catch {
+                    throw BeerListError.underlying(error as NSError)
                 }
-                .mapError { BeerListError.underlying($0 as NSError) }
-                .eraseToEffect()
             },
             nextBeers: {
-                Effect.task {
-                    try await dependencies.beerStore.nextBeers()
+                do {
+                    let beers = try await dependencies.beerStore.nextBeers()
+                    return BeersResult(beers: beers, page: dependencies.beerStore.page)
+                } catch {
+                    throw BeerListError.underlying(error as NSError)
                 }
-                .mapError { BeerListError.underlying($0 as NSError) }
-                .map { BeersResult(beers: $0, page: dependencies.beerStore.page) }
-                .eraseToEffect()
             },
             fetchBeer: { id in
                 guard let beer = dependencies.beerStore.beers.first(where: { $0.id == id }) else {
-                    return Effect(error: BeerError.beerNotFound)
+                    throw BeerError.beerNotFound
                 }
-                return Effect(value: beer)
+                return beer
             },
             moveBeer: { fromOffsets, toOffset in
                 dependencies.beerStore.moveBeer(at: fromOffsets, to: toOffset)
-                return .none
             },
             deleteBeer: { indexSet in
                 dependencies.beerStore.deleteBeer(at: indexSet)
-                return .none
             }, deleteBeerWithID: { id in
                 dependencies.beerStore.deleteBeer(with: id)
-                return .none
             }
         )
     }

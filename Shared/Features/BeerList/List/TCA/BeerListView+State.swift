@@ -14,7 +14,7 @@ import IdentifiedCollections
 extension BeerListView {
     struct State: Equatable {
         let page: Int
-        let viewState: ViewState<IdentifiedArrayOf<BeerListRowFeature.State>, BeerListError>
+        let viewState: ViewState<BeerRowsFeature.State, BeerListError>
         let isBeerPresented: Bool
         let isLoading: Bool
     }

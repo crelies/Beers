@@ -18,18 +18,25 @@ struct BeerDetailFeature: ReducerProtocol {
 
     enum Action: Hashable {
         case onAppear
-        case fetchBeerResponse(Result<Beer, BeerError>)
+        case fetchBeerResponse(TaskResult<Beer>)
     }
 
     @Dependency(\.mainQueue) var mainQueue
-    var fetchBeer: (_ id: Int) -> Effect<Beer, BeerError>
+    @Dependency(\.beerClient.fetchBeer) var fetchBeer
 
     func reduce(into state: inout State, action: Action) -> EffectTask<Action> {
         switch action {
         case .onAppear:
-            return fetchBeer(state.id)
-                .receive(on: mainQueue)
-                .catchToEffect(BeerDetailFeature.Action.fetchBeerResponse)
+            return .task(operation: { [id = state.id] in
+                await .fetchBeerResponse(TaskResult {
+                    try await fetchBeer(id)
+                })
+            }, catch: { error in
+                .fetchBeerResponse(.failure(error))
+            })
+            // TODO: is this required anymore?
+            .receive(on: mainQueue)
+            .eraseToEffect()
 
         case let .fetchBeerResponse(.success(beer)):
             state.beer = beer

@@ -14,21 +14,22 @@ import XCTest
 extension BeerClient {
     static func testing(beers: [Beer]) -> Self {
         .init(
-            fetchBeers: { Effect(value: beers) },
-            nextBeers: { Effect(value: .init(beers: [], page: 1)) },
-            fetchBeer: { id in Effect(value: .mock(id: id)) },
-            moveBeer: { _, _  in Effect(value: ()) },
-            deleteBeer: { _ in Effect(value: ()) },
-            deleteBeerWithID: { _ in Effect(value: ()) }
+            fetchBeers: { beers },
+            nextBeers: { .init(beers: [], page: 1) },
+            fetchBeer: { id in .mock(id: id) },
+            moveBeer: { _, _  in },
+            deleteBeer: { _ in },
+            deleteBeerWithID: { _ in }
         )
     }
 }
 
+@MainActor
 final class BeersTests: XCTestCase {
     private let scheduler = DispatchQueue.immediate
     private let beers: [Beer] = [.mock(), .mock()]
 
-    func testOnAppear() {
+    func testOnAppear() async {
         let beerClient: BeerClient = .testing(beers: beers)
 
         let store = TestStore(
@@ -39,16 +40,16 @@ final class BeersTests: XCTestCase {
         store.dependencies.mainQueue = scheduler.eraseToAnyScheduler()
         store.dependencies.beerClient = beerClient
 
-        store.send(.onAppear)
+        await store.send(.onAppear)
 
-        store.receive(.fetchBeers)
+        await store.receive(.fetchBeers)
 
-        store.receive(.fetchBeersResponse(.success(.init(beers: beers, page: 1)))) { state in
+        await store.receive(.fetchBeersResponse(.success(.init(beers: beers, page: 1)))) { state in
             state.isLoading = false
             state.page = 1
 
             let rowStates = self.beers.map { BeerListRowFeature.State(beer: $0) }
-            state.viewState = .loaded(.init(uniqueElements: rowStates))
+            state.viewState = .loaded(.init(values: .init(uniqueElements: rowStates)))
         }
     }
 
@@ -59,7 +60,7 @@ final class BeersTests: XCTestCase {
         let store = TestStore(
             initialState: BeerListFeature.State(
                 page: 1,
-                viewState: .loaded(.init(uniqueElements: rowStates)),
+                viewState: .loaded(.init(values: .init(uniqueElements: rowStates))),
                 isLoading: false
             ),
             reducer: BeerListFeature()
@@ -72,14 +73,14 @@ final class BeersTests: XCTestCase {
         }
     }
 
-    func testRefresh() {
+    func testRefresh() async {
         let beerClient: BeerClient = .testing(beers: beers)
         let beer: Beer = .mock()
         let rowStates: [BeerListRowFeature.State] = [.init(beer: beer)]
         let store = TestStore(
             initialState: BeerListFeature.State(
                 page: 1,
-                viewState: .loaded(.init(uniqueElements: rowStates)),
+                viewState: .loaded(.init(values: .init(uniqueElements: rowStates))),
                 isLoading: false
             ),
             reducer: BeerListFeature()
@@ -87,17 +88,18 @@ final class BeersTests: XCTestCase {
         store.dependencies.mainQueue = scheduler.eraseToAnyScheduler()
         store.dependencies.beerClient = beerClient
 
-        store.send(.refresh)
+        await store.send(.refresh)
 
-        store.receive(.fetchBeers) { state in
+        await store.receive(.fetchBeers) { state in
             state.isLoading = true
         }
 
-        store.receive(.fetchBeersResponse(.success(.init(beers: beers, page: 1)))) { state in
+        await store.receive(.fetchBeersResponse(.success(.init(beers: beers, page: 1)))) { state in
             state.isLoading = false
 
             let rowStates = self.beers.map { BeerListRowFeature.State(beer: $0) }
-            state.viewState = .loaded(.init(uniqueElements: rowStates))
+            state.viewState = .loaded(.init(values: .init(uniqueElements: rowStates)))
         }
     }
 }
+

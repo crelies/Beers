@@ -22,8 +22,10 @@ struct BeerApp: App {
 
     var body: some Scene {
         WindowGroup {
-            AppView(store: store)
-                .frame(minWidth: 250, minHeight: 700)
+            if !_XCTIsTesting {
+                AppView(store: store)
+                    .frame(minWidth: 250, minHeight: 700)
+            }
         }
     }
 }

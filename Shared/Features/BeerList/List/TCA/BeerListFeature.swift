@@ -13,6 +13,25 @@ import ComposableArchitecture
 import Foundation
 import IdentifiedCollections
 
+struct BeerRowsFeature: ReducerProtocol {
+    struct State: Equatable {
+        var values: IdentifiedArrayOf<BeerListRowFeature.State>
+    }
+
+    enum Action: Equatable {
+        case row(index: BeerListRowFeature.State.ID, action: BeerListRowFeature.Action)
+    }
+
+    var body: some ReducerProtocol<State, Action> {
+        Reduce { state, action in
+            return .none
+        }
+        .forEach(\.values, action: /Action.row) {
+            BeerListRowFeature()
+        }
+    }
+}
+
 struct BeersResult: Equatable {
     let beers: [Beer]
     let page: Int
@@ -21,7 +40,7 @@ struct BeersResult: Equatable {
 struct BeerListFeature: ReducerProtocol {
     struct State: Equatable {
         var page: Int = 0
-        var viewState: ViewState<IdentifiedArrayOf<BeerListRowFeature.State>, BeerListError>
+        var viewState: ViewState<BeerRowsFeature.State, BeerListError>
         var selection: BeerDetailFeature.State?
         var isLoading: Bool
     }
@@ -29,8 +48,9 @@ struct BeerListFeature: ReducerProtocol {
     enum Action: Equatable {
         case onAppear
         case row(index: BeerListRowFeature.State.ID, action: BeerListRowFeature.Action)
+        case rows(BeerRowsFeature.Action)
         case fetchBeers
-        case fetchBeersResponse(Result<BeersResult, BeerListError>)
+        case fetchBeersResponse(TaskResult<BeersResult>)
         case selectBeer(beer: Beer?)
         case setBeerPresented(isPresented: Bool)
         case beerDetail(BeerDetailFeature.Action)
@@ -56,11 +76,11 @@ struct BeerListFeature: ReducerProtocol {
                 state.page = result.page
 
                 let rowStates = result.beers.map(BeerListRowFeature.State.init)
-                state.viewState = .loaded(.init(uniqueElements: rowStates))
+                state.viewState = .loaded(.init(values: .init(uniqueElements: rowStates)))
 
             case let .fetchBeersResponse(.failure(error)):
                 state.isLoading = false
-                state.viewState = .failed(error)
+                state.viewState = .failed(BeerListError.underlying(error as NSError))
 
             case let .row(id, rowAction):
                 switch rowAction {
@@ -69,26 +89,33 @@ struct BeerListFeature: ReducerProtocol {
                         return .none
                     }
 
-                    guard let beerIndex = state.viewState.value?.firstIndex(where: { $0.id == id }) else {
+                    guard let beerIndex = state.viewState.value?.values.firstIndex(where: { $0.id == id }) else {
                         return .none
                     }
 
-                    let lastIndex = (state.viewState.value ?? []).endIndex - 1
+                    let lastIndex = (state.viewState.value?.values ?? []).endIndex - 1
                     guard beerIndex == lastIndex - 5 else {
                         return .none
                     }
 
                     state.isLoading = true
 
-                    return beerClient.nextBeers()
-                        .receive(on: mainQueue)
-                        .catchToEffect(Action.fetchBeersResponse)
-                        .cancellable(id: BeerListCancelID(), cancelInFlight: true)
+                    return .task(operation: {
+                        await .fetchBeersResponse(TaskResult {
+                            try await beerClient.nextBeers()
+                        })
+                    }, catch: { error in
+                        .fetchBeersResponse(.failure(error))
+                    })
+                    .cancellable(id: BeerListCancelID(), cancelInFlight: true)
+                    .receive(on: mainQueue)
+                    .eraseToEffect()
 
                 case .delete:
-                    state.viewState.value?.remove(id: id)
-                    return beerClient.deleteBeerWithID(id)
-                        .fireAndForget()
+                    state.viewState.value?.values.remove(id: id)
+                    return .fireAndForget {
+                        try await beerClient.deleteBeerWithID(id)
+                    }
                 }
 
             case .setBeerPresented(false):
@@ -102,22 +129,30 @@ struct BeerListFeature: ReducerProtocol {
                 }
 
             case let .move(indexSet, toOffset):
-                state.viewState.value?.move(fromOffsets: indexSet, toOffset: toOffset)
-                return beerClient.moveBeer(indexSet, toOffset)
-                    .fireAndForget()
+                state.viewState.value?.values.move(fromOffsets: indexSet, toOffset: toOffset)
+                return .fireAndForget {
+                    try await beerClient.moveBeer(indexSet, toOffset)
+                }
 
             case let .delete(indexSet):
-                indexSet.forEach { state.viewState.value?.remove(at: $0) }
-                return beerClient.deleteBeer(indexSet)
-                    .fireAndForget()
+                indexSet.forEach { state.viewState.value?.values.remove(at: $0) }
+                return .fireAndForget {
+                    try await beerClient.deleteBeer(indexSet)
+                }
 
             case .fetchBeers:
                 state.isLoading = true
-                return beerClient.fetchBeers()
-                    .receive(on: mainQueue)
-                    .map { BeersResult(beers: $0, page: 1) }
-                    .catchToEffect(Action.fetchBeersResponse)
-                    .cancellable(id: BeerListCancelID(), cancelInFlight: true)
+                return .task(operation: {
+                    await .fetchBeersResponse(TaskResult {
+                        let beers = try await beerClient.fetchBeers()
+                        return BeersResult(beers: beers, page: 1)
+                    })
+                }, catch: { error in
+                    .fetchBeersResponse(.failure(error))
+                })
+                .cancellable(id: BeerListCancelID(), cancelInFlight: true)
+                .receive(on: mainQueue)
+                .eraseToEffect()
 
             case .refresh:
                 return .init(value: .fetchBeers)
@@ -127,13 +162,11 @@ struct BeerListFeature: ReducerProtocol {
 
             return .none
         }
-        .ifLet(\.selection, action: /Action.beerDetail) {
-            BeerDetailFeature(fetchBeer: beerClient.fetchBeer)
+        .ifLet(\.viewState.value, action: /Action.rows) {
+            BeerRowsFeature()
         }
-
-        EmptyReducer()
-            .optionalForEach(\.viewState.value, action: /Action.row) {
-                BeerListRowFeature()
-            }
+        .ifLet(\.selection, action: /Action.beerDetail) {
+            BeerDetailFeature()
+        }
     }
 }

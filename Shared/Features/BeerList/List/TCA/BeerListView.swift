@@ -72,7 +72,7 @@ private extension BeerListView {
 
     func listView(viewStore: ViewStore<BeerListView.State, BeerListView.Action>) -> some View {
         List {
-            if viewStore.viewState.value?.isEmpty ?? true {
+            if viewStore.viewState.value?.values.isEmpty ?? true {
                 Text("No beers")
                     .font(.headline)
             } else {
@@ -106,10 +106,10 @@ private extension BeerListView {
         viewStore: ViewStore<BeerListView.State, BeerListView.Action>
     ) -> some View {
         if case let ViewState.loaded(rowStates) = viewStore.viewState {
-            Section(header: headerView(page: viewStore.page), footer: footerView(count: rowStates.count, isLoading: viewStore.isLoading)) {
+            Section(header: headerView(page: viewStore.page), footer: footerView(count: rowStates.values.count, isLoading: viewStore.isLoading)) {
                 ForEachStore(
                     store.scope(
-                        state: { _ in rowStates },
+                        state: { _ in rowStates.values },
                         action: BeerListFeature.Action.row
                     )) { rowStore in
                         BeerListRowView(store: rowStore)
