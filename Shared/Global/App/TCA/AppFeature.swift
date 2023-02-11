@@ -22,7 +22,7 @@ struct AppFeature: ReducerProtocol {
         case beerList(BeerListFeature.Action)
     }
 
-    var body: some ReducerProtocol<State, Action> {
+    var body: some ReducerProtocolOf<Self> {
         Scope(state: \.listState, action: /Action.beerList) {
             BeerListFeature()
         }

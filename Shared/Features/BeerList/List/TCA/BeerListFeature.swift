@@ -22,7 +22,7 @@ struct BeerRowsFeature: ReducerProtocol {
         case row(index: BeerListRowFeature.State.ID, action: BeerListRowFeature.Action)
     }
 
-    var body: some ReducerProtocol<State, Action> {
+    var body: some ReducerProtocolOf<Self> {
         Reduce { state, action in
             return .none
         }
@@ -62,7 +62,7 @@ struct BeerListFeature: ReducerProtocol {
     @Dependency(\.mainQueue) var mainQueue
     @Dependency(\.beerClient) var beerClient
 
-    var body: some ReducerProtocol<State, Action> {
+    var body: some ReducerProtocolOf<Self> {
         Reduce { state, action in
             switch action {
             case .onAppear:
