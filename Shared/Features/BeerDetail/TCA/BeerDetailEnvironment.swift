@@ -10,6 +10,7 @@
 //
 
 import ComposableArchitecture
+import Foundation
 
 struct BeerDetailEnvironment {
     var mainQueue: () -> AnySchedulerOf<DispatchQueue>

@@ -10,6 +10,7 @@
 //
 
 import ComposableArchitecture
+import Foundation
 
 enum AppModule {}
 

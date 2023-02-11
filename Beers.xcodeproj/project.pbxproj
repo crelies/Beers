@@ -81,7 +81,6 @@
 		B90BBC1322A9BC9500F871AB /* Beer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Beer.swift; sourceTree = "<group>"; };
 		B90BBC1622A9BD2C00F871AB /* DefaultBeerAPIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultBeerAPIService.swift; sourceTree = "<group>"; };
 		B91CAD9B2308B4FF00EB67B1 /* BeerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerView.swift; sourceTree = "<group>"; };
-		B91EF59F22AB19A300FC2303 /* preview.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = preview.gif; sourceTree = "<group>"; };
 		B92EFDFC2645EFB500A9AB68 /* BeerListCancelID.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerListCancelID.swift; sourceTree = "<group>"; };
 		B92EFDFF2646868E00A9AB68 /* BeerStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerStore.swift; sourceTree = "<group>"; };
 		B92EFE0A2647C71D00A9AB68 /* BeersTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BeersTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -162,7 +161,6 @@
 			isa = PBXGroup;
 			children = (
 				B9EEB49B2882A6D70025A280 /* Beers.entitlements */,
-				B91EF59F22AB19A300FC2303 /* preview.gif */,
 				B956168E24C87382003A3ACF /* Shared */,
 				B956169724C87382003A3ACF /* iOS */,
 				B956169E24C87382003A3ACF /* macOS */,
@@ -767,11 +765,11 @@
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_ENTITLEMENTS = Beers.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Mac Developer";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 766K8ALVVD;
-				"DEVELOPMENT_TEAM[sdk=macosx*]" = 766K8ALVVD;
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = "";
 				ENABLE_PREVIEWS = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -781,7 +779,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = de.crelies.Beers;
 				PRODUCT_NAME = Beers;
 				PROVISIONING_PROFILE_SPECIFIER = "match Development de.crelies.*";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "match Mac Development de.crelies.*";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
@@ -799,9 +797,11 @@
 				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CODE_SIGN_ENTITLEMENTS = Beers.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "-";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 766K8ALVVD;
+				"DEVELOPMENT_TEAM[sdk=macosx*]" = "";
 				ENABLE_PREVIEWS = YES;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -811,6 +811,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = de.crelies.Beers;
 				PRODUCT_NAME = Beers;
 				PROVISIONING_PROFILE_SPECIFIER = "match AdHoc de.crelies.*";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=macosx*]" = "";
 				SDKROOT = iphoneos;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator macosx";
 				SUPPORTS_MACCATALYST = NO;
@@ -867,7 +868,7 @@
 			repositoryURL = "https://github.com/pointfreeco/swift-composable-architecture";
 			requirement = {
 				kind = upToNextMajorVersion;
-				minimumVersion = 0.38.0;
+				minimumVersion = 0.50.0;
 			};
 		};
 /* End XCRemoteSwiftPackageReference section */
