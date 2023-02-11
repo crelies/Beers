@@ -19,6 +19,7 @@
 		B95616BB24C873E5003A3ACF /* BeerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B91CAD9B2308B4FF00EB67B1 /* BeerView.swift */; };
 		B95616CA24C879BC003A3ACF /* Beer+mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = B95616C924C879BC003A3ACF /* Beer+mock.swift */; };
 		B9954EF02997DE45009F8637 /* BeerClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9954EEF2997DE45009F8637 /* BeerClient.swift */; };
+		B9954EF229980804009F8637 /* ReducerProtocol+optionalForEach.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9954EF129980804009F8637 /* ReducerProtocol+optionalForEach.swift */; };
 		B9ED6B0B2882F34300A1120E /* Store+Equatable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9ED6B0A2882F34300A1120E /* Store+Equatable.swift */; };
 		B9ED6B0D2882F34900A1120E /* Store+Hashable.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9ED6B0C2882F34900A1120E /* Store+Hashable.swift */; };
 		B9EEB49F2882AAE40025A280 /* Dependencies.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9EEB49E2882AAE40025A280 /* Dependencies.swift */; };
@@ -78,6 +79,7 @@
 		B956169624C87382003A3ACF /* Beers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Beers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B95616C924C879BC003A3ACF /* Beer+mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Beer+mock.swift"; sourceTree = "<group>"; };
 		B9954EEF2997DE45009F8637 /* BeerClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerClient.swift; sourceTree = "<group>"; };
+		B9954EF129980804009F8637 /* ReducerProtocol+optionalForEach.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ReducerProtocol+optionalForEach.swift"; sourceTree = "<group>"; };
 		B9ED6B0A2882F34300A1120E /* Store+Equatable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Store+Equatable.swift"; sourceTree = "<group>"; };
 		B9ED6B0C2882F34900A1120E /* Store+Hashable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Store+Hashable.swift"; sourceTree = "<group>"; };
 		B9EEB49B2882A6D70025A280 /* Beers.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Beers.entitlements; sourceTree = "<group>"; };
@@ -223,6 +225,7 @@
 		B92EFE022647221000A9AB68 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				B9954EF129980804009F8637 /* ReducerProtocol+optionalForEach.swift */,
 				B9ED6B0A2882F34300A1120E /* Store+Equatable.swift */,
 				B9ED6B0C2882F34900A1120E /* Store+Hashable.swift */,
 			);
@@ -502,6 +505,7 @@
 				B9F88DAE26337AE9001040A6 /* BeerDetailState+view.swift in Sources */,
 				B9954EF02997DE45009F8637 /* BeerClient.swift in Sources */,
 				B95616B524C873DC003A3ACF /* Beer.swift in Sources */,
+				B9954EF229980804009F8637 /* ReducerProtocol+optionalForEach.swift in Sources */,
 				B9F88DB026337AE9001040A6 /* BeerDetailView.Action+feature.swift in Sources */,
 				B9F88E0B26338830001040A6 /* AppError.swift in Sources */,
 				B95616CA24C879BC003A3ACF /* Beer+mock.swift in Sources */,

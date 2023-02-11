@@ -127,10 +127,9 @@ struct BeerListFeature: ReducerProtocol {
 
             return .none
         }
-        // TODO:
-//        .forEach(\.viewState.value!, action: /Action.row) {
-//            BeerListRowFeature()
-//        }
+        .optionalForEach(\.viewState.value, action: /Action.row) {
+            BeerListRowFeature()
+        }
         .ifLet(\.selection, action: /Action.beerDetail) {
             BeerDetailFeature(fetchBeer: beerClient.fetchBeer)
         }
