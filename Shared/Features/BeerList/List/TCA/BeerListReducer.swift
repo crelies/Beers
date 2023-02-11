@@ -40,7 +40,7 @@ extension BeerListModule {
                     state: \.viewState.value,
                     action: /BeerListAction.row,
                     environment: { listEnvironment in
-                        BeerListRowEnvironment(fetchBeer: listEnvironment.fetchBeer)
+                        listEnvironment
                     }
                 )
             ,
