@@ -11,5 +11,5 @@
 
 enum BeerDetailAction: Equatable, Hashable {
     case onAppear
-    case fetchBeerResponse(Result<Beer, BeerListRowError>)
+    case fetchBeerResponse(Result<Beer, BeerError>)
 }

@@ -16,7 +16,7 @@ struct BeerListEnvironment {
     var mainQueue: () -> AnySchedulerOf<DispatchQueue>
     var fetchBeers: () -> Effect<[Beer], BeerListError>
     var nextBeers: () -> Effect<BeersResult, BeerListError>
-    var fetchBeer: (_ id: Int) -> Effect<Beer, BeerListRowError>
+    var fetchBeer: (_ id: Int) -> Effect<Beer, BeerError>
     var moveBeer: (_ fromOffsets: IndexSet, _ toOffset: Int) -> Effect<Void, BeerListError>
     var deleteBeer: (_ indexSet: IndexSet) -> Effect<Void, BeerListError>
     var deleteBeerWithID: (Int) -> Effect<Void, BeerListError>

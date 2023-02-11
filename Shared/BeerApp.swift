@@ -32,7 +32,7 @@ let store = Store(
         },
         fetchBeer: { id in
             guard let beer = dependencies.beerStore.beers.first(where: { $0.id == id }) else {
-                return Effect(error: BeerListRowError.beerNotFound)
+                return Effect(error: BeerError.beerNotFound)
             }
             return Effect(value: beer)
         },

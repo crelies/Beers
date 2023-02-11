@@ -14,5 +14,5 @@ import Foundation
 
 struct BeerDetailEnvironment {
     var mainQueue: () -> AnySchedulerOf<DispatchQueue>
-    var fetchBeer: (_ id: Int) -> Effect<Beer, BeerListRowError>
+    var fetchBeer: (_ id: Int) -> Effect<Beer, BeerError>
 }
