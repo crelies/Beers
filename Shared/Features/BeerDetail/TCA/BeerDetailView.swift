@@ -26,9 +26,7 @@ struct BeerDetailView: View {
         ) { viewStore in
             VStack {
                 if let beer = viewStore.beer {
-                    BeerView(
-                        beer: beer
-                    )
+                    BeerView(beer: beer)
                 }
             }
             .onAppear {

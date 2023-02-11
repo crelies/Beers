@@ -11,31 +11,6 @@
 
 import ComposableArchitecture
 import Foundation
-import IdentifiedCollections
-
-struct BeerRowsFeature: ReducerProtocol {
-    struct State: Equatable {
-        var values: IdentifiedArrayOf<BeerListRowFeature.State>
-    }
-
-    enum Action: Equatable {
-        case row(index: BeerListRowFeature.State.ID, action: BeerListRowFeature.Action)
-    }
-
-    var body: some ReducerProtocolOf<Self> {
-        Reduce { state, action in
-            return .none
-        }
-        .forEach(\.values, action: /Action.row) {
-            BeerListRowFeature()
-        }
-    }
-}
-
-struct BeersResult: Equatable {
-    let beers: [Beer]
-    let page: Int
-}
 
 struct BeerListFeature: ReducerProtocol {
     struct State: Equatable {

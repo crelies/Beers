@@ -24,18 +24,18 @@ struct BeerListRowView: View {
                 }
             )
         ) { viewStore in
-        content(beer: viewStore.beer)
-            .contextMenu {
-                Button(role: .destructive, action: {
-                    viewStore.send(.delete)
-                }) {
-                    Label("Delete", systemImage: "trash")
+            content(beer: viewStore.beer)
+                .contextMenu {
+                    Button(role: .destructive, action: {
+                        viewStore.send(.delete)
+                    }) {
+                        Label("Delete", systemImage: "trash")
+                    }
                 }
-            }
-            .tag(viewStore.state.beer)
-            .onAppear {
-                viewStore.send(.onAppear)
-            }
+                .tag(viewStore.state.beer)
+                .onAppear {
+                    viewStore.send(.onAppear)
+                }
         }
     }
 }
