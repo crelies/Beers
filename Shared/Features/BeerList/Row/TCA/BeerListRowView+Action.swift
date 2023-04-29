@@ -12,6 +12,7 @@
 extension BeerListRowView {
     enum Action: Equatable {
         case onAppear
+        case selectBeer(beer: Beer?)
         case delete
     }
 }

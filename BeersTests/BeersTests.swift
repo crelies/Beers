@@ -50,7 +50,7 @@ final class BeersTests: XCTestCase {
         }
     }
 
-    func testSelectBeer() {
+    func testSelectBeer() async {
         let beerClient: BeerClient = .testing(beers: beers)
         let beer: Beer = .mock()
         let rowStates: [BeerListRowFeature.State] = [.init(beer: beer)]
@@ -64,7 +64,7 @@ final class BeersTests: XCTestCase {
         )
         store.dependencies.beerClient = beerClient
 
-        store.send(.selectBeer(beer: beer)) { state in
+        await store.send(.row(index: beer.id, action: .selectBeer(beer: beer))) { state in
             state.selection = .init(beer: beer)
         }
     }

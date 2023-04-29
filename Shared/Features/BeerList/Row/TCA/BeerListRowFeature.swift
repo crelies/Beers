@@ -18,6 +18,7 @@ struct BeerListRowFeature: ReducerProtocol {
 
     enum Action: Equatable {
         case onAppear
+        case selectBeer(beer: Beer?)
         case delete
     }
 

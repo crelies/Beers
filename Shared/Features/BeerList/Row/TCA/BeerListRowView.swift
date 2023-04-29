@@ -34,6 +34,11 @@ struct BeerListRowView: View {
                     }
                 }
                 .tag(viewStore.state.beer)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .contentShape(Rectangle())
+                .onTapGesture {
+                    viewStore.send(.selectBeer(beer: viewStore.beer))
+                }
                 .onAppear {
                     viewStore.send(.onAppear)
                 }

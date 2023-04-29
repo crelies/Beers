@@ -12,9 +12,11 @@
 extension BeerListRowView.Action {
     var feature: BeerListRowFeature.Action {
         switch self {
-        case BeerListRowView.Action.onAppear:
+        case .onAppear:
             return .onAppear
-        case BeerListRowView.Action.delete:
+        case let .selectBeer(beer):
+            return .selectBeer(beer: beer)
+        case .delete:
             return .delete
         }
     }

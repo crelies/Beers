@@ -81,19 +81,12 @@ private extension BeerListView {
             }
         }
         .navigationDestination(
-            isPresented: viewStore.binding(
-                get: { $0.isBeerPresented },
-                send: BeerListView.Action.setBeerPresented
+            store: store.scope(
+                state: \.$selection,
+                action: BeerListFeature.Action.beerDetail
             ),
-            destination: {
-                IfLetStore(
-                    store.scope(
-                        state: \.selection,
-                        action: BeerListFeature.Action.beerDetail
-                    ),
-                    then: BeerDetailView.init(store:),
-                    else: { Text("Store not found") }
-                )
+            destination: { store in
+                BeerDetailView(store: store)
             }
         )
         .refreshable {
@@ -114,10 +107,6 @@ private extension BeerListView {
                         action: BeerListFeature.Action.row
                     )) { rowStore in
                         BeerListRowView(store: rowStore)
-                            .contentShape(Rectangle())
-                            .onTapGesture {
-                                viewStore.send(.selectBeer(beer: ViewStore(rowStore).beer))
-                            }
                 }
                 .onMove { indexSet, offset in
                     viewStore.send(.move(indexSet: indexSet, toOffset: offset))

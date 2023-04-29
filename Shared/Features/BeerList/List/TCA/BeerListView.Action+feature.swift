@@ -14,10 +14,6 @@ extension BeerListView.Action {
         switch self {
         case .onAppear:
             return .onAppear
-        case let .selectBeer(beer):
-            return .selectBeer(beer: beer)
-        case let .setBeerPresented(isPresented):
-            return .setBeerPresented(isPresented: isPresented)
         case let .move(indexSet, toOffset):
             return .move(indexSet: indexSet, toOffset: toOffset)
         case let .delete(indexSet):

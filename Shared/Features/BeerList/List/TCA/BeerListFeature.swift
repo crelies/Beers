@@ -16,7 +16,7 @@ struct BeerListFeature: ReducerProtocol {
     struct State: Equatable {
         var page: Int = 0
         var viewState: ViewState<BeerRowsFeature.State, BeerListError>
-        var selection: BeerDetailFeature.State?
+        @PresentationState var selection: BeerDetailFeature.State?
         var isLoading: Bool
     }
 
@@ -26,9 +26,7 @@ struct BeerListFeature: ReducerProtocol {
         case rows(BeerRowsFeature.Action)
         case fetchBeers
         case fetchBeersResponse(TaskResult<BeersResult>)
-        case selectBeer(beer: Beer?)
-        case setBeerPresented(isPresented: Bool)
-        case beerDetail(BeerDetailFeature.Action)
+        case beerDetail(PresentationAction<BeerDetailFeature.Action>)
         case move(indexSet: IndexSet, toOffset: Int)
         case delete(indexSet: IndexSet)
         case refresh
@@ -81,21 +79,18 @@ struct BeerListFeature: ReducerProtocol {
                     })
                     .cancellable(id: BeerListCancelID(), cancelInFlight: true)
 
+                case let .selectBeer(beer):
+                    if let beer {
+                        state.selection = .init(beer: beer)
+                    } else {
+                        state.selection = nil
+                    }
+
                 case .delete:
                     state.viewState.value?.values.remove(id: id)
                     return .fireAndForget {
                         await beerClient.deleteBeerWithID(id)
                     }
-                }
-
-            case .setBeerPresented(false):
-                state.selection = nil
-
-            case let .selectBeer(beer):
-                if let beer {
-                    state.selection = .init(beer: beer)
-                } else {
-                    state.selection = nil
                 }
 
             case let .move(indexSet, toOffset):
@@ -131,7 +126,7 @@ struct BeerListFeature: ReducerProtocol {
         .ifLet(\.viewState.value, action: /Action.rows) {
             BeerRowsFeature()
         }
-        .ifLet(\.selection, action: /Action.beerDetail) {
+        .ifLet(\.$selection, action: /Action.beerDetail) {
             BeerDetailFeature()
         }
     }
