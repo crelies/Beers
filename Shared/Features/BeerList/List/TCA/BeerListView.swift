@@ -23,6 +23,7 @@ struct BeerListView: View {
                     viewAction.feature
                 }
             ),
+            observe: { $0 },
             content: content
         )
     }

@@ -30,10 +30,7 @@ struct BeerDetailFeature: ReducerProtocol {
                 await .fetchBeerResponse(TaskResult {
                     try await fetchBeer(id)
                 })
-            }, catch: { error in
-                .fetchBeerResponse(.failure(error))
             })
-            .eraseToEffect()
 
         case let .fetchBeerResponse(.success(beer)):
             state.beer = beer

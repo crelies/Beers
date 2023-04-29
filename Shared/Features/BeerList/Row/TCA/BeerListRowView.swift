@@ -22,7 +22,8 @@ struct BeerListRowView: View {
                 action: { (viewAction: BeerListRowView.Action) in
                     viewAction.feature
                 }
-            )
+            ),
+            observe: { $0 }
         ) { viewStore in
             content(beer: viewStore.beer)
                 .contextMenu {

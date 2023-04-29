@@ -18,11 +18,12 @@ struct BeerDetailView: View {
     var body: some View {
         WithViewStore(
             store.scope(
-                state: { $0.view },
+                state: \.view,
                 action: { (viewAction: BeerDetailView.Action) in
                     viewAction.feature
                 }
-            )
+            ),
+            observe: { $0 }
         ) { viewStore in
             VStack {
                 if let beer = viewStore.beer {

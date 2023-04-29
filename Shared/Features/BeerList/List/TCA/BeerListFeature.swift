@@ -43,7 +43,7 @@ struct BeerListFeature: ReducerProtocol {
                 guard state.page == 0 else {
                     return .none
                 }
-                return .init(value: .fetchBeers)
+                return .send(.fetchBeers)
 
             case let .fetchBeersResponse(.success(result)):
                 state.isLoading = false
@@ -78,11 +78,8 @@ struct BeerListFeature: ReducerProtocol {
                         await .fetchBeersResponse(TaskResult {
                             try await beerClient.nextBeers()
                         })
-                    }, catch: { error in
-                        .fetchBeersResponse(.failure(error))
                     })
                     .cancellable(id: BeerListCancelID(), cancelInFlight: true)
-                    .eraseToEffect()
 
                 case .delete:
                     state.viewState.value?.values.remove(id: id)
@@ -120,14 +117,11 @@ struct BeerListFeature: ReducerProtocol {
                         let beers = try await beerClient.fetchBeers()
                         return BeersResult(beers: beers, page: 1)
                     })
-                }, catch: { error in
-                    .fetchBeersResponse(.failure(error))
                 })
                 .cancellable(id: BeerListCancelID(), cancelInFlight: true)
-                .eraseToEffect()
 
             case .refresh:
-                return .init(value: .fetchBeers)
+                return .send(.fetchBeers)
 
             default: ()
             }
